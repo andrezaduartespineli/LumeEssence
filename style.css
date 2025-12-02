@@ -1,0 +1,335 @@
+/* Reset de estilos básicos */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        /* Fonte e cor de fundo */
+        body {
+            font-family: 'Arial', sans-serif;
+            line-height: 1.6;
+            background-color: #f4f4f4;
+            color: #616b64;
+            margin: 0;
+        }
+               
+        /* logo e título */
+    .header {
+      display: flex;
+      align-items: center;  /* Alinha verticalmente logo e título */
+      justify-content: left;
+      text-align: center;
+      padding: 14px;
+      color: rgb(27, 30, 228);
+      background-color: #f4f4f4;
+      margin: 0 auto;
+      letter-spacing: 1 px;   
+      font-family: quicksand, sans-serif;
+      font-size: 15px;
+    }
+
+    /* Logo */
+    .header img {
+      width: 300px;  /* Ajuste o tamanho do logo conforme necessário */
+      height: auto;
+      margin-right: 10px; /* Espaço entre a imagem e o título */
+    }
+
+/* 1. Navbar simples */
+    .navbar {
+      display: flex;
+      justify-content: center;
+      background: #616b64;
+      padding: 18px;
+      margin-bottom: 25px;
+    }
+    .navbar a {
+      color: white;
+      text-decoration: none;
+      padding: 10px 20px;
+      margin: 0 5px;
+      transition: background 0.3s;
+    }
+    .navbar a:hover {
+      background: #000000;
+      border-radius: 5px;
+    }
+    
+        /* Contêiner centralizado */
+        .container {
+            width: 80%;
+            margin: 0 auto;
+            max-width: 1200px;
+        }
+
+        /* titulo do sobre*/
+        .container h2{
+            font-size: 35px;
+            text-align: center;
+            font-family: quicksand, sans-serif;
+            font-style: normal;
+            font-weight: 500;
+            margin-bottom: 20px;
+        }
+        /*textos do sobre*/
+        .container p{
+            font-size: 20px;
+            text-align: justify;
+            color: #555;
+            font-family: montserrat, sans-serif;
+            font-style: normal;
+            font-weight: 400;
+        }
+
+        /* subtitulos dos textos sobre */
+        .timeline-item h3,
+        .ceo h3 {
+            font-family: quicksand, sans-serif;
+            font-style: normal;
+            font-weight: 500;
+            font-size: 1.8rem;
+            margin-bottom: 10px;
+            color: #3a3838;
+            justify-content: center;
+        }
+       
+        
+      
+       /* h1 {
+      text-align: center;
+      padding: 20px;
+      background: #010102;
+      color: white;
+      margin: 0;
+    }
+
+    h2 {
+      margin: 30px 0 15px;
+      color: #333;
+      text-align: center;
+    }
+*/
+
+    /* Seções */
+        .intro,
+        .timeline,
+        .ceo {
+            background-color: #fff;
+            padding: 40px 0;
+            margin: 40px 0;
+            border-radius: 8px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+        }
+
+        .timeline-item,
+        .ceo .content {
+            margin-bottom: 30px;
+        }
+
+        /* Estilos para imagens */
+        .image1 img {
+            width: 100%;
+            max-width: 200px;                     
+            display: flex;
+            margin: auto;
+        }
+        .image2 img {
+            width: 100%;
+            max-width: 200px;
+            border-radius: 8px;
+            box-shadow: 0 6px 10px rgba(0, 0, 0, 0.1);
+            display: flex;
+            margin: auto;
+        }
+
+               
+        /* Animações */
+        @keyframes fadeInHeader {
+            to {
+                opacity: 1;
+            }
+        }
+
+        @keyframes fadeIn {
+            0% {
+                opacity: 0;
+            }
+
+            100% {
+                opacity: 1;
+            }
+        }
+
+        @keyframes slideUp {
+            0% {
+                transform: translateY(30px);
+                opacity: 0;
+            }
+
+            100% {
+                transform: translateY(0);
+                opacity: 1;
+            }
+        }
+        /* Aplicando animações nas classes */
+        .fade-in {
+            animation: fadeIn 1s ease-out forwards;
+        }
+
+        .slide-up {
+            font-family: quicksand, sans-serif;
+            font-style: normal;
+            font-weight: 200;
+            animation: slideUp 1s ease-out forwards;
+            color: #555;
+        }
+        
+        .intro .content,
+        .timeline-item,
+        .ceo .content {
+            opacity: 0;
+            animation: fadeIn 1s ease-out forwards;
+        }
+
+        .intro .content,
+        .timeline .timeline-item,
+        .ceo .content {
+            opacity: 0;
+            animation: slideUp 1s ease-out forwards;
+        }
+
+        .intro .content,
+        .timeline .timeline-item,
+        .ceo .content {
+            opacity: 0;
+            animation: slideUp 1s ease-out forwards;
+        }
+   
+        
+    /* 2. Botão animado */
+    .botao-animado {
+      display: block;
+      margin: 20px auto;
+      padding: 15px 30px;
+      font-size: 18px;
+      color: white;
+      background: linear-gradient(45deg, #A36361, #c49ba6);
+      border: none;
+      border-radius: 50px;
+      cursor: pointer;
+      position: relative;
+      overflow: hidden;
+    }
+    .botao-animado::after {
+      content: "";
+      position: absolute;
+      top: 0;
+      left: -100%;
+      width: 100%;
+      height: 100%;
+      background: rgba(255, 255, 255, 0.3);
+      transition: left 0.4s;
+    }
+    .botao-animado:hover::after {
+      left: 0;
+    }
+    
+    /* titulos antes dos cards e galeria*/
+    .titulo h2 {
+      text-align: center;
+      font-family: quicksand, sans-serif;
+      font-style: normal;
+      color: #555;
+      font-weight: 80;
+      font-size: 40px;
+      margin-bottom: 1px;
+    }
+
+    /* 3. Galeria de imagens */
+    .galeria {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+      gap: 15px;
+      padding: 20px;
+      margin-bottom: 25px;
+    }
+    .galeria img {
+      width: 100%;
+      border-radius: 10px;
+      transition: transform 0.3s, box-shadow 0.3s;
+      cursor: pointer;
+    }
+    .galeria img:hover {
+      transform: scale(1.05);
+      box-shadow: 2px 2px 15px rgba(0,0,0,0.3);
+    }
+
+    /* 4. Card com efeito hover */
+    .cards {
+      display: grid;
+      grid-template-columns: 1fr 1fr 1fr 1fr; /* Fr = Colunas;  */
+      justify-content: center;
+      gap: 10px;
+      padding: 5%;
+      
+    }
+        
+    .card {
+      width: 100%;
+      background: white;
+      border-radius: 12px;
+      box-shadow: 2px 2px 8px rgba(0,0,0,0.2);
+      padding: 15px;
+      transition: transform 0.3s;
+    }
+    .card:hover {
+      transform: translateY(-10px);
+    }
+    .card h3 {
+      margin: 0 0 10px;
+      text-align: center;
+      font-size: 18px;
+    }
+    .card p {
+      font-size: 14px;
+      color: #555;
+    }
+    
+    .card img {
+      width: 100%;
+      border-radius: 10px;
+      transition: transform 0.3s, box-shadow 0.3s;
+      cursor: pointer;
+    }
+
+    /* Rodapé */
+        footer {
+      text-align: center;
+      padding: 7px;
+      background: #616b64;
+      color: white;
+      position: fixed;
+      width: 100%;
+      bottom: 0;
+    }
+
+    .imagem-container {
+            position: relative; /* Define a posição relativa para o contêiner */
+            display: inline-block; /* Permite que o contêiner se ajuste ao tamanho da imagem */
+        }
+
+        .imagem-container .img-normal {
+            display: block; /* Garante que a imagem ocupe o espaço correto */
+        }
+
+        .imagem-container .img-hover {
+            position: absolute; /* Posiciona a segunda imagem sobre a primeira */
+            top: 0;
+            left: 0;
+            opacity: 0; /* Torna a segunda imagem invisível por padrão */
+            transition: opacity 0.3s ease; /* Adiciona uma transição suave */
+        }
+
+        .imagem-container:hover .img-hover {
+            opacity: 1; /* Torna a segunda imagem visível ao passar o mouse */
+        }
