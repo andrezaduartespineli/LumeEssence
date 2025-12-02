@@ -245,14 +245,15 @@
       margin-bottom: 1px;
     }
 
-    /* 3. Galeria de imagens */
-    .galeria {
-      display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
-      gap: 15px;
-      padding: 20px;
-      margin-bottom: 25px;
-    }
+    /* Container Geral da Galeria */
+.galeria {
+    display: flex;           /* Usamos Flex para centralizar os itens lado a lado */
+    justify-content: center; /* Centraliza no meio da tela */
+    flex-wrap: wrap;         /* Permite quebrar linha em telas menores */
+    gap: 30px;               /* Espaço entre as bolinhas */
+    padding: 20px;
+    margin-bottom: 40px;
+}
     .galeria img {
       width: 100%;
       border-radius: 10px;
@@ -314,26 +315,52 @@
     }
 */
 
-    .imagem-container {
-            position: relative; /* Define a posição relativa para o contêiner */
-            display: inline-block; /* Permite que o contêiner se ajuste ao tamanho da imagem */
-        }
+    /* O container de cada imagem individual */
+.imagem-container {
+    position: relative;
+    width: 160px;            /* LARGURA FIXA (Define o tamanho pequeno) */
+    height: 160px;           /* ALTURA IGUAL (Para ficar quadrado/redondo) */
+    border-radius: 10%;      /* Faz ficar REDONDO como na referência */
+    overflow: hidden;        /* Garante que a imagem não saia do círculo */
+    box-shadow: 0 4px 10px rgba(0,0,0,0.1); /* Sombra suave */
+    transition: transform 0.3s;
+    cursor: pointer;
+}
 
-        .imagem-container .img-normal {
-            display: block; /* Garante que a imagem ocupe o espaço correto */
-        }
+/* Efeito de crescer um pouquinho ao passar o mouse no container */
+.imagem-container:hover {
+    transform: scale(1.05);
+}
 
-        .imagem-container .img-hover {
-            position: absolute; /* Posiciona a segunda imagem sobre a primeira */
-            top: 0;
-            left: 0;
-            opacity: 0; /* Torna a segunda imagem invisível por padrão */
-            transition: opacity 0.3s ease; /* Adiciona uma transição suave */
-        }
+/* Estilo das Imagens (Normal e Hover) */
+.imagem-container img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;       /* Importante: Corta a imagem para preencher o círculo sem esticar */
+    display: block;
+}
 
-        .imagem-container:hover .img-hover {
-            opacity: 1; /* Torna a segunda imagem visível ao passar o mouse */
-        }
+/* Configuração da imagem de Hover (Mantida a lógica, ajustada para o círculo) */
+.imagem-container .img-hover {
+    position: absolute;
+    top: 0;
+    left: 0;
+    opacity: 0;
+    transition: opacity 0.3s ease;
+}
+
+.imagem-container:hover .img-hover {
+    opacity: 1;
+}
+
+/* Opcional: Adicionar texto abaixo da imagem (se você quiser colocar nomes depois) */
+.categoria-nome {
+    text-align: center;
+    margin-top: 10px;
+    font-family: 'Quicksand', sans-serif;
+    font-size: 14px;
+    color: #555;
+}
 
 /* --- ESTILOS DO NOVO FOOTER --- */
 
@@ -1267,3 +1294,933 @@ footer {
 }
 
 /* --- FIM DOS ESTILOS DO CARRINHO DE COMPRAS --- */
+
+/* --- ESTILOS DA BUSCA NA NAVBAR--- */
+
+.navbar {
+    display: flex;
+    justify-content: center; /* Mantém centralizado */
+    align-items: center;     /* Alinha verticalmente */
+    background: #616b64;
+    padding: 15px 20px;
+    margin-bottom: 25px;
+    flex-wrap: wrap;         /* Permite quebrar linha no celular */
+    gap: 20px;               /* Espaço entre os links e a busca */
+}
+
+/* Agrupamento dos Links */
+.nav-links {
+    display: flex;
+    align-items: center;
+}
+
+/* Caixa de Busca */
+.search-box {
+    display: flex;
+    align-items: center;
+    background-color: rgba(255, 255, 255, 0.15); /* Fundo sutilmente transparente */
+    padding: 5px 15px;
+    border-radius: 20px; /* Bordas arredondadas (Pill shape) */
+    border: 1px solid rgba(255, 255, 255, 0.2);
+    transition: background-color 0.3s;
+}
+
+.search-box:hover, .search-box:focus-within {
+    background-color: rgba(255, 255, 255, 0.25); /* Fica mais claro ao passar o mouse */
+}
+
+/* Input (Onde digita) */
+.search-box input {
+    background: transparent;
+    border: none;
+    outline: none;
+    color: white;
+    font-family: 'Montserrat', sans-serif;
+    font-size: 14px;
+    width: 200px; /* Largura da busca */
+}
+
+/* Cor do texto de placeholder (Ex: "O que você procura?") */
+.search-box input::placeholder {
+    color: rgba(255, 255, 255, 0.7);
+}
+
+/* Botão da Lupa */
+.search-box button {
+    background: transparent;
+    border: none;
+    color: white;
+    cursor: pointer;
+    font-size: 14px;
+    padding: 5px;
+    transition: transform 0.2s;
+}
+
+.search-box button:hover {
+    transform: scale(1.1);
+}
+
+/* Responsividade Mobile */
+@media (max-width: 768px) {
+    .navbar {
+        flex-direction: column; /* Coloca a busca embaixo dos links no celular */
+        gap: 15px;
+    }
+    
+    .nav-links {
+        flex-wrap: wrap;
+        justify-content: center;
+    }
+
+    .search-box {
+        width: 100%; /* Busca ocupa toda a largura no celular */
+    }
+    
+    .search-box input {
+        width: 100%;
+    }
+}
+
+/* --- FIM DOS ESTILOS DA BUSCA NA NAVBAR --- */
+
+/* --- ESTILOS DE LOGIN E CADASTRO NA NAVBAR--- */
+
+/* Ajuste para ícones na navbar */
+.icon-link {
+    color: white;
+    font-size: 18px;
+    transition: color 0.3s;
+}
+
+
+/* Container Centralizado */
+.auth-container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    min-height: 60vh; /* Garante altura para centralizar na tela */
+    padding: 40px 20px;
+}
+
+/* Cartão Branco de Fundo */
+.auth-card {
+    background: white;
+    padding: 40px;
+    width: 100%;
+    max-width: 450px; /* Largura máxima elegante */
+    border-radius: 10px;
+    box-shadow: 0 4px 20px rgba(0,0,0,0.05);
+    text-align: center;
+}
+
+.auth-card h2 {
+    font-family: 'Quicksand', sans-serif;
+    color: #333;
+    margin-bottom: 10px;
+}
+
+.auth-subtitle {
+    font-family: 'Montserrat', sans-serif;
+    color: #666;
+    font-size: 14px;
+    margin-bottom: 30px;
+    display: block;
+}
+
+/* Estilo dos Inputs (Reaproveitando base do contato mas ajustando) */
+.auth-form .form-group {
+    margin-bottom: 20px;
+    text-align: left;
+}
+
+.auth-form label {
+    display: block;
+    margin-bottom: 8px;
+    font-family: 'Quicksand', sans-serif;
+    font-weight: bold;
+    color: #616b64;
+    font-size: 14px;
+}
+
+.auth-form input {
+    width: 100%;
+    padding: 12px;
+    border: 1px solid #ddd;
+    border-radius: 5px;
+    font-family: 'Montserrat', sans-serif;
+    outline: none;
+    transition: border-color 0.3s;
+}
+
+.auth-form input:focus {
+    border-color: #A36361;
+}
+
+/* Links (Esqueci senha / Cadastre-se) */
+.auth-links {
+    display: flex;
+    justify-content: space-between;
+    font-size: 12px;
+    margin-bottom: 20px;
+    font-family: 'Montserrat', sans-serif;
+}
+
+.auth-links a {
+    color: #616b64;
+    text-decoration: none;
+}
+
+.auth-links a:hover {
+    color: #A36361;
+    text-decoration: underline;
+}
+
+/* Botão de Ação */
+.btn-auth {
+    width: 100%;
+    padding: 12px;
+    background: #A36361; /* Cor da marca */
+    color: white;
+    border: none;
+    border-radius: 50px;
+    font-family: 'Quicksand', sans-serif;
+    font-weight: bold;
+    font-size: 16px;
+    cursor: pointer;
+    transition: opacity 0.3s, transform 0.2s;
+    margin-bottom: 20px;
+}
+
+.btn-auth:hover {
+    opacity: 0.9;
+    transform: translateY(-2px);
+}
+
+.auth-footer {
+    font-size: 13px;
+    font-family: 'Montserrat', sans-serif;
+    color: #555;
+}
+
+.auth-footer a {
+    color: #A36361;
+    font-weight: bold;
+    text-decoration: none;
+}
+
+/* Responsividade */
+@media (max-width: 768px) {
+    .nav-icons-area {
+        width: 100%;
+        justify-content: space-around;
+        margin-top: 10px;
+    }
+}
+
+/* --- FIM DOS ESTILOS DE LOGIN E CADASTRO NA NAVBAR--- */
+
+/* --- PÁGINA INSTITUCIONAL (POLÍTICAS) --- */
+
+/* Rolagem suave ao clicar nos links */
+html {
+    scroll-behavior: smooth;
+}
+
+.policy-container {
+    display: flex;
+    max-width: 1100px;
+    margin: 40px auto;
+    padding: 0 20px;
+    gap: 50px;
+    position: relative;
+}
+
+/* Menu Lateral */
+.policy-sidebar {
+    width: 250px;
+    flex-shrink: 0;
+    /* Faz o menu ficar fixo enquanto rola */
+    position: sticky; 
+    top: 20px; 
+    height: fit-content;
+    background: #fff;
+    padding: 20px;
+    border-radius: 8px;
+    box-shadow: 0 2px 10px rgba(0,0,0,0.05);
+}
+
+.policy-sidebar ul {
+    list-style: none;
+    padding: 0;
+}
+
+.policy-sidebar ul li {
+    margin-bottom: 15px;
+}
+
+.policy-sidebar ul li a {
+    text-decoration: none;
+    color: #616b64;
+    font-family: 'Quicksand', sans-serif;
+    font-weight: bold;
+    font-size: 16px;
+    display: block;
+    padding: 10px;
+    border-radius: 5px;
+    transition: all 0.3s;
+}
+
+.policy-sidebar ul li a:hover {
+    background-color: #f4f4f4;
+    color: #A36361;
+}
+
+/* Conteúdo (Direita) */
+.policy-content {
+    flex: 1;
+    background: #fff;
+    padding: 40px;
+    border-radius: 10px;
+    box-shadow: 0 2px 10px rgba(0,0,0,0.05);
+}
+
+.policy-section {
+    margin-bottom: 40px;
+    /* Ajuste para o scroll não cortar o título por causa de headers fixos se houver */
+    scroll-margin-top: 20px; 
+}
+
+.policy-section h3 {
+    font-family: 'Quicksand', sans-serif;
+    color: #A36361;
+    font-size: 26px;
+    margin-bottom: 20px;
+    border-bottom: 2px solid #f4f4f4;
+    padding-bottom: 10px;
+}
+
+.policy-section h4 {
+    font-family: 'Quicksand', sans-serif;
+    color: #333;
+    font-size: 18px;
+    margin-top: 25px;
+    margin-bottom: 10px;
+}
+
+.policy-section p, .policy-section li {
+    font-family: 'Montserrat', sans-serif;
+    color: #555;
+    line-height: 1.8;
+    margin-bottom: 15px;
+    font-size: 15px;
+    text-align: justify;
+}
+
+.policy-section ul {
+    margin-left: 20px;
+    margin-bottom: 20px;
+}
+
+.policy-divider {
+    border: 0;
+    border-top: 1px solid #eee;
+    margin: 40px 0;
+}
+
+/* Responsividade */
+@media (max-width: 768px) {
+    .policy-container {
+        flex-direction: column;
+    }
+
+    .policy-sidebar {
+        width: 100%;
+        position: static; /* Remove o sticky no celular */
+        margin-bottom: 20px;
+    }
+
+    .policy-content {
+        padding: 20px;
+    }
+}
+
+/* --- FIM DA PÁGINA INSTITUCIONAL (POLÍTICAS) --- */
+
+/* --- PÁGINA DE RASTREIO --- */
+
+/* Ícone Grande no Topo */
+.tracking-icon {
+    font-size: 40px;
+    color: #A36361;
+    margin-bottom: 15px;
+    background: #fff0f0;
+    width: 80px;
+    height: 80px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 50%;
+    margin-left: auto;
+    margin-right: auto;
+}
+
+/* --- CORREÇÃO DO BOTÃO DE RASTREIO (LADO A LADO) --- */
+
+/* Container para alinhar Input e Botão */
+.tracking-group {
+    display: flex;       /* Coloca um ao lado do outro */
+    gap: 10px;           /* Espaço entre o campo e o botão */
+    align-items: stretch; /* Força ambos a terem a mesma altura */
+}
+
+/* Ajuste no Input para ele não quebrar o layout */
+.tracking-group input {
+    flex: 1;             /* Ocupa todo o espaço restante */
+    margin: 0;           /* Remove margens extras se houver */
+}
+
+/* Novo estilo do Botão (Agora externo) */
+.btn-tracking {
+    position: static;    /* Remove o posicionamento absoluto antigo */
+    width: 60px;         /* Largura fixa */
+    background: #616b64;
+    color: white;
+    border: none;
+    border-radius: 5px;  /* Bordas arredondadas iguais ao input */
+    cursor: pointer;
+    transition: background 0.3s;
+    
+    /* Centralização perfeita do ícone */
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 0;
+    margin: 0;
+}
+
+.btn-tracking:hover {
+    background: #4e5650;
+}
+
+.divider-light {
+    border: 0;
+    border-top: 1px solid #eee;
+    /* Aumentado de 25px para 35px para dar mais espaço acima e abaixo da linha */
+    margin: 35px 0; 
+}
+
+.order-info {
+    display: flex;
+    justify-content: space-between;
+    /* Aumentado de 30px para 50px para afastar mais da linha do tempo */
+    margin-bottom: 50px;
+    font-family: 'Quicksand', sans-serif;
+    font-size: 16px;
+    background: #f9f9f9;
+    padding: 15px;
+    border-radius: 5px;
+}
+
+/* --- ESTILO DA TIMELINE (LINHA DO TEMPO) --- */
+
+.timeline {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+    text-align: left;
+    position: relative;
+}
+
+/* Linha Vertical */
+.timeline::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    bottom: 0;
+    left: 7px; /* Posição da linha */
+    width: 2px;
+    background: #e0e0e0;
+}
+
+.timeline-item {
+    position: relative;
+    padding-left: 30px; /* Espaço para a bolinha */
+    margin-bottom: 25px;
+}
+
+/* Bolinha da Timeline */
+.timeline-dot {
+    position: absolute;
+    left: 0;
+    top: 5px;
+    width: 16px;
+    height: 16px;
+    border-radius: 50%;
+    background: #ccc;
+    border: 2px solid white;
+    box-shadow: 0 0 0 2px #ccc; /* Cria borda externa */
+    z-index: 1;
+}
+
+/* Item Ativo (O mais recente) */
+.timeline-item.active .timeline-dot {
+    background: #A36361; /* Rosa Lume */
+    box-shadow: 0 0 0 2px #A36361;
+    animation: pulse 2s infinite;
+}
+
+/* Texto da Timeline */
+.timeline-content h4 {
+    margin: 0 0 5px;
+    font-family: 'Quicksand', sans-serif;
+    color: #333;
+    font-size: 15px;
+}
+
+.timeline-content span {
+    display: block;
+    font-family: 'Montserrat', sans-serif;
+    font-size: 13px;
+    color: #666;
+}
+
+.timeline-content small {
+    display: block;
+    font-family: 'Montserrat', sans-serif;
+    font-size: 11px;
+    color: #999;
+    margin-top: 3px;
+}
+
+/* Animação de Pulso para o item ativo */
+@keyframes pulse {
+    0% { box-shadow: 0 0 0 0 rgba(163, 99, 97, 0.4); }
+    70% { box-shadow: 0 0 0 10px rgba(163, 99, 97, 0); }
+    100% { box-shadow: 0 0 0 0 rgba(163, 99, 97, 0); }
+}
+
+/* Ajuste na largura do card para rastreio */
+.tracking-card-width {
+    max-width: 500px !important; /* Um pouco mais largo que o login */
+}
+
+/* --- FIM DA PÁGINA DE RASTREIO --- */
+
+/* --- ESTILOS DO CARROSSEL (CORRIGIDO) --- */
+
+.slider-container {
+    position: relative;
+    max-width: 100%;
+    height: 500px; /* Altura do banner */
+    overflow: hidden;
+    margin-bottom: 40px;
+    background-color: #ddd; /* Cor de fundo cinza caso a imagem não carregue */
+}
+
+.slide {
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    opacity: 0;
+    transition: opacity 1s ease-in-out;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.slide.active {
+    opacity: 1;
+    z-index: 1;
+}
+
+/* Imagem do Banner */
+.slide img {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    object-fit: cover; /* Cobre todo o espaço */
+    filter: brightness(0.6); /* Escurece a imagem para o texto ler melhor */
+}
+
+/* Texto sobre a imagem */
+.slide-content {
+    position: relative;
+    z-index: 10; /* Garante que o texto fique NA FRENTE da imagem */
+    text-align: center;
+    color: white;
+    padding: 20px;
+}
+
+.slide-content h2 {
+    font-family: 'Quicksand', sans-serif;
+    font-size: 48px;
+    font-weight: 300;
+    margin-bottom: 10px;
+    letter-spacing: 2px;
+    text-shadow: 2px 2px 4px rgba(0,0,0,0.5); /* Sombra para leitura */
+}
+
+.slide-content p {
+    font-family: 'Montserrat', sans-serif;
+    font-size: 18px;
+    margin-bottom: 30px;
+    text-shadow: 1px 1px 2px rgba(0,0,0,0.5);
+}
+
+/* (O restante do CSS dos botões e bolinhas continua igual ao anterior) */
+/* Botão do Banner */
+.btn-slide {
+    display: inline-block;
+    padding: 12px 30px;
+    border: 1px solid white;
+    color: white;
+    text-decoration: none;
+    font-family: 'Quicksand', sans-serif;
+    text-transform: uppercase;
+    font-size: 14px;
+    letter-spacing: 1px;
+    transition: all 0.3s;
+}
+
+.btn-slide:hover {
+    background-color: white;
+    color: #333;
+}
+/* ... (Mantenha o CSS das setas e dots que passei antes) */
+
+/* Setas de Navegação */
+.prev-btn, .next-btn {
+    position: absolute;
+    top: 50%;
+    transform: translateY(-50%);
+    background: transparent;
+    border: none;
+    color: rgba(255, 255, 255, 0.7);
+    font-size: 40px;
+    cursor: pointer;
+    z-index: 10;
+    padding: 20px;
+    transition: color 0.3s;
+}
+
+.prev-btn:hover, .next-btn:hover {
+    color: white;
+}
+
+.prev-btn { left: 20px; }
+.next-btn { right: 20px; }
+
+/* Bolinhas Indicadoras */
+.dots-container {
+    position: absolute;
+    bottom: 20px;
+    left: 50%;
+    transform: translateX(-50%);
+    display: flex;
+    gap: 10px;
+    z-index: 10;
+}
+
+.dot {
+    width: 12px;
+    height: 12px;
+    background-color: rgba(255, 255, 255, 0.5);
+    border-radius: 50%;
+    cursor: pointer;
+    transition: background-color 0.3s;
+}
+
+.dot.active {
+    background-color: white;
+    transform: scale(1.2);
+}
+
+/* Responsividade para Celular */
+@media (max-width: 768px) {
+    .slider-container {
+        height: 350px; /* Menor no celular */
+    }
+    
+    .slide-content h2 {
+        font-size: 32px;
+    }
+    
+    .slide-content p {
+        font-size: 14px;
+    }
+
+    .prev-btn, .next-btn {
+        display: none; /* Esconde setas no celular para ficar mais limpo */
+    }
+}
+
+/* --- FIM DOS ESTILOS DO CARROSSEL --- */
+
+/* --- ESTILOS DA BARRA DE BENEFÍCIOS --- */
+
+.benefits-bar {
+    background-color: #f9f9f9; /* Fundo cinza bem claro */
+    padding: 30px 0;
+    border-bottom: 1px solid #eee;
+    margin-bottom: 40px; /* Espaço antes do título "Nossos Produtos" */
+}
+
+.benefits-container {
+    max-width: 1200px;
+    margin: 0 auto;
+    display: flex;
+    justify-content: space-around; /* Distribui os itens uniformemente */
+    align-items: center;
+    flex-wrap: wrap; /* Permite quebrar linha no celular */
+    gap: 20px;
+    padding: 0 20px;
+}
+
+.benefit-item {
+    display: flex;
+    align-items: center;
+    gap: 15px;
+    min-width: 200px; /* Garante um tamanho mínimo para cada item */
+}
+
+/* Estilo dos Ícones */
+.benefit-item i {
+    font-size: 32px;
+    color: #A36361; /* Cor rosa/terracota da marca */
+    /* Adiciona um círculo sutil atrás do ícone */
+    background: #fff0f0;
+    width: 60px;
+    height: 60px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 50%;
+}
+
+/* Estilo dos Textos */
+.benefit-text h4 {
+    margin: 0 0 5px;
+    font-family: 'Quicksand', sans-serif;
+    font-size: 16px;
+    color: #333;
+}
+
+.benefit-text p {
+    margin: 0;
+    font-family: 'Montserrat', sans-serif;
+    font-size: 13px;
+    color: #666;
+}
+
+/* Responsividade */
+@media (max-width: 768px) {
+    .benefits-container {
+        justify-content: flex-start; /* Alinha à esquerda no celular */
+    }
+
+    .benefit-item {
+        width: 100%; /* Cada item ocupa uma linha inteira no celular */
+        padding: 10px 0;
+        border-bottom: 1px solid #eee; /* Adiciona uma linha separadora */
+    }
+
+    .benefit-item:last-child {
+        border-bottom: none;
+    }
+}
+/* --- FIM DOS ESTILOS DA BARRA DE BENEFÍCIOS --- */
+
+/* --- ESTILOS DO MOSTRUÁRIO (VITRINE) --- */
+
+.showcase-section {
+    max-width: 1200px;
+    margin: 0 auto 60px; /* Margem inferior para afastar do próximo bloco */
+    padding: 0 20px;
+}
+
+.showcase-grid {
+    display: grid;
+    /* Cria 4 colunas iguais */
+    grid-template-columns: repeat(4, 1fr); 
+    gap: 20px;
+}
+
+/* --- Card Banner (Esquerda) --- */
+.showcase-banner-card {
+    position: relative;
+    height: 100%;
+    border-radius: 8px;
+    overflow: hidden;
+    /* Se não tiver imagem vertical, usa um fundo cor da marca */
+    background-color: #616b64; 
+}
+
+.showcase-banner-card img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    transition: transform 0.5s;
+}
+
+.showcase-banner-card:hover img {
+    transform: scale(1.05);
+}
+
+.banner-overlay {
+    position: absolute;
+    bottom: 30px;
+    left: 0;
+    width: 100%;
+    text-align: center;
+    color: white;
+    text-shadow: 1px 1px 3px rgba(0,0,0,0.6);
+}
+
+.banner-overlay h3 {
+    font-family: 'Quicksand', sans-serif;
+    font-size: 24px;
+    margin: 0;
+    text-transform: uppercase;
+    letter-spacing: 2px;
+}
+
+.banner-overlay span {
+    display: block;
+    font-family: 'Montserrat', sans-serif; /* Fonte cursiva ficaria linda aqui */
+    font-size: 18px;
+    margin: 5px 0 15px;
+    font-style: italic;
+}
+
+.banner-overlay a {
+    color: white;
+    text-decoration: none;
+    border: 1px solid white;
+    padding: 8px 20px;
+    font-size: 12px;
+    text-transform: uppercase;
+    transition: 0.3s;
+}
+
+.banner-overlay a:hover {
+    background: white;
+    color: #333;
+}
+
+/* --- Cards de Produto --- */
+.product-card-showcase {
+    background: white;
+    border: 1px solid #f0f0f0;
+    border-radius: 8px;
+    overflow: hidden;
+    display: flex;
+    flex-direction: column;
+    transition: transform 0.3s, box-shadow 0.3s;
+}
+
+.product-card-showcase:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 10px 20px rgba(0,0,0,0.05);
+}
+
+.p-image {
+    position: relative;
+    height: 250px;
+    overflow: hidden;
+}
+
+.p-image img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+}
+
+.tag-destaque {
+    position: absolute;
+    top: 10px;
+    left: 10px;
+    background-color: #A36361; /* Rosa Lume */
+    color: white;
+    font-size: 10px;
+    padding: 4px 8px;
+    text-transform: uppercase;
+    border-radius: 4px;
+    font-family: 'Montserrat', sans-serif;
+    font-weight: bold;
+}
+
+.p-info {
+    padding: 20px;
+    text-align: center;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    flex-grow: 1;
+}
+
+.p-info h4 {
+    font-family: 'Quicksand', sans-serif;
+    color: #333;
+    font-size: 16px;
+    margin: 0 0 10px;
+    font-weight: 600;
+}
+
+.p-price {
+    margin-bottom: 15px;
+}
+
+.p-price .price {
+    display: block;
+    font-size: 18px;
+    font-weight: bold;
+    color: #333;
+    font-family: 'Montserrat', sans-serif;
+}
+
+.p-price .pix {
+    display: block;
+    font-size: 12px;
+    color: #888;
+    margin-top: 2px;
+}
+
+.btn-shop-now {
+    background-color: #616b64; /* Verde acinzentado */
+    color: white;
+    border: none;
+    padding: 12px;
+    width: 100%;
+    text-transform: uppercase;
+    font-size: 12px;
+    font-weight: bold;
+    letter-spacing: 1px;
+    cursor: pointer;
+    transition: background 0.3s;
+    border-radius: 4px;
+}
+
+.btn-shop-now:hover {
+    background-color: #A36361; /* Muda para Rosa no hover */
+}
+
+/* Responsividade */
+@media (max-width: 900px) {
+    .showcase-grid {
+        grid-template-columns: repeat(2, 1fr); /* 2 colunas no tablet */
+    }
+}
+
+@media (max-width: 600px) {
+    .showcase-grid {
+        grid-template-columns: 1fr; /* 1 coluna no celular */
+    }
+    
+    .showcase-banner-card {
+        height: 300px; /* Altura fixa para o banner no celular */
+    }
+}
+
+/* --- FIM DOS ESTILOS DO MOSTRUÁRIO (VITRINE) --- */
