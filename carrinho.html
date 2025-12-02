@@ -1,0 +1,238 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Carrinho - Lume Essence</title>
+    <link rel="icon" href="imagens/Logo/pequenalogosemfnfo.png"> 
+    <link href='https://fonts.googleapis.com/css?family=Quicksand' rel='stylesheet'>
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:ital,wght@0,100..900;1,100..900&display=swap" rel="stylesheet">
+    
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+    <div class="header"> 
+        <img src="imagens/Logo/horizontalsemfundo.png" alt="Lume Essence Logo">
+    </div>
+ 
+    <div class="navbar">
+    <a href="index.html">Início</a>
+    <a href="produtos.html">Produtos</a>
+    <a href="contato.html">Contato</a>
+    <a href="sobre.html">Sobre</a>
+    
+    <a href="carrinho.html" class="cart-link">
+        <i class="fas fa-shopping-bag"></i>
+        <span class="cart-count">3</span> </a>
+</div>
+
+    <div class="titulo">
+        <h2>Seu Carrinho</h2>
+    </div>
+
+    <div class="cart-container">
+        
+        <div class="cart-items">
+            
+            <div class="cart-header-row">
+                <div class="col-product">Produto</div>
+                <div class="col-qty">Qtd.</div>
+                <div class="col-price">Preço</div>
+                <div class="col-action"></div>
+            </div>
+
+            <div class="cart-item">
+                <div class="item-info">
+                    <img src="imagens/vela.png" alt="Vela Lavanda">
+                    <div class="item-details">
+                        <h4>Vela Aromática Lavanda</h4>
+                        <p>Aroma: Lavanda</p>
+                    </div>
+                </div>
+                
+                <div class="item-quantity">
+                    <button class="qty-btn minus"><i class="fas fa-minus"></i></button>
+                    <input type="number" value="1" min="1" readonly>
+                    <button class="qty-btn plus"><i class="fas fa-plus"></i></button>
+                </div>
+
+                <div class="item-price" data-price="68.00">R$ 68,00</div>
+
+                <div class="item-remove">
+                    <button class="btn-remove"><i class="fas fa-trash-alt"></i></button>
+                </div>
+            </div>
+
+            <div class="cart-item">
+                <div class="item-info">
+                    <img src="imagens/homespray.png" alt="Home Spray">
+                    <div class="item-details">
+                        <h4>Home Spray Bambu</h4>
+                        <p>Aroma: Bambu</p>
+                    </div>
+                </div>
+                
+                <div class="item-quantity">
+                    <button class="qty-btn minus"><i class="fas fa-minus"></i></button>
+                    <input type="number" value="2" min="1" readonly>
+                    <button class="qty-btn plus"><i class="fas fa-plus"></i></button>
+                </div>
+
+                <div class="item-price" data-price="45.00">R$ 90,00</div>
+
+                <div class="item-remove">
+                    <button class="btn-remove"><i class="fas fa-trash-alt"></i></button>
+                </div>
+            </div>
+
+            <a href="produtos.html" class="continue-shopping">
+                <i class="fas fa-arrow-left"></i> Continuar comprando
+            </a>
+
+        </div>
+
+        <div class="cart-summary">
+            <h3>Resumo do Pedido</h3>
+            
+            <div class="summary-row">
+                <span>Subtotal</span>
+                <span id="cart-subtotal">R$ 158,00</span>
+            </div>
+
+            <div class="shipping-calc">
+                <label>Calcular Frete</label>
+                <div class="shipping-input">
+                    <input type="text" placeholder="CEP">
+                    <button>OK</button>
+                </div>
+                <p class="shipping-result">Frete: <span>R$ 15,00</span></p>
+            </div>
+
+            <hr>
+
+            <div class="summary-total">
+                <span>Total</span>
+                <span id="cart-total">R$ 173,00</span>
+            </div>
+
+            <div class="payment-info">
+                <p>ou <strong>R$ 164,35</strong> via Pix (5% off)</p>
+            </div>
+
+            <button class="btn-checkout">Finalizar Compra</button>
+        </div>
+
+    </div>
+
+    <footer>
+  <div class="footer-container">
+    
+    <div class="footer-top">
+      <div class="newsletter-text">
+        <i class="fab fa-instagram"></i>
+        <span>Receba nossas novidades e promoções</span>
+      </div>
+      <form class="newsletter-form">
+        <input type="text" placeholder="Nome completo">
+        <input type="text" placeholder="WhatsApp">
+        <input type="email" placeholder="E-mail">
+        <button type="submit">OK</button>
+      </form>
+    </div>
+
+    <hr class="footer-divider">
+
+    <div class="footer-middle">
+      
+      <div class="footer-col">
+        <h4>Navegação</h4>
+        <ul>
+          <li><a href="index.html">Início</a></li>
+          <li><a href="produtos.html">Produtos</a></li>
+          <li><a href="contato.html">Contato</a></li>
+          <li><a href="sobre.html">Sobre</a></li>
+        </ul>
+      </div>
+
+      <div class="footer-col">
+        <h4>Institucional</h4>
+        <ul>
+          <li><a href="#">Trocas e Devoluções</a></li>
+          <li><a href="#">Política de Privacidade</a></li>
+          <li><a href="#">Termos de Uso</a></li>
+          <li><a href="#">Rastrear Pedido</a></li>
+        </ul>
+      </div>
+
+      <div class="footer-col">
+        <h4>Entre em contato</h4>
+        <ul class="contact-list">
+          <li><i class="fab fa-whatsapp"></i> (11) 99999-9999</li>
+          <li><i class="far fa-envelope"></i> contato@lumeessence.com.br</li>
+          <li><i class="fas fa-map-marker-alt"></i> São Paulo - SP</li>
+        </ul>
+      </div>
+    </div>
+
+    <hr class="footer-divider">
+
+    <div class="footer-bottom">
+      
+      <div class="payment-section">
+        <span>Formas de pagamento:</span>
+        <div class="icons">
+          <i class="fab fa-cc-visa"></i>
+          <i class="fab fa-cc-mastercard"></i>
+          <i class="fab fa-cc-amex"></i>
+          <i class="fab fa-pix"></i>
+          <i class="fas fa-barcode"></i>
+        </div>
+      </div>
+
+      <div class="security-section">
+        <span>Segurança:</span>
+        <div class="icons">
+          <i class="fas fa-lock"></i> 
+          <i class="fab fa-google"></i>
+        </div>
+      </div>
+
+    </div>
+
+    <div class="copyright">
+      © 2025 Lume Essence - Todos os direitos reservados
+    </div>
+
+  </div>
+</footer>
+
+    <script>
+        // Seleciona todos os botões de mais e menos
+        const plusBtns = document.querySelectorAll('.plus');
+        const minusBtns = document.querySelectorAll('.minus');
+
+        plusBtns.forEach(btn => {
+            btn.addEventListener('click', function() {
+                const input = this.parentElement.querySelector('input');
+                let value = parseInt(input.value);
+                input.value = value + 1;
+                // Aqui você adicionaria a lógica para atualizar o preço total
+            });
+        });
+
+        minusBtns.forEach(btn => {
+            btn.addEventListener('click', function() {
+                const input = this.parentElement.querySelector('input');
+                let value = parseInt(input.value);
+                if (value > 1) {
+                    input.value = value - 1;
+                }
+            });
+        });
+    </script>
+
+</body>
+</html>

@@ -1,92 +1,183 @@
 <!DOCTYPE html>
 <html lang="pt-BR">
 <head>
-  <meta charset="UTF-8">
-  <title>Lume Essence</title>
-  <link rel="icon" href="imagens/Logo/pequenalogosemfnfo.png">
-  <link href='https://fonts.googleapis.com/css?family=Quicksand' rel='stylesheet'>
-  <link href="https://fonts.googleapis.com/css2?family=Montserrat:ital,wght@0,100..900;1,100..900&display=swap" rel="stylesheet">
-  <link rel="stylesheet" href="style.css">
-  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Produtos - Lume Essence</title>
+    <link rel="icon" href="imagens/Logo/pequenalogosemfnfo.png">
+    
+    <link href='https://fonts.googleapis.com/css?family=Quicksand' rel='stylesheet'>
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:ital,wght@0,100..900;1,100..900&display=swap" rel="stylesheet">
+    
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    
+    <link rel="stylesheet" href="style.css">
 </head>
 <body>
 
-  <div class="header"> 
-   <img src="imagens/Logo/horizontalsemfundo.png" alt="">
- </div>
+    <div class="header"> 
+        <img src="imagens/Logo/horizontalsemfundo.png" alt="Lume Essence Logo">
+    </div>
  
-  <div class="navbar">
+    <div class="navbar">
     <a href="index.html">Início</a>
     <a href="produtos.html">Produtos</a>
-    <a href="sobre.html">Sobre</a>
     <a href="contato.html">Contato</a>
-  </div>
-
-
-<div class="titulo">
-  <h2>Velas</h2>
-  </div>
-  
-  <div class="cards">
-
-    <div class="card">
-      <h3>Morango</h3>
-<img src="imagens/morango.png" alt="Imagem 1">
-      <p><button class="botao-animado">Adicionar ao carrinho</button></p>
-    </div>
-
-    <div class="card">
-      <h3>Limão Siciliano</h3>
-<img src="imagens/limaosiciliano.png" alt="Imagem 1">
-      <p><button class="botao-animado">Adicionar ao carrinho</button></p>
-    </div>
-
-    <div class="card">
-      <h3>Chá Branco</h3>
-<img src="imagens/chabranco.png" alt="Imagem 1">
-      <p><button class="botao-animado">Adicionar ao carrinho</button></p>
-    </div>
-
-    <div class="card">
-      <h3>Chocolate</h3>
-<img src="imagens/chocolate.png" alt="Imagem 1">
-      <p><button class="botao-animado">Adicionar ao carrinho</button></p>
-    </div>
+    <a href="sobre.html">Sobre</a>
+    
+    <a href="carrinho.html" class="cart-link">
+        <i class="fas fa-shopping-bag"></i>
+        <span class="cart-count">3</span> </a>
 </div>
 
-<div class="titulo">
-  <h2>Aromatizadores</h2>
-  </div><br>
+    <div class="main-shop-container">
+        
+        <aside class="shop-sidebar">
+            
+            <div class="filter-group">
+                <h3>Categorias</h3>
+                <ul>
+                    <li><a href="#">Velas Aromáticas</a></li>
+                    <li><a href="#">Aromatizadores</a></li>
+                    <li><a href="#">Home Spray</a></li>
+                    <li><a href="#">Kits Presente</a></li>
+                    <li><a href="#">Acessórios</a></li>
+                    <li><a href="#">Ver mais</a></li>
+                </ul>
+            </div>
 
-    <div class="cards">
+            <div class="filter-group">
+                <h3>Aroma</h3>
+                <div class="checkbox-list">
+                    <label><input type="checkbox"> Alecrim</label>
+                    <label><input type="checkbox"> Baunilha</label>
+                    <label><input type="checkbox"> Bambu</label>
+                    <label><input type="checkbox"> Chá Branco</label>
+                    <label><input type="checkbox"> Lavanda</label>
+                    <label><input type="checkbox"> Limão Siciliano</label>
+                    <label><input type="checkbox"> Morango</label>
+                </div>
+            </div>
 
-    <div class="card">
-      <h3>Lavanda</h3>
-<img src="imagens/aromalavanda.png" alt="Imagem 1">
-      <p><button class="botao-animado">Adicionar ao carrinho</button></p>
+        </aside>
+
+        <section class="shop-content">
+            
+            <div class="shop-header">
+                <div class="breadcrumbs">
+                    Início > <strong>Produtos</strong>
+                </div>
+                <div class="sorting">
+                    <label>Ordenar por:</label>
+                    <select>
+                        <option>Mais vendidos</option>
+                        <option>Menor preço</option>
+                        <option>Maior preço</option>
+                        <option>Lançamentos</option>
+                    </select>
+                </div>
+            </div>
+
+            <div class="products-grid">
+
+                <div class="product-card-shop">
+                    <div class="product-image">
+                        <img src="imagens/vela.png" alt="Vela Lavanda">
+                        <span class="tag-novo">Novo</span>
+                    </div>
+                    <div class="product-info">
+                        <h4>Vela Aromática Lavanda</h4>
+                        <div class="price-box">
+                            <span class="price-full">R$ 68,00</span>
+                            <span class="price-pix">R$ 64,60 com Pix</span>
+                        </div>
+                        <button class="btn-buy">Ver Detalhes</button>
+                    </div>
+                </div>
+
+                <div class="product-card-shop">
+                    <div class="product-image">
+                        <img src="imagens/aromabaunilha.png" alt="Aromatizador Baunilha">
+                    </div>
+                    <div class="product-info">
+                        <h4>Aromatizador Baunilha</h4>
+                        <div class="price-box">
+                            <span class="price-full">R$ 74,00</span>
+                            <span class="price-pix">R$ 70,30 com Pix</span>
+                        </div>
+                        <button class="btn-buy">Ver Detalhes</button>
+                    </div>
+                </div>
+
+                <div class="product-card-shop">
+                    <div class="product-image">
+                        <img src="imagens/homespray.png" alt="Home Spray">
+                    </div>
+                    <div class="product-info">
+                        <h4>Home Spray Bambu</h4>
+                        <div class="price-box">
+                            <span class="price-full">R$ 45,00</span>
+                            <span class="price-pix">R$ 42,75 com Pix</span>
+                        </div>
+                        <button class="btn-buy">Ver Detalhes</button>
+                    </div>
+                </div>
+
+                <div class="product-card-shop">
+                    <div class="product-image">
+                        <img src="imagens/kit.png" alt="Kit Presente">
+                    </div>
+                    <div class="product-info">
+                        <h4>Kit Lume Experience</h4>
+                        <div class="price-box">
+                            <span class="price-full">R$ 120,00</span>
+                            <span class="price-pix">R$ 114,00 com Pix</span>
+                        </div>
+                        <button class="btn-buy">Ver Detalhes</button>
+                    </div>
+                </div>
+
+                 <div class="product-card-shop">
+                    <div class="product-image">
+                        <img src="imagens/morango.png" alt="Vela Morango">
+                    </div>
+                    <div class="product-info">
+                        <h4>Vela Morango</h4>
+                        <div class="price-box">
+                            <span class="price-full">R$ 68,00</span>
+                            <span class="price-pix">R$ 64,60 com Pix</span>
+                        </div>
+                        <button class="btn-buy">Ver Detalhes</button>
+                    </div>
+                </div>
+
+                 <div class="product-card-shop">
+                    <div class="product-image">
+                        <img src="imagens/limaosiciliano.png" alt="Vela Limão">
+                    </div>
+                    <div class="product-info">
+                        <h4>Vela Limão Siciliano</h4>
+                        <div class="price-box">
+                            <span class="price-full">R$ 68,00</span>
+                            <span class="price-pix">R$ 64,60 com Pix</span>
+                        </div>
+                        <button class="btn-buy">Ver Detalhes</button>
+                    </div>
+                </div>
+
+            </div>
+            
+            <div class="pagination">
+                <span class="active">1</span>
+                <span>2</span>
+                <span>3</span>
+                <span>></span>
+            </div>
+
+        </section>
     </div>
 
-    <div class="card">
-      <h3>Baunilha</h3>
-<img src="imagens/aromabaunilha.png" alt="Imagem 1">
-      <p><button class="botao-animado">Adicionar ao carrinho</button></p>
-    </div>
-
-<div class="card">
-      <h3>Orquídea Negra</h3>
-<img src="imagens/aromaorquidea.png" alt="Imagem 1">
-      <p><button class="botao-animado">Adicionar ao carrinho</button></p>
-    </div>
-
-    <div class="card">
-      <h3>Chocolate</h3>
-<img src="imagens/aromachocolate.png" alt="Imagem 1">
-      <p><button class="botao-animado">Adicionar ao carrinho</button></p>
-    </div>
-    </div>
-
-    
-     <footer>
+    <footer>
   <div class="footer-container">
     
     <div class="footer-top">
@@ -110,9 +201,9 @@
         <h4>Navegação</h4>
         <ul>
           <li><a href="index.html">Início</a></li>
-          <li><a href="#">Produtos</a></li>
+          <li><a href="produtos.html">Produtos</a></li>
+          <li><a href="contato.html">Contato</a></li>
           <li><a href="sobre.html">Sobre</a></li>
-          <li><a href="#">Contato</a></li>
         </ul>
       </div>
 
@@ -167,7 +258,6 @@
 
   </div>
 </footer>
-  
-  
+
 </body>
 </html>
