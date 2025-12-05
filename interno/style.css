@@ -100,7 +100,7 @@ body {
 
 /* Inputs */
 .input-group {
-    margin-bottom: 20px;
+    margin-bottom: 10px;
 }
 
 .input-group label {
@@ -1777,7 +1777,7 @@ input:checked + .slider:before {
     }
 }
 
-.form-row-2-1 {
+.form-row-2-1{
     display: grid;
     grid-template-columns: 2fr 1fr; /* Esquerda larga, direita curta */
     gap: 20px;

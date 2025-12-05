@@ -1087,6 +1087,7 @@ footer {
     cursor: pointer;
     transition: all 0.3s;
     border-radius: 4px;
+    
 }
 
 .btn-buy:hover {
@@ -1719,6 +1720,7 @@ footer {
     cursor: pointer;
     transition: opacity 0.3s, transform 0.2s;
     margin-bottom: 20px;
+    text-decoration: none;
 }
 
 .btn-auth:hover {
@@ -3684,3 +3686,4 @@ html {
 }
 
 /* --- Fim do Modal Newsletter --- */
+

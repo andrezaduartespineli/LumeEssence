@@ -1,0 +1,244 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Minha Conta | Lume Essence</title>
+    
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@300;400;600&family=Quicksand:wght@400;500;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="stylesheet" href="area-cliente.css">
+</head>
+<body>
+
+    <header class="site-header">
+        <div class="container header-content">
+            <div class="logo">
+                <img src="../imagens/Logo/grandelogosemfundo.png" alt="Lume Essence">
+            </div>
+            <nav class="site-nav">
+                <a href="../index.html">Início</a>
+                <a href="../">Produtos</a>
+                <a href="#">Sobre</a>
+                <a href="#">Contato</a>
+            </nav>
+            <div class="header-icons">
+                <a href="#"><i class="fa-solid fa-magnifying-glass"></i></a>
+                <a href="#" class="active"><i class="fa-regular fa-user"></i></a>
+                <a href="#"><i class="fa-solid fa-bag-shopping"></i> <span class="cart-count">2</span></a>
+            </div>
+        </div>
+    </header>
+
+    <div class="client-container container">
+        
+        <aside class="client-sidebar">
+            <div class="user-summary">
+                <div class="user-avatar">
+                    <img src="../imagens/fundadora1.jpeg" alt="Foto do Cliente">
+                </div>
+                <h3>Olá, Ana Clara</h3>
+                <p>ana@email.com</p>
+            </div>
+            
+            <nav class="account-menu">
+                <a href="#" class="active"><i class="fa-solid fa-house"></i> Visão Geral</a>
+                <a href="#"><i class="fa-solid fa-box"></i> Meus Pedidos</a>
+                <a href="#"><i class="fa-regular fa-heart"></i> Favoritos</a>
+                <a href="#"><i class="fa-solid fa-location-dot"></i> Endereços</a>
+                <a href="#"><i class="fa-regular fa-credit-card"></i> Cartões Salvos</a>
+                <a href="#"><i class="fa-solid fa-user-gear"></i> Meus Dados</a>
+                <a href="../login.html" class="logout"><i class="fa-solid fa-right-from-bracket"></i> Sair</a>
+            </nav>
+        </aside>
+
+        <main class="client-content">
+            
+            <div class="welcome-banner">
+                <h2>Bem-vinda de volta, Ana! ✨</h2>
+                <p>Que a Lume Essence traga luz para o seu dia hoje.</p>
+            </div>
+
+            <section class="stats-row">
+                <div class="stat-card">
+                    <div class="icon-box gold"><i class="fa-solid fa-box-open"></i></div>
+                    <div>
+                        <h3>Em Trânsito</h3>
+                        <p>1 Pedido a caminho</p>
+                    </div>
+                </div>
+                <div class="stat-card">
+                    <div class="icon-box green"><i class="fa-solid fa-leaf"></i></div>
+                    <div>
+                        <h3>Lume Points</h3>
+                        <p>120 pontos acumulados</p>
+                    </div>
+                </div>
+                <div class="stat-card">
+                    <div class="icon-box purple"><i class="fa-solid fa-ticket"></i></div>
+                    <div>
+                        <h3>Cupons</h3>
+                        <p>1 Cupom disponível</p>
+                    </div>
+                </div>
+            </section>
+
+            <section class="latest-order">
+                <div class="section-header">
+                    <h3>Último Pedido <span class="order-number">#5420</span></h3>
+                    <a href="../rastreio.html" class="btn-track">Rastrear Entrega</a>
+                </div>
+                
+                <div class="order-progress-bar">
+                    <div class="step completed">
+                        <div class="step-icon"><i class="fa-solid fa-check"></i></div>
+                        <span>Aprovado</span>
+                    </div>
+                    <div class="step completed">
+                        <div class="step-icon"><i class="fa-solid fa-box"></i></div>
+                        <span>Separado</span>
+                    </div>
+                    <div class="step active">
+                        <div class="step-icon"><i class="fa-solid fa-truck-fast"></i></div>
+                        <span>Em Trânsito</span>
+                    </div>
+                    <div class="step">
+                        <div class="step-icon"><i class="fa-solid fa-house-chimney"></i></div>
+                        <span>Entregue</span>
+                    </div>
+                    <div class="line">
+                        <div class="line-fill" style="width: 66%;"></div> </div>
+                </div>
+
+                <div class="order-items-preview">
+                    <div class="item-img">
+                        <img src="../imagens/new.png" alt="Vela">
+                        <span class="qty">2x</span>
+                    </div>
+                    <div class="item-desc">
+                        <h4>Vela Aromática Lavanda (180g)</h4>
+                        <p>Previsão de entrega: <strong>08/12/2025</strong></p>
+                    </div>
+                    <div class="item-price">
+                        R$ 189,90
+                    </div>
+                </div>
+            </section>
+
+            <section class="recent-history">
+                <h3>Histórico Recente</h3>
+                <table class="client-table">
+                    <thead>
+                        <tr>
+                            <th>Pedido</th>
+                            <th>Data</th>
+                            <th>Status</th>
+                            <th>Total</th>
+                            <th></th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td>#5415</td>
+                            <td>02/12/2025</td>
+                            <td><span class="badge delivered">Entregue</span></td>
+                            <td>R$ 89,90</td>
+                            <td><a href="#" class="link-detail">Detalhes</a></td>
+                        </tr>
+                        <tr>
+                            <td>#5390</td>
+                            <td>20/11/2025</td>
+                            <td><span class="badge delivered">Entregue</span></td>
+                            <td>R$ 245,00</td>
+                            <td><a href="#" class="link-detail">Detalhes</a></td>
+                        </tr>
+                    </tbody>
+                </table>
+            </section>
+
+        </main>
+    </div>
+<footer >
+  <div class="footer-container">
+    
+    <div class="footer-top">
+      <div class="newsletter-text">
+        <i class="fab fa-instagram"></i>
+        <span>Receba nossas novidades e promoções</span>
+      </div>
+      <form class="newsletter-form">
+        <input type="text" placeholder="Nome completo">
+        <input type="text" placeholder="WhatsApp">
+        <input type="email" placeholder="E-mail">
+        <button type="submit">OK</button>
+      </form>
+    </div>
+
+    <hr class="footer-divider">
+
+    <div class="footer-middle">
+      
+      <div class="footer-col">
+        <h4>Navegação</h4>
+        <ul>
+          <li><a href="index.html">Início</a></li>
+          <li><a href="produtos.html">Produtos</a></li>
+          <li><a href="contato.html">Contato</a></li>
+          <li><a href="sobre.html">Sobre</a></li>
+        </ul>
+      </div>
+
+      <div class="footer-col">
+  <h4>Institucional</h4>
+  <ul>
+    <li><a href="institucional.html#trocas">Trocas e Devoluções</a></li>
+    <li><a href="institucional.html#privacidade">Política de Privacidade</a></li>
+    <li><a href="institucional.html#termos">Termos de Uso</a></li>
+    <li><a href="rastreio.html">Rastrear Pedido</a></li>
+  </ul>
+</div>
+
+      <div class="footer-col">
+        <h4>Entre em contato</h4>
+        <ul class="contact-list">
+          <li><i class="fab fa-whatsapp"></i> (11) 99999-9999</li>
+          <li><i class="far fa-envelope"></i> contato@lumeessence.com.br</li>
+          <li><i class="fas fa-map-marker-alt"></i> São Paulo - SP</li>
+        </ul>
+      </div>
+    </div>
+
+    <hr class="footer-divider">
+
+    <div class="footer-bottom">
+      
+      <div class="payment-section">
+        <span>Formas de pagamento:</span>
+        <div class="icons">
+          <i class="fab fa-cc-visa"></i>
+          <i class="fab fa-cc-mastercard"></i>
+          <i class="fab fa-cc-amex"></i>
+          <i class="fab fa-pix"></i>
+          <i class="fas fa-barcode"></i>
+        </div>
+      </div>
+
+      <div class="security-section">
+        <span>Segurança:</span>
+        <div class="icons">
+          <i class="fas fa-lock"></i> 
+          <i class="fab fa-google"></i>
+        </div>
+      </div>
+
+    </div>
+
+    <div class="copyright">
+      © 2025 Lume Essence - Todos os direitos reservados
+    </div>
+
+  </div>
+</footer>
+
+</body>
+</html>
