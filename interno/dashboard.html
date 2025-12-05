@@ -1,0 +1,168 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Dashboard | Lume Essence Admin</title>
+    <link rel="icon" href="../imagens/Logo/grandelogosemfundo.png">
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@300;400;600&family=Quicksand:wght@400;500;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+    <div class="admin-container">
+        
+        <aside class="sidebar">
+            <div class="sidebar-header">
+                <h2 class="brand-text">LUME <span>ADMIN</span></h2>
+            </div>
+
+            <nav class="sidebar-nav">
+                <ul>
+                    <li class="active"><a href="dashboard.html"><i class="fa-solid fa-chart-line"></i> Visão Geral</a></li>
+                    <li><a href="pedido.html"><i class="fa-solid fa-bag-shopping"></i>Pedidos</a></li>
+                    <li><a href="produto.html"><i class="fa-solid fa-box-open"></i> Produtos</a></li>
+                    <li><a href="fornecedores.html"><i class="fa-solid fa-truck-fast"></i> Fornecedores</a></li>
+                    <li><a href="funcionarios.html"><i class="fa-solid fa-users"></i> Funcionários</a></li>
+                    <li><a href="financeiro.html"><i class="fa-solid fa-file-invoice-dollar"></i> Financeiro</a></li>
+                    <li class="separator"></li>
+                    <li><a href="configuracoes.html"><i class="fa-solid fa-gear"></i> Configurações</a></li>
+                </ul>
+            </nav>
+
+            <div class="sidebar-footer">
+                <a href="login.html" class="logout-btn"><i class="fa-solid fa-right-from-bracket"></i> Sair</a>
+            </div>
+        </aside>
+
+        <main class="main-content">
+            
+            <header class="top-bar">
+                <div class="welcome-text">
+                    <h1>Olá, " "</h1>
+                    <p>Aqui está o resumo da Lume Essence hoje.</p>
+                </div>
+                
+                <div class="user-profile">
+    <div class="profile-dropdown-trigger" onclick="toggleProfileMenu()">
+        <img src="../imagens/fundadora1.jpeg" alt="Admin" class="avatar">
+    </div>
+
+    <div class="profile-dropdown-menu" id="profileMenu">
+        <ul>
+            <li>
+                <a href="configuracoes.html">
+                    <i class="fa-regular fa-user"></i> Meu Perfil
+                </a>
+            </li>
+            <li>
+                <a href="#">
+                    <i class="fa-solid fa-rotate"></i> Trocar Usuário
+                </a>
+            </li>
+            <li class="separator"></li> <li>
+                <a href="login.html" class="text-danger">
+                    <i class="fa-solid fa-right-from-bracket"></i> Sair do Sistema
+                </a>
+            </li>
+        </ul>
+    </div>
+</div>
+            </header>
+
+            <section class="stats-grid">
+                <div class="card">
+                    <div class="card-info">
+                        <h3>Vendas Hoje</h3>
+                        <p class="number">R$ 1.250,00</p>
+                        <span class="trend positive"><i class="fa-solid fa-arrow-up"></i> +12%</span>
+                    </div>
+                    <div class="card-icon icon-gold">
+                        <i class="fa-solid fa-bag-shopping"></i>
+                    </div>
+                </div>
+
+                <div class="card">
+                    <div class="card-info">
+                        <h3>Pedidos Pendentes</h3>
+                        <p class="number">08</p>
+                        <span class="trend neutral">Aguardando envio</span>
+                    </div>
+                    <div class="card-icon icon-blue">
+                        <i class="fa-solid fa-clock"></i>
+                    </div>
+                </div>
+
+                <div class="card">
+                    <div class="card-info">
+                        <h3>Estoque Baixo</h3>
+                        <p class="number">15 Itens</p>
+                        <span class="trend negative">Repor urgente</span>
+                    </div>
+                    <div class="card-icon icon-red">
+                        <i class="fa-solid fa-triangle-exclamation"></i>
+                    </div>
+                </div>
+
+                <div class="card">
+                    <div class="card-info">
+                        <h3>Novos Clientes</h3>
+                        <p class="number">24</p>
+                        <span class="trend positive">Esta semana</span>
+                    </div>
+                    <div class="card-icon icon-green">
+                        <i class="fa-solid fa-user-plus"></i>
+                    </div>
+                </div>
+            </section>
+
+            <section class="data-table-section">
+                <div class="section-header">
+                    <h2>Últimos Pedidos</h2>
+                    <button class="btn-action">Ver Todos</button>
+                </div>
+                
+                <div class="table-responsive">
+                    <table>
+                        <thead>
+                            <tr>
+                                <th>Pedido #</th>
+                                <th>Cliente</th>
+                                <th>Status</th>
+                                <th>Valor</th>
+                                <th>Ação</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td>#4501</td>
+                                <td>Ana Souza</td>
+                                <td><span class="status-badge success">Pago</span></td>
+                                <td>R$ 189,90</td>
+                                <td><button class="btn-icon"><i class="fa-solid fa-eye"></i></button></td>
+                            </tr>
+                            <tr>
+                                <td>#4502</td>
+                                <td>Carlos Lima</td>
+                                <td><span class="status-badge warning">Pendente</span></td>
+                                <td>R$ 450,00</td>
+                                <td><button class="btn-icon"><i class="fa-solid fa-eye"></i></button></td>
+                            </tr>
+                            <tr>
+                                <td>#4503</td>
+                                <td>Mariana X.</td>
+                                <td><span class="status-badge processing">Enviando</span></td>
+                                <td>R$ 89,90</td>
+                                <td><button class="btn-icon"><i class="fa-solid fa-eye"></i></button></td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </section>
+
+        </main>
+    </div>
+<script src="script.js"></script>
+</body>
+</html>

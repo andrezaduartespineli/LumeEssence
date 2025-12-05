@@ -1,0 +1,290 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Financeiro | Lume Essence Admin</title>
+    <link rel="icon" href="../imagens/Logo/grandelogosemfundo.png">
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@300;400;600&family=Quicksand:wght@400;500;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+    <div class="admin-container">
+        
+        <aside class="sidebar">
+            <div class="sidebar-header">
+                <h2 class="brand-text">LUME <span>ADMIN</span></h2>
+            </div>
+            <nav class="sidebar-nav">
+                <ul>
+                    <li><a href="dashboard.html"><i class="fa-solid fa-chart-line"></i> Visão Geral</a></li>
+                    <li><a href="pedido.html"><i class="fa-solid fa-bag-shopping"></i>Pedidos</a></li>
+                    <li><a href="produto.html"><i class="fa-solid fa-box-open"></i> Produtos</a></li>
+                    <li><a href="fornecedores.html"><i class="fa-solid fa-truck-fast"></i> Fornecedores</a></li>
+                    <li><a href="funcionarios.html"><i class="fa-solid fa-users"></i> Funcionários</a></li>
+                    <li class="active"><a href="financeiro.html"><i class="fa-solid fa-file-invoice-dollar"></i> Financeiro</a></li>
+                    <li class="separator"></li>
+                    <li><a href="configuracoes.html"><i class="fa-solid fa-gear"></i> Configurações</a></li>
+                </ul>
+            </nav>
+            <div class="sidebar-footer">
+                <a href="login.html" class="logout-btn"><i class="fa-solid fa-right-from-bracket"></i> Sair</a>
+            </div>
+        </aside>
+
+        <main class="main-content">
+            
+            <header class="top-bar">
+                <div class="welcome-text">
+                    <h1>Controle Financeiro</h1>
+                    <p>Fluxo de caixa e balanço mensal.</p>
+                </div>
+                <div class="user-profile">
+    <div class="profile-dropdown-trigger" onclick="toggleProfileMenu()">
+        <img src="../imagens/fundadora1.jpeg" alt="Admin" class="avatar">
+    </div>
+
+    <div class="profile-dropdown-menu" id="profileMenu">
+        <ul>
+            <li>
+                <a href="configuracoes.html">
+                    <i class="fa-regular fa-user"></i> Meu Perfil
+                </a>
+            </li>
+            <li>
+                <a href="#">
+                    <i class="fa-solid fa-rotate"></i> Trocar Usuário
+                </a>
+            </li>
+            <li class="separator"></li> <li>
+                <a href="login.html" class="text-danger">
+                    <i class="fa-solid fa-right-from-bracket"></i> Sair do Sistema
+                </a>
+            </li>
+        </ul>
+    </div>
+</div>
+            </header>
+
+            <section class="finance-summary">
+                
+                <div class="card finance-card income">
+                    <div class="icon-box">
+                        <i class="fa-solid fa-arrow-trend-up"></i>
+                    </div>
+                    <div class="finance-info">
+                        <span>Entradas (Mês)</span>
+                        <h3>R$ 45.280,00</h3>
+                    </div>
+                </div>
+
+                <div class="card finance-card expense">
+                    <div class="icon-box">
+                        <i class="fa-solid fa-arrow-trend-down"></i>
+                    </div>
+                    <div class="finance-info">
+                        <span>Saídas (Mês)</span>
+                        <h3>R$ 12.450,00</h3>
+                    </div>
+                </div>
+
+                <div class="card finance-card balance">
+                    <div class="icon-box">
+                        <i class="fa-solid fa-wallet"></i>
+                    </div>
+                    <div class="finance-info">
+                        <span>Saldo Líquido</span>
+                        <h3>R$ 32.830,00</h3>
+                    </div>
+                </div>
+            </section>
+
+            <section class="toolbar">
+                <div class="date-filter">
+                    <button class="active">Este Mês</button>
+                    <button>Mês Passado</button>
+                    <button>Personalizar</button>
+                </div>
+                <div class="action-buttons">
+                    <button class="btn-expense"><i class="fa-solid fa-minus"></i> Nova Despesa</button>
+                    <button class="btn-income"><i class="fa-solid fa-plus"></i> Nova Receita</button>
+                </div>
+            </section>
+
+            <section class="transactions-section">
+                <div class="section-header">
+                    <h2>Extrato Recente</h2>
+                    <a href="#" class="view-all">Ver Relatório Completo</a>
+                </div>
+
+                <div class="table-responsive">
+                    <table class="finance-table">
+                        <thead>
+                            <tr>
+                                <th>Data</th>
+                                <th>Descrição</th>
+                                <th>Categoria</th>
+                                <th>Status</th>
+                                <th class="text-right">Valor</th>
+                                <th></th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td>04/12/2025</td>
+                                <td><strong>Venda #4590 - Loja Online</strong></td>
+                                <td>Vendas</td>
+                                <td><span class="badge success">Recebido</span></td>
+                                <td class="text-right value-income">+ R$ 289,90</td>
+                                <td class="action-col"><i class="fa-solid fa-ellipsis"></i></td>
+                            </tr>
+                            <tr>
+                                <td>03/12/2025</td>
+                                <td><strong>Fornecedor: Essências Premium</strong></td>
+                                <td>Matéria-prima</td>
+                                <td><span class="badge success">Pago</span></td>
+                                <td class="text-right value-expense">- R$ 1.250,00</td>
+                                <td class="action-col"><i class="fa-solid fa-ellipsis"></i></td>
+                            </tr>
+                            <tr>
+                                <td>02/12/2025</td>
+                                <td><strong>Conta de Luz - Ateliê</strong></td>
+                                <td>Infraestrutura</td>
+                                <td><span class="badge warning">Pendente</span></td>
+                                <td class="text-right value-expense">- R$ 350,00</td>
+                                <td class="action-col"><i class="fa-solid fa-ellipsis"></i></td>
+                            </tr>
+                            <tr>
+                                <td>01/12/2025</td>
+                                <td><strong>Venda Corporativa - Hotel X</strong></td>
+                                <td>B2B</td>
+                                <td><span class="badge success">Recebido</span></td>
+                                <td class="text-right value-income">+ R$ 5.400,00</td>
+                                <td class="action-col"><i class="fa-solid fa-ellipsis"></i></td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </section>
+
+        </main>
+    </div>
+<div id="modal-receita" class="modal-backdrop">
+        <div class="modal-box slide-down">
+            <div class="modal-header">
+                <h2><i class="fa-solid fa-arrow-trend-up"></i> Nova Receita</h2>
+                <button class="btn-close-modal" onclick="fecharModalReceita()">
+                    <i class="fa-solid fa-xmark"></i>
+                </button>
+            </div>
+
+            <form class="modal-form">
+                <div class="input-group">
+                    <label>Descrição da Venda/Entrada</label>
+                    <input type="text" placeholder="Ex: Venda Corporativa - Lote 50 Velas" required>
+                </div>
+
+                <div class="form-row-2">
+                    <div class="input-group">
+                        <label>Valor (R$)</label>
+                        <input type="number" placeholder="0,00" step="0.01" class="input-green">
+                    </div>
+                    <div class="input-group">
+                        <label>Data</label>
+                        <input type="date" id="data-hoje">
+                    </div>
+                </div>
+
+                <div class="form-row-2">
+                    <div class="input-group">
+                        <label>Categoria</label>
+                        <select>
+                            <option>Venda Loja Online</option>
+                            <option>Venda Corporativa (B2B)</option>
+                            <option>Rendimento de Investimento</option>
+                            <option>Outros</option>
+                        </select>
+                    </div>
+                    <div class="input-group">
+                        <label>Status</label>
+                        <select>
+                            <option value="recebido">Recebido (Pago)</option>
+                            <option value="pendente">Pendente (A receber)</option>
+                        </select>
+                    </div>
+                </div>
+
+                <div class="modal-footer">
+                    <button type="button" class="btn-ghost" onclick="fecharModalReceita()">Cancelar</button>
+                    <button type="submit" class="btn-confirm-income">Confirmar Entrada</button>
+                </div>
+            </form>
+        </div>
+    </div>
+<div id="modal-despesa" class="modal-backdrop">
+        <div class="modal-box slide-down">
+            <div class="modal-header">
+                <h2 style="color: var(--danger);"><i class="fa-solid fa-arrow-trend-down"></i> Nova Despesa</h2>
+                <button class="btn-close-modal" onclick="fecharModalDespesa()">
+                    <i class="fa-solid fa-xmark"></i>
+                </button>
+            </div>
+
+            <form class="modal-form">
+                <div class="input-group">
+                    <label>Descrição da Despesa</label>
+                    <input type="text" placeholder="Ex: Conta de Luz - Ateliê" required>
+                </div>
+
+                <div class="form-row-2">
+                    <div class="input-group">
+                        <label>Valor (R$)</label>
+                        <input type="number" placeholder="0,00" step="0.01" class="input-red">
+                    </div>
+                    <div class="input-group">
+                        <label>Data de Vencimento</label>
+                        <input type="date" id="data-despesa">
+                    </div>
+                </div>
+
+                <div class="form-row-2">
+                    <div class="input-group">
+                        <label>Categoria</label>
+                        <select>
+                            <option>Matéria-prima (Cera/Essência)</option>
+                            <option>Embalagens e Vidros</option>
+                            <option>Logística e Frete</option>
+                            <option>Marketing e Anúncios</option>
+                            <option>Infraestrutura (Luz/Água/Aluguel)</option>
+                            <option>Folha de Pagamento</option>
+                            <option>Impostos</option>
+                            <option>Outros</option>
+                        </select>
+                    </div>
+                    <div class="input-group">
+                        <label>Status</label>
+                        <select>
+                            <option value="pendente">Pendente (A pagar)</option>
+                            <option value="pago">Pago</option>
+                            <option value="agendado">Agendado</option>
+                        </select>
+                    </div>
+                </div>
+
+                <div class="input-group">
+                    <label>Fornecedor (Opcional)</label>
+                    <input type="text" placeholder="Busque ou digite o nome...">
+                </div>
+
+                <div class="modal-footer">
+                    <button type="button" class="btn-ghost" onclick="fecharModalDespesa()">Cancelar</button>
+                    <button type="submit" class="btn-confirm-expense">Registrar Saída</button>
+                </div>
+            </form>
+        </div>
+    </div>
+    <script src="script.js"></script>
+</body>
+</html>

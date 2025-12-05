@@ -1,0 +1,182 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Novo Produto | Lume Essence Admin</title>
+    <link rel="icon" href="../imagens/Logo/grandelogosemfundo.png">
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@300;400;600&family=Quicksand:wght@400;500;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+    <div class="admin-container">
+        
+        <aside class="sidebar">
+            <div class="sidebar-header">
+                <h2 class="brand-text">LUME <span>ADMIN</span></h2>
+            </div>
+            <nav class="sidebar-nav">
+                <ul>
+                    <li><a href="dashboard.html"><i class="fa-solid fa-chart-line"></i> Visão Geral</a></li>
+                    <li><a href="pedido.html"><i class="fa-solid fa-bag-shopping"></i>Pedidos</a></li>
+                    <li class="active"><a href="produto.html"><i class="fa-solid fa-box-open"></i> Produtos</a></li>
+                    <li><a href="fornecedores.html"><i class="fa-solid fa-truck-fast"></i> Fornecedores</a></li>
+                    <li><a href="funcionarios.html"><i class="fa-solid fa-users"></i> Funcionários</a></li>
+                    <li><a href="financeiro.html"><i class="fa-solid fa-file-invoice-dollar"></i> Financeiro</a></li>
+                    <li class="separator"></li>
+                    <li><a href="configuracoes.html"><i class="fa-solid fa-gear"></i> Configurações</a></li>
+                </ul>
+            </nav>
+            <div class="sidebar-footer">
+                <a href="login.html" class="logout-btn"><i class="fa-solid fa-right-from-bracket"></i> Sair</a>
+            </div>
+        </aside>
+
+        <main class="main-content">
+            
+            <header class="top-bar">
+                <div class="welcome-text">
+                    <h1>Cadastrar Produto</h1>
+                    <p>Adicione novos aromas ao catálogo.</p>
+                </div>
+                <div class="user-profile">
+    <div class="profile-dropdown-trigger" onclick="toggleProfileMenu()">
+        <img src="../imagens/fundadora1.jpeg" alt="Admin" class="avatar">
+    </div>
+
+    <div class="profile-dropdown-menu" id="profileMenu">
+        <ul>
+            <li>
+                <a href="configuracoes.html">
+                    <i class="fa-regular fa-user"></i> Meu Perfil
+                </a>
+            </li>
+            <li>
+                <a href="#">
+                    <i class="fa-solid fa-rotate"></i> Trocar Usuário
+                </a>
+            </li>
+            <li class="separator"></li> <li>
+                <a href="login.html" class="text-danger">
+                    <i class="fa-solid fa-right-from-bracket"></i> Sair do Sistema
+                </a>
+            </li>
+        </ul>
+    </div>
+</div>
+            </header>
+
+            <form class="product-form-container">
+                
+                <div class="form-header">
+                    <h2>Informações do Item</h2>
+                    <div class="form-actions">
+                        <a href="produtos.html" class="btn-cancel">Cancelar</a>
+                        <button type="submit" class="btn-save">Salvar Produto</button>
+                    </div>
+                </div>
+
+                <div class="form-grid">
+                    
+                    <div class="left-column">
+                        
+                        <div class="input-group">
+                            <label>Nome do Produto</label>
+                            <input type="text" placeholder="Ex: Vela Aromática Lavanda" required>
+                        </div>
+
+                        <div class="form-row-3">
+                            <div class="input-group">
+                                <label>Categoria</label>
+                                <select id="categoria" onchange="atualizarTamanhos()">
+                                    <option value="velas">Velas Aromáticas</option>
+                                    <option value="spray">Home Spray</option>
+                                    <option value="difusor">Difusores</option>
+                                    <option value="kits">Kits Presente</option>
+                                </select>
+                            </div>
+                            <div class="input-group">
+                                <label>Aroma (Família Olfativa)</label>
+                                <select id="aroma">
+                                    <option>Alecrim</option>
+                                    <option>Baunilha</option>
+                                    <option>Capim Limão</option>
+                                    <option>Chá Branco</option>
+                                    <option>Chocolate</option>
+                                    <option>Lavanda</option>
+                                    <option>Bamboo</option>
+                                    <option>Flor de Algodão</option>
+                                    <option>Limão Siciliano</option>
+                                    <option>Morango</option>
+                                    <option>Sem Aroma (Neutro)</option>
+                                </select>
+                            </div>
+                            <div class="input-group">
+                                <label id="label-tamanho">Tamanho / Peso</label>
+                                <select id="tamanho">
+                                    <option>100g</option>
+                                    <option>150g</option>
+                                    <option>230g</option>
+                                    <option>330g</option>
+                                </select>
+                            </div>
+                        </div>
+
+                        <div class="form-row-2">
+                            <div class="input-group">
+                                <label>Código (SKU)</label>
+                                <input type="text" placeholder="VEL-001">
+                            </div>
+                            <div class="input-group">
+                                <label>Preço (R$)</label>
+                                <input type="number" placeholder="0,00" step="0.01">
+                            </div>
+                        </div>
+
+                        <div class="form-row-2">
+                            <div class="input-group">
+                                <label>Estoque Inicial</label>
+                                <input type="number" placeholder="0">
+                            </div>
+                            
+                            <div class="input-group">
+                                <label>Data de Cadastro</label>
+                                <input type="date" id="data-cadastro" readonly style="background-color: #e9ecef; cursor: not-allowed;">
+                            </div>
+                        </div>
+
+                        <div class="input-group">
+                            <label>Descrição Completa</label>
+                            <textarea rows="4" placeholder="Descreva as notas olfativas e benefícios..."></textarea>
+                        </div>
+                    </div>
+
+                    <div class="right-column">
+                        <div class="upload-card">
+                            <label>Imagem Principal</label>
+                            <div class="drop-zone">
+                                <i class="fa-solid fa-cloud-arrow-up"></i>
+                                <p>Arraste a foto aqui</p>
+                                <input type="file" hidden>
+                            </div>
+                        </div>
+
+                        <div class="toggle-group">
+                            <label class="switch">
+                                <input type="checkbox" checked>
+                                <span class="slider round"></span>
+                            </label>
+                            <span>Produto Ativo</span>
+                        </div>
+                    </div>
+
+                </div>
+            </form>
+
+        </main>
+    </div>
+<script src="script.js"></script>
+</body>
+</html>

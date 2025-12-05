@@ -1,0 +1,153 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Produtos | Lume Essence Admin</title>
+    <link rel="icon" href="../imagens/Logo/grandelogosemfundo.png">
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@300;400;600&family=Quicksand:wght@400;500;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+    <div class="admin-container">
+        
+        <aside class="sidebar">
+            <div class="sidebar-header">
+                <h2 class="brand-text">LUME <span>ADMIN</span></h2>
+            </div>
+            <nav class="sidebar-nav">
+                <ul>
+                    <li><a href="dashboard.html"><i class="fa-solid fa-chart-line"></i> Visão Geral</a></li>
+                    <li><a href="pedido.html"><i class="fa-solid fa-bag-shopping"></i>Pedidos</a></li>
+                    <li class="active"><a href="produto.html"><i class="fa-solid fa-box-open"></i> Produtos</a></li>
+                    <li><a href="fornecedores.html"><i class="fa-solid fa-truck-fast"></i> Fornecedores</a></li>
+                    <li><a href="funcionarios.html"><i class="fa-solid fa-users"></i> Funcionários</a></li>
+                    <li><a href="financeiro.html"><i class="fa-solid fa-file-invoice-dollar"></i> Financeiro</a></li>
+                    <li class="separator"></li>
+                    <li><a href="configuracoes.html"><i class="fa-solid fa-gear"></i> Configurações</a></li>
+                </ul>
+            </nav>
+            <div class="sidebar-footer">
+                <a href="login.html" class="logout-btn"><i class="fa-solid fa-right-from-bracket"></i> Sair</a>
+            </div>
+        </aside>
+
+        <main class="main-content">
+            
+            <header class="top-bar">
+                <div class="welcome-text">
+                    <h1>Catálogo de Produtos</h1>
+                    <p>Gerencie seu estoque e vitrine.</p>
+                </div>
+                <div class="user-profile">
+    <div class="profile-dropdown-trigger" onclick="toggleProfileMenu()">
+        <img src="../imagens/fundadora1.jpeg" alt="Admin" class="avatar">
+    </div>
+
+    <div class="profile-dropdown-menu" id="profileMenu">
+        <ul>
+            <li>
+                <a href="configuracoes.html">
+                    <i class="fa-regular fa-user"></i> Meu Perfil
+                </a>
+            </li>
+            <li>
+                <a href="#">
+                    <i class="fa-solid fa-rotate"></i> Trocar Usuário
+                </a>
+            </li>
+            <li class="separator"></li> <li>
+                <a href="login.html" class="text-danger">
+                    <i class="fa-solid fa-right-from-bracket"></i> Sair do Sistema
+                </a>
+            </li>
+        </ul>
+    </div>
+</div>
+            </header>
+
+            <section class="suppliers-toolbar"> <div class="filter-tabs">
+                    <button class="tab-btn active">Todos</button>
+                    <button class="tab-btn">Velas</button>
+                    <button class="tab-btn">Home Spray</button>
+                    <button class="tab-btn">Kits</button>
+                </div>
+                
+                <div class="toolbar-actions">
+                    <div class="search-compact">
+                        <i class="fa-solid fa-magnifying-glass"></i>
+                        <input type="text" placeholder="Buscar produto...">
+                    </div>
+                    <a href="cad_produtos.html" class="btn-new-supplier" style="text-decoration: none;">
+                        <i class="fa-solid fa-plus"></i> Novo Produto
+                    </a>
+                </div>
+            </section>
+
+            <section class="products-grid">
+                
+                <div class="product-card">
+                    <div class="product-image">
+                        <img src="../imagens/lavanda.png" alt="Vela Lavanda"> <span class="stock-badge in-stock">Em Estoque</span>
+                        <div class="hover-actions">
+                            <button class="btn-icon-circle"><i class="fa-solid fa-pen"></i></button>
+                            <button class="btn-icon-circle delete"><i class="fa-solid fa-trash"></i></button>
+                        </div>
+                    </div>
+                    <div class="product-info">
+                        <span class="category">Velas Aromáticas</span>
+                        <h3>Vela Calmante Lavanda</h3>
+                        <div class="price-row">
+                            <span class="price">R$ 89,90</span>
+                            <span class="stock-qty">12 un.</span>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="product-card">
+                    <div class="product-image">
+                        <div class="no-image"><i class="fa-regular fa-image"></i></div>
+                        <span class="stock-badge low-stock">Baixo Estoque</span>
+                        <div class="hover-actions">
+                            <button class="btn-icon-circle"><i class="fa-solid fa-pen"></i></button>
+                            <button class="btn-icon-circle delete"><i class="fa-solid fa-trash"></i></button>
+                        </div>
+                    </div>
+                    <div class="product-info">
+                        <span class="category">Home Spray</span>
+                        <h3>Bamboo & Chá Branco</h3>
+                        <div class="price-row">
+                            <span class="price">R$ 65,00</span>
+                            <span class="stock-qty text-red">03 un.</span>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="product-card">
+                    <div class="product-image">
+                        <img src="../imagens/kit.png" alt="Kit Presente">
+                        <span class="stock-badge out-stock">Esgotado</span>
+                        <div class="hover-actions">
+                            <button class="btn-icon-circle"><i class="fa-solid fa-pen"></i></button>
+                            <button class="btn-icon-circle delete"><i class="fa-solid fa-trash"></i></button>
+                        </div>
+                    </div>
+                    <div class="product-info">
+                        <span class="category">Kits</span>
+                        <h3>Kit Ritual Completo</h3>
+                        <div class="price-row">
+                            <span class="price">R$ 189,90</span>
+                            <span class="stock-qty">0 un.</span>
+                        </div>
+                    </div>
+                </div>
+
+            </section>
+
+        </main>
+    </div>
+<script src="script.js"></script>
+</body>
+</html>
