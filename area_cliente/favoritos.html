@@ -10,14 +10,14 @@
     <link rel="stylesheet" href="area-cliente.css">
 </head>
 <body>
-
-    
-     <header>
+<header>
+          
             <div class="container">
                 <div class="logo">
-                    <img src="../imagens/Logo/horizontalsemfundo.png" alt="Lume Essence">
+                    <img src="../imagens/Logo/somenteiconesemfundo.png" alt="Lume Essence">
                 </div>
-            </div>    
+            </div>
+
   <div class="navbar">
     <div class="nav-links">
         <a href="../index.html">Início</a>
@@ -32,11 +32,35 @@
             <input type="text" placeholder="Buscar...">
             <button type="submit"><i class="fas fa-search"></i></button>
         </div>
+        
+<div class="header-icons">
+<div class="user-menu-wrapper">
+    <a href="../login.html" class="user-icon-link">
+        <i class="fa-regular fa-user"></i>
+    </a>
 
-        <a href="../login.html" class="icon-link" title="Minha Conta">
-            <i class="fas fa-user"></i>
-        </a>
-
+    <div class="user-dropdown">
+        <ul>
+            <li>
+                <a href="area-cliente.html">
+                    <i class="fa-solid fa-user-gear"></i> Minha Conta
+                </a>
+            </li>
+            <li>
+                <a href="meus-pedidos.html">
+                    <i class="fa-solid fa-box"></i> Meus Pedidos
+                </a>
+            </li>
+            <li class="separator"></li>
+            <li>
+                <a href="../login.html" class="logout-link">
+                    <i class="fa-solid fa-right-from-bracket"></i> Sair
+                </a>
+            </li>
+        </ul>
+    </div>
+</div>
+</div>
         <a href="../carrinho.html" class="cart-link" title="Carrinho">
             <i class="fas fa-shopping-bag"></i>
             <span class="cart-count">3</span>
@@ -62,7 +86,7 @@
                 <a href="favoritos.html" class="active"><i class="fa-solid fa-heart"></i> Favoritos</a>
                 <a href="enderecos.html"><i class="fa-solid fa-location-dot"></i> Endereços</a>
                 <a href="cartoes.html"><i class="fa-regular fa-credit-card"></i> Cartões Salvos</a>
-                <a href="#"><i class="fa-solid fa-user-gear"></i> Meus Dados</a>
+                <a href="meus-dados.html"><i class="fa-solid fa-user-gear"></i> Meus Dados</a>
                 <a href="../login.html" class="logout"><i class="fa-solid fa-right-from-bracket"></i> Sair</a>
             </nav>
         </aside>

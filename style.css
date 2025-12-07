@@ -1,8 +1,6 @@
 /* ==========================================================================
    1. ESTILOS GLOBAIS (COMUNS A TODAS AS PÁGINAS)
    ========================================================================== */
-/*LOGO*/
-
 
 
 /* Reset de estilos básicos */
@@ -14,7 +12,7 @@
 
 /* Fonte e cor de fundo */
 body {
-    font-family: 'Arial', sans-serif;
+    font-family: 'Montserrat', sans-serif;
     line-height: 1.6;
     background-color: #f4f4f4;
     color: #616b64;
@@ -24,23 +22,13 @@ body {
 /* --- CABEÇALHO (HEADER) --- */
 .header {
     display: flex;
-    align-items: center;  /* Alinha verticalmente logo e título */
+    align-items: center;
     justify-content: left;
     text-align: center;
     padding: 14px;
     color: rgb(27, 30, 228);
     background-color: #f4f4f4;
-    margin: 0 auto;
-      
-    
-    
-}
-
-/* Logo */
-.header img {
-    width: 300px;  /* Ajuste o tamanho do logo conforme necessário */
-    height: auto;
-    margin-right: 10px; /* Espaço entre a imagem e o título */
+    margin: 0 auto;   
 }
 
 /* --- BARRA DE NAVEGAÇÃO (NAVBAR) --- */
@@ -75,7 +63,7 @@ body {
 
 .titulo h2 {
     text-align: center;
-    font-family: quicksand, sans-serif;
+    font-family: 'Montserrat', sans-serif;
     font-style: normal;
     color: #555;
     font-weight: 80;
@@ -284,7 +272,7 @@ footer {
 }
 
 h2, h3 {
-    font-family: 'Quicksand', sans-serif;
+    font-family: 'Montserrat', sans-serif;
     font-weight: 500;
     color: #2c2c2c;
 }
@@ -1638,7 +1626,7 @@ footer {
 }
 
 .auth-card h2 {
-    font-family: 'Quicksand', sans-serif;
+    font-family: 'Montserrat', sans-serif;
     color: #333;
     margin-bottom: 10px;
 }
@@ -2079,7 +2067,7 @@ html {
 }
 
 .slide-content h2 {
-    font-family: 'Quicksand', sans-serif;
+    font-family: 'Montserrat', sans-serif;
     font-size: 48px;
     font-weight: 300;
     margin-bottom: 10px;
@@ -3604,7 +3592,7 @@ html {
 }
 
 #newsletter-modal h2 {
-    font-family: 'Quicksand', sans-serif;
+    font-family: 'Montserrat', sans-serif;
     font-size: 2rem;
     margin-bottom: 15px;
     color: #333;
@@ -3679,3 +3667,98 @@ html {
 }
 
 /* --- Fim do Modal Newsletter --- */
+/* --- Menu Suspenso do Ícone de Usuário --- */
+
+/* Container para posicionar o menu relativo ao ícone */
+.user-menu-wrapper {
+    position: relative;
+    display: inline-block;
+    height: 100%; /* Garante altura para o hover não falhar */
+}
+
+/* O Menu Dropdown (Começa Escondido) */
+.user-dropdown {
+    position: absolute;
+    top: 30px; /* Distância do ícone */
+    left: 50%;
+    transform: translateX(-50%); /* Centraliza em relação ao ícone */
+    background-color: #fff;
+    min-width: 180px;
+    box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+    border-radius: 8px;
+    padding: 10px 0;
+    opacity: 0;
+    visibility: hidden;
+    transition: all 0.3s ease;
+    z-index: 1000;
+}
+
+/* Setinha decorativa no topo do menu */
+.user-dropdown::before {
+    content: '';
+    position: absolute;
+    top: -6px;
+    left: 50%;
+    transform: translateX(-50%) rotate(45deg);
+    width: 12px;
+    height: 12px;
+    background-color: #fff;
+    box-shadow: -2px -2px 5px rgba(0,0,0,0.03);
+}
+
+/* MÁGICA: Mostra o menu quando passa o mouse no Wrapper */
+.user-menu-wrapper:hover .user-dropdown {
+    opacity: 1;
+    visibility: visible;
+    top: 40px; /* Pequena animação de descida */
+}
+
+/* Estilo dos Links dentro do Menu */
+.user-dropdown ul {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+}
+
+.user-dropdown ul li a {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    padding: 10px 20px;
+    color: #555;
+    text-decoration: none;
+    font-size: 0.9rem;
+    white-space: nowrap; /* Impede que o texto quebre linha */
+    transition: background 0.2s;
+    font-family: 'Montserrat', sans-serif; /* Garante a fonte do site */
+    margin: 0; /* Remove margens extras dos links globais */
+}
+
+.user-dropdown ul li a:hover {
+    background-color: #f5f5f5;
+    color: #d4a373; /* Cor dourada da marca */
+}
+
+.user-dropdown i {
+    width: 20px;
+    text-align: center;
+    font-size: 0.9rem;
+}
+
+/* Separador */
+.user-dropdown .separator {
+    height: 1px;
+    background-color: #eee;
+    margin: 5px 0;
+}
+
+/* Link de Sair (Vermelho) */
+.logout-link {
+    color: #e74c3c !important;
+}
+
+.logout-link:hover {
+    background-color: #fff0f0 !important;
+}
+
+/* --- FIM Menu Suspenso do Ícone de Usuário --- */

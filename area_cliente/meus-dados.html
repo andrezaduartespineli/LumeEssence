@@ -3,16 +3,13 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Meus Cartões | Lume Essence</title>
+    <title>Meus Dados | Lume Essence</title>
     
     <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@300;400;600&family=Quicksand:wght@400;500;700&display=swap" rel="stylesheet">
-    <link href="https://fonts.googleapis.com/css2?family=Source+Code+Pro:wght@400;600&display=swap" rel="stylesheet">
-    
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <link rel="stylesheet" href="area-cliente.css">
 </head>
 <body>
-
 <header>
           
             <div class="container">
@@ -71,7 +68,6 @@
     </div>
 </div>
 </header>
-
     <div class="client-container container">
         
         <aside class="client-sidebar">
@@ -88,8 +84,8 @@
                 <a href="meus-pedidos.html"><i class="fa-solid fa-box"></i> Meus Pedidos</a>
                 <a href="favoritos.html"><i class="fa-regular fa-heart"></i> Favoritos</a>
                 <a href="enderecos.html"><i class="fa-solid fa-location-dot"></i> Endereços</a>
-                <a href="cartoes.html" class="active"><i class="fa-regular fa-credit-card"></i> Cartões Salvos</a>
-                <a href="meus-dados.html"><i class="fa-solid fa-user-gear"></i> Meus Dados</a>
+                <a href="cartoes.html"><i class="fa-regular fa-credit-card"></i> Cartões Salvos</a>
+                <a href="meus-dados.html" class="active"><i class="fa-solid fa-user-gear"></i> Meus Dados</a>
                 <a href="../login.html" class="logout"><i class="fa-solid fa-right-from-bracket"></i> Sair</a>
             </nav>
         </aside>
@@ -97,140 +93,125 @@
         <main class="client-content">
             
             <div class="section-header">
-                <h2>Minha Carteira</h2>
-                <button class="btn-track" onclick="abrirModalCartao()"><i class="fa-solid fa-plus"></i> Novo Cartão</button>
+                <h2>Meus Dados Pessoais</h2>
+                <p style="color: #888; font-size: 0.9rem;">Mantenha suas informações atualizadas.</p>
             </div>
 
-            <p style="margin-bottom: 30px; color: #666; font-size: 0.9rem;">
-                <i class="fa-solid fa-lock" style="color: var(--gold);"></i> Seus dados são criptografados e armazenados com segurança.
-            </p>
-
-            <div class="cards-grid">
-
-                <div class="credit-card-visual card-dark">
-                    <div class="card-bg-design"></div>
-                    <div class="card-top">
-                        <div class="chip">
-                            <img src="https://raw.githubusercontent.com/dasShounak/freeUseImages/main/chip.png" alt="Chip">
+            <div class="data-form-container">
+                
+                <div class="profile-header-edit">
+                    <div class="avatar-upload-circle">
+                        <img src="../imagens/fundadora1.jpeg" alt="Avatar">
+                        <div class="overlay-edit">
+                            <i class="fa-solid fa-camera"></i>
                         </div>
-                        <div class="brand-logo">
-                            <i class="fa-brands fa-cc-mastercard"></i>
-                        </div>
+                        <input type="file" hidden>
                     </div>
-                    <div class="card-number">
-                        **** **** **** 4589
+                    <div class="profile-info-text">
+                        <h3>Ana Clara Silva</h3>
+                        <p>Cliente desde 2024</p>
+                        <button class="btn-text" style="text-align: left; padding: 0;">Alterar Foto</button>
                     </div>
-                    <div class="card-details">
-                        <div class="holder">
-                            <span>Titular</span>
-                            <strong>ANA C SILVA</strong>
-                        </div>
-                        <div class="expiry">
-                            <span>Validade</span>
-                            <strong>08/28</strong>
-                        </div>
-                    </div>
-                    <button class="btn-delete-card"><i class="fa-solid fa-trash"></i></button>
                 </div>
 
-                <div class="credit-card-visual card-blue">
-                    <div class="card-bg-design"></div>
-                    <div class="card-top">
-                        <div class="chip">
-                            <img src="https://raw.githubusercontent.com/dasShounak/freeUseImages/main/chip.png" alt="Chip">
-                        </div>
-                        <div class="brand-logo">
-                            <i class="fa-brands fa-cc-visa"></i>
-                        </div>
+                <form class="personal-data-form">
+                    
+                    <h4 class="form-subtitle">Informações Pessoais</h4>
+                    
+                    <div class="input-row">
+                        <label>Nome Completo</label>
+                        <input type="text" value="Ana Clara Silva" required>
                     </div>
-                    <div class="card-number">
-                        **** **** **** 1024
-                    </div>
-                    <div class="card-details">
-                        <div class="holder">
-                            <span>Titular</span>
-                            <strong>ANA CLARA SILVA</strong>
-                        </div>
-                        <div class="expiry">
-                            <span>Validade</span>
-                            <strong>12/26</strong>
-                        </div>
-                    </div>
-                    <button class="btn-delete-card"><i class="fa-solid fa-trash"></i></button>
-                </div>
 
-                <div class="add-card-placeholder" onclick="abrirModalCartao()">
-                    <div class="circle-plus">
-                        <i class="fa-solid fa-plus"></i>
+                    <div class="input-row-2">
+                        <div>
+                            <label>CPF</label>
+                            <input type="text" value="123.456.789-00" readonly style="background: #f9f9f9; cursor: not-allowed;">
+                        </div>
+                        <div>
+                            <label>Data de Nascimento</label>
+                            <input type="date" value="1995-05-20">
+                        </div>
                     </div>
-                    <p>Adicionar novo cartão</p>
+
+                    <div class="input-row-2">
+                        <div>
+                            <label>Celular / WhatsApp</label>
+                            <input type="tel" value="(11) 99999-8888">
+                        </div>
+                        <div>
+                            <label>Gênero (Opcional)</label>
+                            <select>
+                                <option>Feminino</option>
+                                <option>Masculino</option>
+                                <option>Prefiro não informar</option>
+                                <option>Outro</option>
+                            </select>
+                        </div>
+                    </div>
+
+                    <hr class="form-divider">
+
+                    <h4 class="form-subtitle">Acesso e Segurança</h4>
+
+                    <div class="input-row">
+                        <label>E-mail de Login</label>
+                        <input type="email" value="ana@email.com" required>
+                    </div>
+
+                    <div class="input-row-2">
+                        <div>
+                            <label>Nova Senha</label>
+                            <input type="password" placeholder="Deixe em branco para manter">
+                        </div>
+                        <div>
+                            <label>Confirmar Nova Senha</label>
+                            <input type="password" placeholder="Repita a nova senha">
+                        </div>
+                    </div>
+
+                    <hr class="form-divider">
+
+                    <h4 class="form-subtitle">Comunicação</h4>
+                    
+                    <div class="preferences-check">
+                        <label class="checkbox-container">
+                            <input type="checkbox" checked>
+                            <span class="checkmark"></span>
+                            <div>
+                                <strong>Receber ofertas por E-mail</strong>
+                                <p>Seja a primeira a saber sobre lançamentos e promoções.</p>
+                            </div>
+                        </label>
+                        
+                        <label class="checkbox-container">
+                            <input type="checkbox" checked>
+                            <span class="checkmark"></span>
+                            <div>
+                                <strong>Receber novidades pelo WhatsApp</strong>
+                                <p>Avisos sobre o status do seu pedido em tempo real.</p>
+                            </div>
+                        </label>
+                    </div>
+
+                    <div class="form-footer-action">
+                        <button type="submit" class="btn-save-large">Salvar Alterações</button>
+                    </div>
+
+                </form>
+
+                <div class="danger-zone">
+                    <div class="danger-text">
+                        <h4>Excluir minha conta</h4>
+                        <p>Ao excluir sua conta, todos os seus dados e histórico de pedidos serão removidos permanentemente.</p>
+                    </div>
+                    <button class="btn-delete-account">Quero excluir minha conta</button>
                 </div>
 
             </div>
 
         </main>
     </div>
-
-    <div id="modal-cartao" class="modal-overlay">
-        <div class="modal-content-box">
-            <div class="modal-header">
-                <h3>Adicionar Cartão</h3>
-                <button class="close-modal" onclick="fecharModalCartao()">&times;</button>
-            </div>
-            
-            <form class="card-form">
-                <div class="input-row">
-                    <label>Número do Cartão</label>
-                    <div class="input-with-icon">
-                        <i class="fa-regular fa-credit-card"></i>
-                        <input type="text" placeholder="0000 0000 0000 0000" maxlength="19" required>
-                    </div>
-                </div>
-
-                <div class="input-row">
-                    <label>Nome do Titular do Cartão</label>
-                    <input type="text" placeholder="Nome Impresso no Cartão" style="text-transform: uppercase;" required>
-                </div>
-
-                <div class="input-row">
-                    <label>CPF do Titular do Cartão</label>
-                    <input type="text" placeholder="000.000.000-00" maxlength="14" required>
-                </div>
-                
-                <div class="input-row-2">
-                    <div>
-                        <label>Validade</label>
-                        <input type="text" placeholder="MM/AA" maxlength="5" required>
-                    </div>
-                    <div>
-                        <label>CVV <i class="fa-regular fa-circle-question" title="3 dígitos atrás do cartão" style="cursor: help; font-size: 0.8rem;"></i></label>
-                        <input type="password" placeholder="123" maxlength="3" required>
-                    </div>
-                </div>
-
-                <div class="input-row-2">
-                    <label class="input-check-container">
-                        <input type="checkbox" checked>
-                        <span>Salvar para compras futuras</span>
-                    </label>
-                </div>
-
-                <div class="modal-footer">
-                    <button type="button" class="btn-cancel" onclick="fecharModalCartao()">Cancelar</button>
-                    <button type="submit" class="btn-save"><i class="fa-solid fa-lock"></i> Salvar Seguro</button>
-                </div>
-            </form>
-        </div>
-    </div>
-
-    <script>
-        function abrirModalCartao() {
-            document.getElementById('modal-cartao').style.display = 'flex';
-        }
-        function fecharModalCartao() {
-            document.getElementById('modal-cartao').style.display = 'none';
-        }
-    </script>
 <footer >
   <div class="footer-container">
     
@@ -312,5 +293,6 @@
 
   </div>
 </footer>
+
 </body>
 </html>
