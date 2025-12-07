@@ -23,21 +23,13 @@ body {
     padding: 0 20px;
 }
 
-/* --- CABEÇALHO DO SITE (SIMPLES) --- */
-.site-header {
-    background: var(--white);
-    padding: 15px 0;
-    box-shadow: 0 2px 10px rgba(0,0,0,0.05);
-    margin-bottom: 40px;
-}
+.logo img { height: 100px; } /* MUDA O TAMANHO DA LOGO*/
 
 .header-content {
     display: flex;
     justify-content: space-between;
     align-items: center;
 }
-
-.logo img { height: 50px; }
 
 .site-nav a {
     text-decoration: none;
@@ -487,3 +479,1230 @@ footer {
   }
 }
 /* --- FIM DOS ESTILOS DO NOVO FOOTER --- */
+
+
+/* --- BARRA DE NAVEGAÇÃO (NAVBAR) --- */
+.navbar {
+    display: flex;
+    justify-content: center;
+    background: #616b64;
+    padding: 3px;
+    margin-bottom: 50px;
+}
+
+.navbar a {
+    color: white;
+    text-decoration: none;
+    padding: 10px 20px;
+    margin: 0 5px;
+    transition: background 0.3s;
+}
+
+.navbar a:hover {
+    background: #000000;
+    border-radius: 5px;
+}
+
+/* --- ESTILOS DA BUSCA NA NAVBAR--- */
+
+/* Agrupamento dos Links */
+.nav-links {
+    display: flex;
+    align-items: center;
+}
+
+/* Caixa de Busca */
+.search-box {
+    display: flex;
+    align-items: center;
+    background-color: rgba(255, 255, 255, 0.15); /* Fundo sutilmente transparente */
+    padding: 5px 15px;
+    border-radius: 20px; /* Bordas arredondadas (Pill shape) */
+    border: 1px solid rgba(255, 255, 255, 0.2);
+    transition: background-color 0.3s;
+}
+
+.search-box:hover, .search-box:focus-within {
+    background-color: rgba(255, 255, 255, 0.25); /* Fica mais claro ao passar o mouse */
+}
+
+/* Input (Onde digita) */
+.search-box input {
+    background: transparent;
+    border: none;
+    outline: none;
+    color: white;
+    font-family: 'Montserrat', sans-serif;
+    font-size: 14px;
+    width: 200px; /* Largura da busca */
+}
+
+/* Cor do texto de placeholder (Ex: "O que você procura?") */
+.search-box input::placeholder {
+    color: rgba(255, 255, 255, 0.7);
+}
+
+/* Botão da Lupa */
+.search-box button {
+    background: transparent;
+    border: none;
+    color: white;
+    cursor: pointer;
+    font-size: 14px;
+    padding: 5px;
+    transition: transform 0.2s;
+}
+
+.search-box button:hover {
+    transform: scale(1.1);
+}
+
+/* Responsividade Mobile */
+@media (max-width: 768px) {
+    .navbar {
+        flex-direction: column; /* Coloca a busca embaixo dos links no celular */
+        gap: 4px;
+    }
+    
+    .nav-links {
+        flex-wrap: wrap;
+        justify-content: center;
+    }
+
+    .search-box {
+        width: 100%; /* Busca ocupa toda a largura no celular */
+    }
+    
+    .search-box input {
+        width: 100%;
+    }
+}
+
+/* --- FIM DOS ESTILOS DA BUSCA NA NAVBAR --- */
+
+/* --- ESTILOS DE LOGIN E CADASTRO NA NAVBAR--- */
+
+/* Ajuste para ícones na navbar */
+.icon-link {
+    color: white;
+    font-size: 18px;
+    transition: color 0.3s;
+}
+
+
+/* Container Centralizado */
+.auth-container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    min-height: 60vh; /* Garante altura para centralizar na tela */
+    padding: 40px 20px;
+}
+
+/* Cartão Branco de Fundo */
+.auth-card {
+    background: white;
+    padding: 40px;
+    width: 100%;
+    max-width: 450px; /* Largura máxima elegante */
+    border-radius: 10px;
+    box-shadow: 0 4px 20px rgba(0,0,0,0.05);
+    text-align: center;
+}
+
+.auth-card h2 {
+    font-family: 'Quicksand', sans-serif;
+    color: #333;
+    margin-bottom: 10px;
+}
+
+.auth-subtitle {
+    font-family: 'Montserrat', sans-serif;
+    color: #666;
+    font-size: 14px;
+    margin-bottom: 30px;
+    display: block;
+}
+
+/* Estilo dos Inputs (Reaproveitando base do contato mas ajustando) */
+.auth-form .form-group {
+    margin-bottom: 20px;
+    text-align: left;
+}
+
+.auth-form label {
+    display: block;
+    margin-bottom: 8px;
+    font-family: 'Quicksand', sans-serif;
+    font-weight: bold;
+    color: #616b64;
+    font-size: 14px;
+}
+
+.auth-form input {
+    width: 100%;
+    padding: 12px;
+    border: 1px solid #ddd;
+    border-radius: 5px;
+    font-family: 'Montserrat', sans-serif;
+    outline: none;
+    transition: border-color 0.3s;
+}
+
+.auth-form input:focus {
+    border-color: #A36361;
+}
+
+/* Links (Esqueci senha / Cadastre-se) */
+.auth-links {
+    display: flex;
+    justify-content: space-between;
+    font-size: 12px;
+    margin-bottom: 20px;
+    font-family: 'Montserrat', sans-serif;
+}
+
+.auth-links a {
+    color: #616b64;
+    text-decoration: none;
+}
+
+.auth-links a:hover {
+    color: #A36361;
+    text-decoration: underline;
+}
+
+/* Botão de Ação */
+.btn-auth {
+    width: 100%;
+    padding: 12px;
+    background: #A36361; /* Cor da marca */
+    color: white;
+    border: none;
+    border-radius: 50px;
+    font-family: 'Quicksand', sans-serif;
+    font-weight: bold;
+    font-size: 16px;
+    cursor: pointer;
+    transition: opacity 0.3s, transform 0.2s;
+    margin-bottom: 20px;
+    text-decoration: none;
+}
+
+.btn-auth:hover {
+    opacity: 0.9;
+    transform: translateY(-2px);
+}
+
+.auth-footer {
+    font-size: 13px;
+    font-family: 'Montserrat', sans-serif;
+    color: #555;
+}
+
+.auth-footer a {
+    color: #A36361;
+    font-weight: bold;
+    text-decoration: none;
+}
+
+/* Responsividade */
+@media (max-width: 768px) {
+    .nav-icons-area {
+        width: 100%;
+        justify-content: space-around;
+        margin-top: 10px;
+    }
+}
+
+/* --- FIM DOS ESTILOS DE LOGIN E CADASTRO NA NAVBAR--- */
+
+/* --- ESTILO DO ÍCONE DO CARRINHO NA NAVBAR --- */
+
+.cart-link {
+    position: relative; /* Necessário para posicionar a bolinha */
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.cart-link i {
+    font-size: 18px; /* Tamanho do ícone */
+}
+
+/* A bolinha vermelha com o número */
+.cart-count {
+    position: absolute;
+    top: 2px;             /* Ajuste vertical */
+    right: 10px;          /* Ajuste horizontal */
+    background-color: #A36361; /* A cor rosa/terracota da sua marca */
+    color: white;
+    font-size: 10px;
+    font-weight: bold;
+    height: 16px;
+    width: 16px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 50%;   /* Deixa redondinho */
+    font-family: 'Montserrat', sans-serif;
+    border: 1px solid #616b64; /* Uma borda sutil para separar do fundo */
+}
+
+/* Efeito ao passar o mouse */
+.cart-link:hover .cart-count {
+    transform: scale(1.1); /* Um leve zoom na bolinha */
+    transition: transform 0.2s;
+}
+
+/* --- FIM DOS ESTILOS DO CARRINHO DE COMPRAS --- */
+
+/* --- Estilos da Página Meus Pedidos --- */
+
+/* Abas de Filtro */
+.order-tabs {
+    display: flex;
+    gap: 10px;
+    margin-bottom: 30px;
+    border-bottom: 1px solid #eee;
+    padding-bottom: 10px;
+}
+
+.tab-btn {
+    background: none;
+    border: none;
+    padding: 8px 15px;
+    font-family: 'Montserrat', sans-serif;
+    font-size: 0.9rem;
+    color: #999;
+    cursor: pointer;
+    border-radius: 20px;
+    transition: all 0.3s;
+}
+
+.tab-btn.active, .tab-btn:hover {
+    background-color: var(--primary);
+    color: var(--white);
+}
+
+/* Lista de Cards */
+.orders-list {
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+}
+
+.order-card {
+    background: var(--white);
+    border-radius: 12px;
+    padding: 25px;
+    box-shadow: 0 4px 15px rgba(0,0,0,0.03);
+    border: 1px solid transparent;
+    transition: border-color 0.3s;
+}
+
+.order-card:hover {
+    border-color: rgba(212, 163, 115, 0.4);
+}
+
+/* Header do Card (ID, Data, Status) */
+.order-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    border-bottom: 1px solid #f5f5f5;
+    padding-bottom: 15px;
+    margin-bottom: 20px;
+    flex-wrap: wrap;
+    gap: 15px;
+}
+
+.order-header .label {
+    display: block;
+    font-size: 0.75rem;
+    color: #aaa;
+    text-transform: uppercase;
+}
+
+.order-header strong {
+    font-size: 1rem;
+    color: var(--primary);
+    font-family: 'Quicksand', sans-serif;
+}
+
+/* Badges de Status */
+.badge {
+    padding: 6px 14px;
+    border-radius: 30px;
+    font-size: 0.8rem;
+    font-weight: 700;
+    text-transform: uppercase;
+}
+
+.badge.transit { background: #e3f2fd; color: #1976d2; }
+.badge.delivered { background: #e8f5e9; color: #2e7d32; }
+.badge.canceled { background: #f5f5f5; color: #757575; }
+
+/* Corpo do Card (Produtos e Total) */
+.order-body {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 20px;
+}
+
+.product-thumbs {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+.product-thumbs img {
+    width: 60px;
+    height: 60px;
+    border-radius: 8px;
+    object-fit: cover;
+    border: 1px solid #eee;
+}
+
+.more-items {
+    width: 40px;
+    height: 40px;
+    background: #f0f0f0;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 0.8rem;
+    color: #666;
+    font-weight: 600;
+}
+
+.order-total-info {
+    text-align: right;
+}
+
+.order-total-info span {
+    display: block;
+    font-size: 0.8rem;
+    color: #999;
+}
+
+.order-total-info strong {
+    font-size: 1.2rem;
+    color: var(--primary);
+}
+
+/* Rodapé do Card (Botões) */
+.order-footer {
+    display: flex;
+    justify-content: flex-end;
+    gap: 15px;
+    padding-top: 15px;
+}
+
+.btn-details {
+    padding: 8px 20px;
+    border: 1px solid #ddd;
+    color: #666;
+    text-decoration: none;
+    border-radius: 6px;
+    font-size: 0.9rem;
+    font-weight: 600;
+    transition: all 0.2s;
+}
+
+.btn-details:hover {
+    border-color: var(--primary);
+    color: var(--primary);
+}
+
+.btn-track-small {
+    padding: 8px 20px;
+    background: var(--primary);
+    color: var(--white);
+    text-decoration: none;
+    border-radius: 6px;
+    font-size: 0.9rem;
+    font-weight: 600;
+}
+
+.btn-buy-again {
+    padding: 8px 20px;
+    background: var(--gold);
+    color: var(--white);
+    text-decoration: none;
+    border-radius: 6px;
+    font-size: 0.9rem;
+    font-weight: 600;
+}
+
+.btn-buy-again:hover, .btn-track-small:hover {
+    opacity: 0.9;
+    transform: translateY(-2px);
+}
+
+/* Mobile */
+@media (max-width: 600px) {
+    .order-body {
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 15px;
+    }
+    .order-total-info {
+        text-align: left;
+    }
+    .order-footer {
+        flex-direction: column;
+    }
+    .btn-details, .btn-track-small, .btn-buy-again {
+        text-align: center;
+    }
+}
+
+/* --- FIM Estilos da Página Meus Pedidos --- */
+/* --- Estilos da Página de Favoritos --- */
+
+.favorites-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(240px, 1fr)); /* Responsivo: ajusta colunas sozinho */
+    gap: 30px;
+}
+
+.fav-card {
+    background: var(--white);
+    border-radius: 12px;
+    overflow: hidden;
+    position: relative; /* Para posicionar o botão remover */
+    box-shadow: 0 4px 15px rgba(0,0,0,0.03);
+    border: 1px solid transparent;
+    transition: all 0.3s;
+}
+
+.fav-card:hover {
+    transform: translateY(-5px);
+    border-color: rgba(212, 163, 115, 0.3);
+    box-shadow: 0 10px 25px rgba(0,0,0,0.05);
+}
+
+/* Botão de Remover (X) */
+.btn-remove {
+    position: absolute;
+    top: 10px;
+    right: 10px;
+    width: 30px;
+    height: 30px;
+    background: rgba(255, 255, 255, 0.9);
+    border: none;
+    border-radius: 50%;
+    color: #999;
+    cursor: pointer;
+    z-index: 10;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: all 0.2s;
+    box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+}
+
+.btn-remove:hover {
+    background: var(--white);
+    color: #e74c3c;
+    transform: scale(1.1);
+}
+
+/* Imagem */
+.fav-img {
+    height: 240px;
+    width: 100%;
+    position: relative;
+    background: #f9f9f9;
+}
+
+.fav-img img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+}
+
+/* Badge de Promoção */
+.badge-promo {
+    position: absolute;
+    bottom: 10px;
+    left: 10px;
+    background: var(--gold);
+    color: white;
+    padding: 4px 10px;
+    border-radius: 4px;
+    font-size: 0.75rem;
+    font-weight: 700;
+}
+
+/* Informações */
+.fav-info {
+    padding: 20px;
+    text-align: center;
+}
+
+.fav-info h3 {
+    font-family: 'Quicksand', sans-serif;
+    font-size: 1rem;
+    color: var(--primary);
+    margin-bottom: 10px;
+    /* Limita o texto a 2 linhas */
+    display: -webkit-box;
+    /* -webkit-line-clamp: 2;*/
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+    height: 2.4em; /* Altura fixa para alinhar cards */
+}
+
+/* Preço */
+.fav-price {
+    margin-bottom: 15px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 10px;
+}
+
+.current-price {
+    font-weight: 700;
+    color: var(--primary);
+    font-size: 1.1rem;
+}
+
+.old-price {
+    text-decoration: line-through;
+    color: #ccc;
+    font-size: 0.9rem;
+}
+
+/* Botão Adicionar */
+.btn-add-cart {
+    width: 100%;
+    background: var(--primary);
+    color: var(--white);
+    border: none;
+    padding: 12px;
+    border-radius: 6px;
+    font-family: 'Montserrat', sans-serif;
+    font-weight: 600;
+    font-size: 0.85rem;
+    cursor: pointer;
+    transition: background 0.3s;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+}
+
+.btn-add-cart:hover {
+    background: var(--gold);
+}
+
+/* Estado Esgotado */
+.out-of-stock-card .fav-img img {
+    opacity: 0.6;
+}
+
+.overlay-stock {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    background: rgba(0,0,0,0.7);
+    color: white;
+    padding: 5px 15px;
+    border-radius: 20px;
+    font-size: 0.8rem;
+    text-transform: uppercase;
+    font-weight: 600;
+}
+
+.btn-add-cart.disabled {
+    background: #eee;
+    color: #999;
+    cursor: not-allowed;
+}
+
+.btn-add-cart.disabled:hover {
+    background: #eee;
+}
+
+/* Responsividade */
+@media (max-width: 600px) {
+    .favorites-grid {
+        grid-template-columns: 1fr; /* 1 coluna no celular para focar na imagem */
+    }
+}
+
+/* --- FIM Estilos da Página de Favoritos --- */
+
+/* --- Estilos da Página de Endereços --- */
+
+.address-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+    gap: 30px;
+}
+
+.address-card {
+    background: var(--white);
+    border-radius: 12px;
+    padding: 25px;
+    position: relative;
+    border: 1px solid #eee;
+    transition: all 0.3s;
+    box-shadow: 0 4px 10px rgba(0,0,0,0.02);
+}
+
+.address-card:hover {
+    box-shadow: 0 8px 20px rgba(0,0,0,0.05);
+    border-color: #ddd;
+}
+
+/* Estilo Especial para o Card Padrão */
+.default-card {
+    border: 1px solid var(--gold);
+    background-color: #fffbf5; /* Fundo levemente dourado/creme */
+}
+
+.card-tag {
+    position: absolute;
+    top: 15px;
+    right: 15px;
+    background: var(--gold);
+    color: white;
+    font-size: 0.7rem;
+    padding: 4px 10px;
+    border-radius: 20px;
+    font-weight: 600;
+    text-transform: uppercase;
+}
+
+.address-icon {
+    font-size: 1.5rem;
+    color: var(--primary);
+    margin-bottom: 15px;
+}
+
+.address-details h3 {
+    font-family: 'Quicksand', sans-serif;
+    font-size: 1.1rem;
+    margin-bottom: 10px;
+    color: var(--primary);
+}
+
+.address-details p {
+    font-size: 0.9rem;
+    color: #666;
+    margin-bottom: 5px;
+    line-height: 1.5;
+}
+
+/* Ações do Card */
+.address-actions {
+    margin-top: 20px;
+    padding-top: 15px;
+    border-top: 1px solid rgba(0,0,0,0.05);
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.btn-text {
+    background: none;
+    border: none;
+    color: #999;
+    font-size: 0.8rem;
+    cursor: pointer;
+    text-decoration: underline;
+}
+
+.btn-text:hover { color: var(--gold); }
+
+.actions-right {
+    display: flex;
+    gap: 10px;
+}
+
+.btn-icon-edit, .btn-icon-delete {
+    background: none;
+    border: 1px solid #eee;
+    width: 35px;
+    height: 35px;
+    border-radius: 6px;
+    color: #555;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: all 0.2s;
+}
+
+.btn-icon-edit:hover {
+    background: var(--primary);
+    color: white;
+    border-color: var(--primary);
+}
+
+.btn-icon-delete:hover {
+    background: #ffebee;
+    color: #e74c3c;
+    border-color: #e74c3c;
+}
+
+/* --- Modal de Endereço --- */
+.modal-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0,0,0,0.5);
+    z-index: 1000;
+    display: none; /* Escondido por padrão */
+    justify-content: center;
+    align-items: center;
+    backdrop-filter: blur(2px);
+}
+
+.modal-content-box {
+    background: white;
+    padding: 30px;
+    border-radius: 12px;
+    width: 90%;
+    max-width: 500px;
+    box-shadow: 0 10px 30px rgba(0,0,0,0.2);
+}
+
+.modal-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 25px;
+}
+
+.modal-header h3 { font-family: 'Quicksand', sans-serif; color: var(--primary); }
+
+.close-modal {
+    background: none;
+    border: none;
+    font-size: 1.5rem;
+    cursor: pointer;
+    color: #999;
+}
+
+/* Formulário do Modal */
+.address-form { display: flex; flex-direction: column; gap: 15px; }
+
+.input-row-2 { display: grid; grid-template-columns: 1fr 1fr; gap: 15px; }
+.input-row-2-1 { display: grid; grid-template-columns: 2fr 1fr; gap: 15px; }
+
+.address-form input, .address-form select {
+    padding: 12px;
+    border: 1px solid #ddd;
+    border-radius: 6px;
+    font-family: 'Montserrat', sans-serif;
+    font-size: 0.9rem;
+    width: 100%;
+    box-sizing: border-box;
+}
+
+.address-form input:focus { border-color: var(--gold); outline: none; }
+
+.modal-footer {
+    display: flex;
+    justify-content: flex-end;
+    gap: 15px;
+    margin-top: 10px;
+}
+
+.btn-cancel {
+    background: none;
+    border: 1px solid #ddd;
+    padding: 10px 20px;
+    border-radius: 6px;
+    cursor: pointer;
+    font-weight: 600;
+    color: #666;
+}
+
+.btn-save {
+    background: var(--primary);
+    color: white;
+    border: none;
+    padding: 10px 25px;
+    border-radius: 6px;
+    cursor: pointer;
+    font-weight: 600;
+}
+
+.btn-save:hover { background: var(--gold); }
+
+/* --- FIM Estilos da Página de Endereços --- */
+/* --- Estilos da Página de Cartões --- */
+
+.cards-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
+    gap: 30px;
+}
+
+/* O Cartão Visual */
+.credit-card-visual {
+    width: 100%;
+    height: 200px;
+    border-radius: 16px;
+    padding: 25px;
+    color: white;
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    box-shadow: 0 10px 20px rgba(0,0,0,0.15);
+    transition: transform 0.3s;
+    overflow: hidden;
+}
+
+.credit-card-visual:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 15px 30px rgba(0,0,0,0.2);
+}
+
+/* Temas de Cores */
+.card-dark {
+    background: linear-gradient(135deg, #1e1e1e 0%, #3a3a3a 100%);
+}
+
+.card-blue {
+    background: linear-gradient(135deg, #0f2027 0%, #203a43 50%, #2c5364 100%);
+}
+
+/* Elementos do Cartão */
+.card-top {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+}
+
+.chip img {
+    width: 40px;
+    opacity: 0.9;
+}
+
+.brand-logo {
+    font-size: 2.5rem;
+    opacity: 0.8;
+}
+
+.card-number {
+    font-family: 'Source Code Pro', monospace;
+    font-size: 1.4rem;
+    letter-spacing: 2px;
+    text-shadow: 0 2px 2px rgba(0,0,0,0.3);
+}
+
+.card-details {
+    display: flex;
+    justify-content: space-between;
+}
+
+.card-details span {
+    font-size: 0.6rem;
+    text-transform: uppercase;
+    opacity: 0.7;
+    display: block;
+    margin-bottom: 2px;
+}
+
+.card-details strong {
+    font-family: 'Source Code Pro', monospace;
+    font-size: 0.9rem;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+}
+
+/* Botão Excluir (Discreto) */
+.btn-delete-card {
+    position: absolute;
+    top: 15px;
+    right: 15px;
+    background: rgba(255,255,255,0.1);
+    border: none;
+    color: white;
+    width: 30px;
+    height: 30px;
+    border-radius: 50%;
+    cursor: pointer;
+    display: none; /* Só aparece no hover */
+    align-items: center;
+    justify-content: center;
+}
+
+.credit-card-visual:hover .btn-delete-card {
+    display: flex;
+}
+
+.btn-delete-card:hover {
+    background: rgba(231, 76, 60, 0.8);
+}
+
+/* Card Placeholder (Adicionar Novo) */
+.add-card-placeholder {
+    height: 200px;
+    border: 2px dashed #ddd;
+    border-radius: 16px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    background-color: #fcfcfc;
+    transition: all 0.3s;
+    color: #999;
+}
+
+.add-card-placeholder:hover {
+    border-color: var(--gold);
+    color: var(--gold);
+    background-color: #fff;
+}
+
+.circle-plus {
+    width: 50px;
+    height: 50px;
+    border-radius: 50%;
+    background: #eee;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin-bottom: 15px;
+    font-size: 1.2rem;
+    transition: background 0.3s;
+}
+
+.add-card-placeholder:hover .circle-plus {
+    background: var(--gold);
+    color: white;
+}
+
+/* --- Modal Específico --- */
+.card-form {
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+}
+
+.input-with-icon {
+    position: relative;
+}
+
+.input-with-icon i {
+    position: absolute;
+    left: 15px;
+    top: 50%;
+    transform: translateY(-50%);
+    color: #999;
+}
+
+.input-with-icon input {
+    padding-left: 45px; /* Espaço para o ícone */
+}
+
+.card-form label {
+    font-size: 0.85rem;
+    font-weight: 600;
+    margin-bottom: 5px;
+    display: block;
+    color: #555;
+}
+
+.input-check-container {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    font-weight: 400 !important;
+    cursor: pointer;
+}
+
+/* --- FIM Estilos da Página de Cartões --- */
+
+/* =========================================
+   ESTILOS GERAIS DO MODAL (SERVE PARA TODOS)
+   ========================================= */
+
+/* Fundo Escuro (Overlay) */
+.modal-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0, 0, 0, 0.5); /* Fundo preto transparente */
+    z-index: 2000; /* Fica acima de tudo */
+    display: none; /* Começa escondido */
+    justify-content: center;
+    align-items: center;
+    backdrop-filter: blur(3px); /* Desfoque moderno */
+}
+
+/* Caixa Branca do Modal */
+.modal-content-box {
+    background: white;
+    padding: 30px;
+    border-radius: 12px;
+    width: 90%;
+    max-width: 500px; /* Largura máxima */
+    box-shadow: 0 10px 40px rgba(0,0,0,0.2);
+    position: relative;
+    animation: slideDown 0.3s ease-out;
+}
+
+@keyframes slideDown {
+    from { opacity: 0; transform: translateY(-20px); }
+    to { opacity: 1; transform: translateY(0); }
+}
+
+/* Cabeçalho do Modal (Título e X) */
+.modal-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 25px;
+    border-bottom: 1px solid #eee;
+    padding-bottom: 15px;
+}
+
+.modal-header h3 {
+    font-family: 'Quicksand', sans-serif;
+    color: var(--primary);
+    margin: 0;
+}
+
+.close-modal {
+    background: none;
+    border: none;
+    font-size: 1.8rem;
+    cursor: pointer;
+    color: #999;
+    line-height: 1;
+}
+
+.close-modal:hover {
+    color: #e74c3c;
+}
+
+/* =========================================
+   FORMULÁRIO DE CARTÃO (ESPECÍFICO)
+   ========================================= */
+
+.card-form {
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+}
+
+/* Linhas de Input */
+.input-row {
+    width: 100%;
+}
+
+.input-row-2 {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 15px;
+}
+
+/* Estilo dos Inputs */
+.card-form label {
+    font-size: 0.85rem;
+    font-weight: 600;
+    margin-bottom: 5px;
+    display: block;
+    color: #555;
+}
+
+.card-form input {
+    width: 100%;
+    padding: 12px;
+    border: 1px solid #ddd;
+    border-radius: 6px;
+    font-family: 'Montserrat', sans-serif;
+    font-size: 0.95rem;
+    box-sizing: border-box; /* Garante que não estoure a largura */
+}
+
+.card-form input:focus {
+    border-color: var(--gold);
+    outline: none;
+}
+
+/* Input com Ícone (Cartão) */
+.input-with-icon {
+    position: relative;
+}
+
+.input-with-icon i {
+    position: absolute;
+    left: 15px;
+    top: 50%;
+    transform: translateY(-50%);
+    color: #999;
+    font-size: 1.1rem;
+}
+
+.input-with-icon input {
+    padding-left: 45px; /* Espaço para o ícone não ficar em cima do texto */
+}
+
+/* Checkbox "Salvar Cartão" */
+.input-check-container {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    font-weight: 400 !important;
+    cursor: pointer;
+}
+
+.input-check-container input {
+    width: auto; /* Checkbox não pode ser 100% */
+}
+
+/* Rodapé com Botões */
+.modal-footer {
+    display: flex;
+    justify-content: flex-end;
+    gap: 15px;
+    margin-top: 15px;
+    border-top: 1px solid #eee;
+    padding-top: 20px;
+}
+
+.btn-cancel {
+    background: white;
+    border: 1px solid #ddd;
+    color: #666;
+    padding: 10px 20px;
+    border-radius: 6px;
+    cursor: pointer;
+    font-weight: 600;
+}
+
+.btn-save {
+    background: var(--primary);
+    color: white;
+    border: none;
+    padding: 10px 25px;
+    border-radius: 6px;
+    cursor: pointer;
+    font-weight: 600;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}
+
+.btn-save:hover {
+    background: var(--gold);
+}

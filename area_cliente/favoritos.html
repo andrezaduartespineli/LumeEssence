@@ -3,15 +3,16 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Minha Conta | Lume Essence</title>
+    <title>Meus Favoritos | Lume Essence</title>
     
     <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@300;400;600&family=Quicksand:wght@400;500;700&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <link rel="stylesheet" href="area-cliente.css">
 </head>
 <body>
+
     
-<header>
+     <header>
             <div class="container">
                 <div class="logo">
                     <img src="../imagens/Logo/horizontalsemfundo.png" alt="Lume Essence">
@@ -43,6 +44,7 @@
     </div>
 </div>
 </header>
+
     <div class="client-container container">
         
         <aside class="client-sidebar">
@@ -55,9 +57,9 @@
             </div>
             
             <nav class="account-menu">
-                <a href="area-cliente.html" class="active"><i class="fa-solid fa-house"></i> Visão Geral</a>
+                <a href="area-cliente.html"><i class="fa-solid fa-house"></i> Visão Geral</a>
                 <a href="meus-pedidos.html"><i class="fa-solid fa-box"></i> Meus Pedidos</a>
-                <a href="favoritos.html"><i class="fa-solid fa-heart"></i> Favoritos</a>
+                <a href="favoritos.html" class="active"><i class="fa-solid fa-heart"></i> Favoritos</a>
                 <a href="enderecos.html"><i class="fa-solid fa-location-dot"></i> Endereços</a>
                 <a href="cartoes.html"><i class="fa-regular fa-credit-card"></i> Cartões Salvos</a>
                 <a href="#"><i class="fa-solid fa-user-gear"></i> Meus Dados</a>
@@ -67,107 +69,59 @@
 
         <main class="client-content">
             
-            <div class="welcome-banner">
-                <h2>Bem-vinda de volta, Ana! ✨</h2>
-                <p>Que a Lume Essence traga luz para o seu dia hoje.</p>
+            <div class="section-header">
+                <h2>Meus Desejos</h2>
+                <p style="color: #888; font-size: 0.9rem;">Salve agora, compre depois.</p>
             </div>
 
-            <section class="stats-row">
-                <div class="stat-card">
-                    <div class="icon-box gold"><i class="fa-solid fa-box-open"></i></div>
-                    <div>
-                        <h3>Em Trânsito</h3>
-                        <p>1 Pedido a caminho</p>
-                    </div>
-                </div>
-                <div class="stat-card">
-                    <div class="icon-box green"><i class="fa-solid fa-leaf"></i></div>
-                    <div>
-                        <h3>Lume Points</h3>
-                        <p>120 pontos acumulados</p>
-                    </div>
-                </div>
-                <div class="stat-card">
-                    <div class="icon-box purple"><i class="fa-solid fa-ticket"></i></div>
-                    <div>
-                        <h3>Cupons</h3>
-                        <p>1 Cupom disponível</p>
-                    </div>
-                </div>
-            </section>
+            <div class="favorites-grid">
 
-            <section class="latest-order">
-                <div class="section-header">
-                    <h3>Último Pedido <span class="order-number">#5420</span></h3>
-                    <a href="../rastreio.html" class="btn-track">Rastrear Entrega</a>
-                </div>
-                
-                <div class="order-progress-bar">
-                    <div class="step completed">
-                        <div class="step-icon"><i class="fa-solid fa-check"></i></div>
-                        <span>Aprovado</span>
+                <div class="fav-card">
+                    <button class="btn-remove" title="Remover"><i class="fa-solid fa-xmark"></i></button>
+                    <div class="fav-img">
+                        <img src="../imagens/lavanda.png" alt="Vela Lavanda">
+                        <span class="badge-promo">-10%</span>
                     </div>
-                    <div class="step completed">
-                        <div class="step-icon"><i class="fa-solid fa-box"></i></div>
-                        <span>Separado</span>
+                    <div class="fav-info">
+                        <h3>Vela Aromática Lavanda (180g)</h3>
+                        <div class="fav-price">
+                            <span class="old-price">R$ 99,90</span>
+                            <span class="current-price">R$ 89,90</span>
+                        </div>
+                        <button class="btn-add-cart"><i class="fa-solid fa-bag-shopping"></i> Adicionar à Sacola</button>
                     </div>
-                    <div class="step active">
-                        <div class="step-icon"><i class="fa-solid fa-truck-fast"></i></div>
-                        <span>Em Trânsito</span>
-                    </div>
-                    <div class="step">
-                        <div class="step-icon"><i class="fa-solid fa-house-chimney"></i></div>
-                        <span>Entregue</span>
-                    </div>
-                    <div class="line">
-                        <div class="line-fill" style="width: 66%;"></div> </div>
                 </div>
 
-                <div class="order-items-preview">
-                    <div class="item-img">
-                        <img src="../imagens/vela.png" alt="Vela">
-                        <span class="qty">2x</span>
+                <div class="fav-card">
+                    <button class="btn-remove" title="Remover"><i class="fa-solid fa-xmark"></i></button>
+                    <div class="fav-img">
+                        <img src="../imagens/kit.png" alt="Kit Presente">
                     </div>
-                    <div class="item-desc">
-                        <h4>Vela Aromática Lavanda (180g)</h4>
-                        <p>Previsão de entrega: <strong>08/12/2025</strong></p>
-                    </div>
-                    <div class="item-price">
-                        R$ 189,90
+                    <div class="fav-info">
+                        <h3>Kit Presente "Ritual Calma"</h3>
+                        <div class="fav-price">
+                            <span class="current-price">R$ 189,90</span>
+                        </div>
+                        <button class="btn-add-cart"><i class="fa-solid fa-bag-shopping"></i> Adicionar à Sacola</button>
                     </div>
                 </div>
-            </section>
 
-            <section class="recent-history">
-                <h3>Histórico Recente</h3>
-                <table class="client-table">
-                    <thead>
-                        <tr>
-                            <th>Pedido</th>
-                            <th>Data</th>
-                            <th>Status</th>
-                            <th>Total</th>
-                            <th></th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        <tr>
-                            <td>#5415</td>
-                            <td>02/12/2025</td>
-                            <td><span class="badge delivered">Entregue</span></td>
-                            <td>R$ 89,90</td>
-                            <td><a href="#" class="link-detail">Detalhes</a></td>
-                        </tr>
-                        <tr>
-                            <td>#5390</td>
-                            <td>20/11/2025</td>
-                            <td><span class="badge delivered">Entregue</span></td>
-                            <td>R$ 245,00</td>
-                            <td><a href="#" class="link-detail">Detalhes</a></td>
-                        </tr>
-                    </tbody>
-                </table>
-            </section>
+                <div class="fav-card out-of-stock-card">
+                    <button class="btn-remove" title="Remover"><i class="fa-solid fa-xmark"></i></button>
+                    <div class="fav-img">
+                        <img src="../imagens/homespray.png" alt="Home Spray">
+                        <div class="overlay-stock">Esgotado</div>
+                    </div>
+                    <div class="fav-info">
+                        <h3>Home Spray Bamboo (250ml)</h3>
+                        <div class="fav-price">
+                            <span class="current-price">R$ 65,00</span>
+                        </div>
+                        <button class="btn-add-cart disabled" disabled>Avise-me quando chegar</button>
+                    </div>
+                </div>
+
+            </div>
 
         </main>
     </div>
@@ -252,6 +206,5 @@
 
   </div>
 </footer>
-
 </body>
 </html>

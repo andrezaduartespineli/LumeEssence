@@ -1,6 +1,9 @@
 /* ==========================================================================
    1. ESTILOS GLOBAIS (COMUNS A TODAS AS PÁGINAS)
    ========================================================================== */
+/*LOGO*/
+
+
 
 /* Reset de estilos básicos */
 * {
@@ -28,9 +31,9 @@ body {
     color: rgb(27, 30, 228);
     background-color: #f4f4f4;
     margin: 0 auto;
-    letter-spacing: 1px;   
-    font-family: quicksand, sans-serif;
-    font-size: 15px;
+      
+    
+    
 }
 
 /* Logo */
@@ -45,8 +48,8 @@ body {
     display: flex;
     justify-content: center;
     background: #616b64;
-    padding: 18px;
-    margin-bottom: 25px;
+    padding: 3px;
+    margin-bottom: 0px;
 }
 
 .navbar a {
@@ -64,10 +67,11 @@ body {
 
 /* --- CONTAINERS E TÍTULOS GERAIS --- */
 .container {
-    width: 80%;
-    margin: 0 auto;
     max-width: 1200px;
+    margin: 0 auto;
+    padding: 0 20px;
 }
+.logo img { height: 100px; } /* MUDA O TAMANHO DA LOGO*/
 
 .titulo h2 {
     text-align: center;
@@ -1528,17 +1532,6 @@ footer {
 
 /* --- ESTILOS DA BUSCA NA NAVBAR--- */
 
-.navbar {
-    display: flex;
-    justify-content: center; /* Mantém centralizado */
-    align-items: center;     /* Alinha verticalmente */
-    background: #616b64;
-    padding: 15px 20px;
-    margin-bottom: 25px;
-    flex-wrap: wrap;         /* Permite quebrar linha no celular */
-    gap: 20px;               /* Espaço entre os links e a busca */
-}
-
 /* Agrupamento dos Links */
 .nav-links {
     display: flex;
@@ -1595,7 +1588,7 @@ footer {
 @media (max-width: 768px) {
     .navbar {
         flex-direction: column; /* Coloca a busca embaixo dos links no celular */
-        gap: 15px;
+        gap: 4px;
     }
     
     .nav-links {
@@ -3686,4 +3679,3 @@ html {
 }
 
 /* --- Fim do Modal Newsletter --- */
-
