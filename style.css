@@ -2267,7 +2267,7 @@ html {
     border-radius: 8px;
     overflow: hidden;
     /* Se não tiver imagem vertical, usa um fundo cor da marca */
-    background-color: #616b64; 
+    background-color: #616b64;
 }
 
 .showcase-banner-card img {
