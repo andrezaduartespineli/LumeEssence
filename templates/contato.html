@@ -1,0 +1,241 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Contato - Lume Essence</title>
+    <link rel="icon" href="imagens/Logo/pequenalogosemfnfo.png">
+    
+    <link href='https://fonts.googleapis.com/css?family=Quicksand' rel='stylesheet'>
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:ital,wght@0,100..900;1,100..900&display=swap" rel="stylesheet">
+    
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+    <div class="container">
+                <div class="logo">
+                    <img src="imagens/Logo/horizontalsemfundo.png" alt="Lume Essence">
+                </div>
+            </div>
+ 
+    <div class="navbar">
+    <div class="nav-links">
+        <a href="index.html">Início</a>
+        <a href="produtos.html">Produtos</a>
+        <a href="sobre.html">Sobre</a>
+        <a href="contato.html">Contato</a>
+    </div>
+
+    <div class="nav-icons-area" style="display: flex; align-items: center; gap: 20px;">
+        
+        <div class="search-box">
+            <input type="text" placeholder="Buscar...">
+            <button type="submit"><i class="fas fa-search"></i></button>
+        </div>
+
+        <div class="header-icons">
+<div class="user-menu-wrapper">
+    <a href="login.html" class="user-icon-link">
+        <i class="fa-regular fa-user"></i>
+    </a>
+
+    <div class="user-dropdown">
+        <ul>
+           <li>
+                <a href="../LumeEssence/area_cliente/area-cliente.html">
+                    <i class="fa-solid fa-user-gear"></i> Minha Conta
+                </a>
+            </li>
+            <li>
+                <a href="../LumeEssence/area_cliente/meus-pedidos.html">
+                    <i class="fa-solid fa-box"></i> Meus Pedidos
+                </a>
+            </li>
+            <li class="separator"></li>
+            <li>
+                <a href="login.html" class="logout-link">
+                    <i class="fa-solid fa-right-from-bracket"></i> Sair
+                </a>
+            </li>
+        </ul>
+    </div>
+</div>
+</div>
+
+        <a href="carrinho.html" class="cart-link" title="Carrinho">
+            <i class="fas fa-shopping-bag"></i>
+            <span class="cart-count">3</span>
+        </a>
+    </div>
+</div>
+    <div class="contact-page-container">
+        
+        <div class="titulo">
+            <h2>Fale Conosco</h2>
+            <p style="text-align: center; font-family: 'Montserrat', sans-serif; margin-bottom: 30px;">
+                Tem alguma dúvida sobre nossos aromas ou pedidos? Preencha o formulário abaixo.
+            </p>
+        </div>
+
+        <div class="contact-wrapper">
+            
+            <div class="contact-form-area">
+                <form action="#" method="POST">
+                    
+                    <div class="form-group">
+                        <label for="nome">Nome completo</label>
+                        <input type="text" id="nome" name="nome" placeholder="Seu nome" required>
+                    </div>
+
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label for="email">E-mail</label>
+                            <input type="email" id="email" name="email" placeholder="seu@email.com" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="telefone">Telefone</label>
+                            <input type="tel" id="telefone" name="telefone" placeholder="(DD) 99999-9999">
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="mensagem">Mensagem</label>
+                        <textarea id="mensagem" name="mensagem" rows="5" placeholder="Como podemos ajudar?" required></textarea>
+                    </div>
+
+                    <div class="recaptcha-placeholder">
+                        <div class="recaptcha-box">
+                            <input type="checkbox" id="robot-check">
+                            <label for="robot-check">Não sou um robô</label>
+                            <img src="https://www.gstatic.com/recaptcha/api2/logo_48.png" alt="captcha icon">
+                        </div>
+                    </div>
+
+                    <button type="submit" class="btn-enviar">Enviar mensagem</button>
+                </form>
+            </div>
+
+            <div class="contact-info-area">
+                <h3>Entre em contato</h3>
+                
+                <div class="info-item">
+                    <i class="fab fa-whatsapp"></i>
+                    <div>
+                        <strong>WhatsApp</strong>
+                        <p>(11) 98946-1731</p>
+                    </div>
+                </div>
+
+                <div class="info-item">
+                    <i class="fas fa-phone-alt"></i>
+                    <div>
+                        <strong>Telefone</strong>
+                        <p>(11) 98946-1731</p>
+                    </div>
+                </div>
+
+                <div class="info-item">
+                    <i class="far fa-envelope"></i>
+                    <div>
+                        <strong>E-mail</strong>
+                        <p>decor.parafinesse@gmail.com</p> </div>
+                </div>
+
+                <div class="social-contact">
+                    <a href="#"><i class="fab fa-instagram"></i></a>
+                    <a href="#"><i class="fab fa-facebook"></i></a>
+                </div>
+            </div>
+
+        </div>
+    </div>
+
+<footer>
+  <div class="footer-container">
+    
+    <div class="footer-top">
+      <div class="newsletter-text">
+            <i class="fas fa-tag"></i>
+            <span>Receba nossas novidades e promoções.</span>
+      </div>
+
+      <form class="newsletter-form">
+            <input type="text" placeholder="Nome completo">
+            <input type="text" placeholder="WhatsApp">
+            <input type="email" placeholder="E-mail">
+            <button type="submit">OK</button>
+      </form>
+    </div>
+
+    <hr class="footer-divider">
+
+    <div class="footer-middle">
+      
+    <div class="footer-col">
+        <h4>Navegação</h4>
+        <ul>
+          <li><a href="index.html">Início</a></li>
+          <li><a href="produtos.html">Produtos</a></li>
+          <li><a href="contato.html">Contato</a></li>
+          <li><a href="sobre.html">Sobre</a></li>
+        </ul>
+    </div>
+
+    <div class="footer-col">
+        <h4>Institucional</h4>
+        <ul>
+            <li><a href="institucional.html#trocas">Trocas e Devoluções</a></li>
+            <li><a href="institucional.html#privacidade">Política de Privacidade</a></li>
+            <li><a href="institucional.html#termos">Termos de Uso</a></li>
+            <li><a href="rastreio.html">Rastrear Pedido</a></li>
+        </ul>
+    </div>
+
+      <div class="footer-col">
+            <h4>Entre em contato</h4>
+            <ul class="contact-list">
+            <li><i class="fab fa-whatsapp"></i><a href="https://api.whatsapp.com/send/?phone=5561996100308&text&type=phone_number&app_absent=0"> (61) 99610-0308</a></li>
+            <li><i class="far fa-envelope"></i> lumeessence.contato@gmail.com</li>
+            <li><i class="fas fa-map-marker-alt"></i> Brasília - DF</li>
+            <li><i class="fab fa-instagram"></i><a href="https://www.instagram.com/lumeessence.oficial?igsh=dTBkZ2h1Zno4bGZl">Instagram</a></li>
+            </ul>
+      </div>
+    </div>
+
+    <hr class="footer-divider">
+
+    <div class="footer-bottom">
+      
+      <div class="payment-section">
+            <span>Formas de pagamento:</span>
+            <div class="icons">
+            <i class="fab fa-cc-visa"></i>
+            <i class="fab fa-cc-mastercard"></i>
+            <i class="fab fa-cc-amex"></i>
+            <i class="fab fa-pix"></i>
+            <i class="fas fa-barcode"></i>
+            </div>
+      </div>
+
+      <div class="security-section">
+            <span>Segurança:</span>
+            <div class="icons">
+            <i class="fas fa-lock"></i> 
+            <i class="fab fa-google"></i>
+            </div>
+      </div>
+
+    </div>
+
+    <div class="copyright">
+      © 2025 Lume Essence - Todos os direitos reservados
+    </div>
+
+  </div>
+</footer>
+
+</body>
+</html>
