@@ -198,15 +198,6 @@
             </form>
         </div>
     </div>
-
-    <script>
-        function abrirModalEndereco() {
-            document.getElementById('modal-endereco').style.display = 'flex';
-        }
-        function fecharModalEndereco() {
-            document.getElementById('modal-endereco').style.display = 'none';
-        }
-    </script>
 <footer>
   <div class="footer-container">
     
@@ -216,12 +207,13 @@
             <span>Receba nossas novidades e promoções.</span>
       </div>
 
-      <form class="newsletter-form">
-            <input type="text" placeholder="Nome completo">
-            <input type="text" placeholder="WhatsApp">
-            <input type="email" placeholder="E-mail">
-            <button type="submit">OK</button>
-      </form>
+      
+      <form class="newsletter-form" action="/newsletter/cadastrar" method="POST">
+    <input type="text" name="nome" placeholder="Nome completo" required>
+    <input type="text" name="whatsapp" placeholder="WhatsApp" required>
+    <input type="email" name="email" placeholder="E-mail" required>
+    <button type="submit">OK</button>
+    </form>
     </div>
 
     <hr class="footer-divider">
@@ -290,5 +282,6 @@
 
   </div>
 </footer>
+<script src="../../static/scriptareacliente.js"></script>
 </body>
 </html>

@@ -177,12 +177,13 @@
             <span>Receba nossas novidades e promoções.</span>
       </div>
 
-      <form class="newsletter-form">
-            <input type="text" placeholder="Nome completo">
-            <input type="text" placeholder="WhatsApp">
-            <input type="email" placeholder="E-mail">
-            <button type="submit">OK</button>
-      </form>
+      <form class="newsletter-form" action="/newsletter/cadastrar" method="POST">
+    <input type="text" name="nome" placeholder="Nome completo" required>
+    <input type="text" name="whatsapp" placeholder="WhatsApp" required>
+    <input type="email" name="email" placeholder="E-mail" required>
+    <button type="submit">OK</button>
+    </form>
+    </div>
     </div>
 
     <hr class="footer-divider">
@@ -251,31 +252,6 @@
 
   </div>
 </footer>
-
-    <script>
-        // Seleciona todos os botões de mais e menos
-        const plusBtns = document.querySelectorAll('.plus');
-        const minusBtns = document.querySelectorAll('.minus');
-
-        plusBtns.forEach(btn => {
-            btn.addEventListener('click', function() {
-                const input = this.parentElement.querySelector('input');
-                let value = parseInt(input.value);
-                input.value = value + 1;
-                // Aqui você adicionaria a lógica para atualizar o preço total
-            });
-        });
-
-        minusBtns.forEach(btn => {
-            btn.addEventListener('click', function() {
-                const input = this.parentElement.querySelector('input');
-                let value = parseInt(input.value);
-                if (value > 1) {
-                    input.value = value - 1;
-                }
-            });
-        });
-    </script>
-
+<script src="../../static/scriptsite.js"></script>
 </body>
 </html>

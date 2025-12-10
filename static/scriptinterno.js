@@ -162,3 +162,5 @@ function toggleProfileMenu() {
                 };
            
        /* -----  FIM JAVA DO CADASTRO DE PRODUTOS ----- */
+
+       document.getElementById('data_cad_fornecedor').value = new Date().toISOString().split('T')[0];

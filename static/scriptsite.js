@@ -207,3 +207,52 @@ function changeImage(element) {
         });
     });
 /* FIm Java do modal de newsletter */
+
+/* JAVA PAGINA DO CARRINHO*/
+// Seleciona todos os botões de mais e menos
+        const plusBtns = document.querySelectorAll('.plus');
+        const minusBtns = document.querySelectorAll('.minus');
+
+        plusBtns.forEach(btn => {
+            btn.addEventListener('click', function() {
+                const input = this.parentElement.querySelector('input');
+                let value = parseInt(input.value);
+                input.value = value + 1;
+                // Aqui você adicionaria a lógica para atualizar o preço total
+            });
+        });
+
+        minusBtns.forEach(btn => {
+            btn.addEventListener('click', function() {
+                const input = this.parentElement.querySelector('input');
+                let value = parseInt(input.value);
+                if (value > 1) {
+                    input.value = value - 1;
+                }
+            });
+        });
+/* FIM JAVA PAGINA DO CARRINHO*/
+
+/* JAVA PAGINA DO RASTREIO*/
+
+function simularRastreio() {
+            const input = document.getElementById('trackingInput');
+            const result = document.getElementById('trackingResult');
+            
+            if(input.value.trim() === "") {
+                alert("Por favor, digite um código de rastreio.");
+                return;
+            }
+
+            // Simula um carregamento de 1 segundo
+            input.disabled = true;
+            document.querySelector('.btn-tracking').innerHTML = '<i class="fas fa-spinner fa-spin"></i>';
+
+            setTimeout(() => {
+                input.disabled = false;
+                document.querySelector('.btn-tracking').innerHTML = '<i class="fas fa-search"></i>';
+                result.style.display = "block"; // Mostra o resultado
+            }, 1000);
+        }
+
+/* FIM JAVA PAGINA DO RASTREIO*/

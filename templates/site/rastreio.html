@@ -142,12 +142,13 @@
             <span>Receba nossas novidades e promoções.</span>
       </div>
 
-      <form class="newsletter-form">
-            <input type="text" placeholder="Nome completo">
-            <input type="text" placeholder="WhatsApp">
-            <input type="email" placeholder="E-mail">
-            <button type="submit">OK</button>
-      </form>
+      <form class="newsletter-form" action="/newsletter/cadastrar" method="POST">
+    <input type="text" name="nome" placeholder="Nome completo" required>
+    <input type="text" name="whatsapp" placeholder="WhatsApp" required>
+    <input type="email" name="email" placeholder="E-mail" required>
+    <button type="submit">OK</button>
+    </form>
+    </div>
     </div>
 
     <hr class="footer-divider">
@@ -216,28 +217,6 @@
 
   </div>
 </footer>
-
-    <script>
-        function simularRastreio() {
-            const input = document.getElementById('trackingInput');
-            const result = document.getElementById('trackingResult');
-            
-            if(input.value.trim() === "") {
-                alert("Por favor, digite um código de rastreio.");
-                return;
-            }
-
-            // Simula um carregamento de 1 segundo
-            input.disabled = true;
-            document.querySelector('.btn-tracking').innerHTML = '<i class="fas fa-spinner fa-spin"></i>';
-
-            setTimeout(() => {
-                input.disabled = false;
-                document.querySelector('.btn-tracking').innerHTML = '<i class="fas fa-search"></i>';
-                result.style.display = "block"; // Mostra o resultado
-            }, 1000);
-        }
-    </script>
-
+<script src="../../static/scriptsite.js"></script>
 </body>
 </html>

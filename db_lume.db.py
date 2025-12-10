@@ -4,51 +4,28 @@ import sqlite3 as sql
 con = sql.connect ('db_lume.db')
 cur = con.cursor()
 
-#Tabela Produtos
+#Tabela Produtos ok
 cur.execute('DROP TABLE IF EXISTS tb_produtos')
 
 sql_produto = '''CREATE TABLE "tb_produtos" (
     "id_produto" INTEGER PRIMARY KEY AUTOINCREMENT,
     "nome_produto" VARCHAR(45) NOT NULL,
+    "fornecedor" VARCHAR(45) NOT NULL,
+    "categoria" INTEGER NOT NULL,
+    "aroma" VARCHAR(45) NOT NULL,
+    "tamanho" VARCHAR(45) NOT NULL,
     "sku" VARCHAR(45) NOT NULL,
-    "descricao" VARCHAR(100) NOT NULL,
+    "qtd_estoque" INTEGER NOT NULL,
     "preco_custo" DECIMAL(10,2) NOT NULL,
     "preco_venda" DECIMAL(10,2) NOT NULL,
-    "qtd_estoque" INTEGER NOT NULL,
-    "fornecedor" VARCHAR(45) NOT NULL,
-    "categoria_id" INTEGER NOT NULL,
-    "subcategoria_id" INTEGER NOT NULL,
-    "img_produto" BLOB DEFAULT NULL,
-    "data_cad" DATETIME NOT NULL
+    "data_cad" DATETIME NOT NULL,
+    "descricao" VARCHAR(100) NOT NULL,
+    "img_produto" BLOB DEFAULT NULL
     )'''
 
 cur.execute(sql_produto)
 
-#Tabela Categorias
-cur.execute('DROP TABLE IF EXISTS tb_categorias')
-
-sql_categoria = '''CREATE TABLE "tb_categorias" (
-    "id_categoria" INTEGER PRIMARY KEY AUTOINCREMENT,
-    "nome_categoria" VARCHAR(45) NOT NULL,
-    "descricao" VARCHAR(100) NOT NULL,
-    "data_cad" DATETIME NOT NULL
-    )'''
-
-cur.execute(sql_categoria)
-
-#Tabela Subcategorias
-cur.execute('DROP TABLE IF EXISTS tb_subcategorias')
-
-sql_subcategoria = '''CREATE TABLE "tb_subcategorias" (
-    "id_subcategoria" INTEGER PRIMARY KEY AUTOINCREMENT,
-    "nome_subcategoria" VARCHAR(45) NOT NULL,
-    "descricao" VARCHAR(100) NOT NULL,
-    "data_cad" DATETIME NOT NULL
-    )'''
-
-cur.execute(sql_subcategoria)
-
-#Tabela Clientes
+#Tabela Clientes ok
 cur.execute('DROP TABLE IF EXISTS tb_clientes')
 
 sql_cliente = '''CREATE TABLE "tb_clientes" (
@@ -73,18 +50,18 @@ sql_cliente = '''CREATE TABLE "tb_clientes" (
 
 cur.execute(sql_cliente)
 
-#Tabela Clientes Promoção
-cur.execute('DROP TABLE IF EXISTS tb_clientesPromo')
+# Tabela de Newsletter (Leads) ok
+cur.execute('DROP TABLE IF EXISTS tb_newsletter')
 
-sql_clientePromo = '''CREATE TABLE "tb_clientesPromo" (
-    "id_clientepromo" INTEGER PRIMARY KEY AUTOINCREMENT,
-    "nome" VARCHAR(45) NOT NULL,
-    "email" VARCHAR(45) NOT NULL,
-    "tel_cel" BIGINT NOT NULL,
-    "data_cad" DATETIME NOT NULL
+sql_newsletter = '''CREATE TABLE "tb_newsletter" (
+    "id" INTEGER PRIMARY KEY AUTOINCREMENT,
+    "nome" VARCHAR(100),
+    "whatsapp" VARCHAR(20),
+    "email" VARCHAR(100),
+    "data_cad" DATETIME DEFAULT CURRENT_TIMESTAMP
     )'''
 
-cur.execute(sql_clientePromo)
+cur.execute(sql_newsletter)
 
 #Tabela Pedidos
 cur.execute('DROP TABLE IF EXISTS tb_pedidos')
@@ -115,7 +92,7 @@ sql_itensPedido = '''CREATE TABLE "tb_itensPedido" (
 
 cur.execute(sql_itensPedido)
 
-#Tabela Fornecedores
+#Tabela Fornecedores ok
 cur.execute('DROP TABLE IF EXISTS tb_fornecedores')
 
 sql_fornecedores = '''CREATE TABLE "tb_fornecedores" (
@@ -123,18 +100,47 @@ sql_fornecedores = '''CREATE TABLE "tb_fornecedores" (
     "razao_social" VARCHAR(45) NOT NULL,
     "nome_fantasia" VARCHAR(45) NOT NULL,
     "cnpj" VARCHAR(45) NOT NULL,
-    "tel_cel" VARCHAR(45) NOT NULL,
-    "categoria" VARCHAR(100) NOT NULL,
     "insc_estadual" VARCHAR(20) DEFAULT NULL,
+    "categoria" VARCHAR(100) NOT NULL,
+    "nome_repre" VARCHAR(45) NOT NULL,
+    "tel_cel" VARCHAR(45) NOT NULL,
     "email" VARCHAR(45) NOT NULL,
     "cep" int NOT NULL,
     "endereco" VARCHAR(200) NOT NULL,
     "cidade" VARCHAR(45) NOT NULL,
     "estado" VARCHAR(2) NOT NULL,
+    "observacao" VARCHAR(100) NOT NULL, 
     "data_cad" DATETIME NOT NULL
     )'''
 
 cur.execute(sql_fornecedores)
+
+# Tabela Funcionários ok
+cur.execute('DROP TABLE IF EXISTS tb_funcionarios')
+
+sql_funcionarios = '''CREATE TABLE "tb_funcionarios" (
+    "id_funcionario" INTEGER PRIMARY KEY AUTOINCREMENT,
+    "nome" VARCHAR(100) NOT NULL,
+    "cpf" VARCHAR(14) NOT NULL,
+    "data_nasc" DATE NOT NULL,
+    "tel_cel" VARCHAR(20) NOT NULL,
+    "email_pessoal" VARCHAR(100) NOT NULL,
+    "cep" int NOT NULL,
+    "endereco" VARCHAR(45) NOT NULL,
+    "bairro" VARCHAR(45) NOT NULL,
+    "cidade" VARCHAR(45) NOT NULL,
+    "estado" VARCHAR(2) NOT NULL,
+    "cargo" VARCHAR(50) NOT NULL,
+    "departamento" VARCHAR(50) NOT NULL,
+    "email_login" VARCHAR(100) NOT NULL,
+    "senha" VARCHAR(100) NOT NULL,
+    "permissao" VARCHAR(20) NOT NULL,
+    "ativo" BOOLEAN DEFAULT 1,
+    "data_cad" DATETIME DEFAULT CURRENT_TIMESTAMP
+    )'''
+
+cur.execute(sql_funcionarios)
+
 
 #Tabela ContasReceber
 cur.execute('DROP TABLE IF EXISTS tb_contasReceber')
@@ -151,6 +157,22 @@ sql_contasReceber = '''CREATE TABLE "tb_contasReceber" (
     )'''
 
 cur.execute(sql_contasReceber)
+
+# --- Tabela Despesas (Contas a Pagar) ---
+cur.execute('DROP TABLE IF EXISTS tb_despesas')
+
+sql_despesas = '''CREATE TABLE "tb_despesas" (
+    "id_despesa" INTEGER PRIMARY KEY AUTOINCREMENT,
+    "descricao" VARCHAR(100) NOT NULL,
+    "valor" DECIMAL(10,2) NOT NULL,
+    "data_venc" DATE NOT NULL,
+    "categoria" VARCHAR(50),
+    "status" VARCHAR(20) NOT NULL,
+    "fornecedor" VARCHAR(100),
+    "data_cad" DATETIME DEFAULT CURRENT_TIMESTAMP
+    )'''
+
+cur.execute(sql_despesas)
 
 #Tabela Contatos
 cur.execute('DROP TABLE IF EXISTS tb_contatos')

@@ -172,6 +172,8 @@
 
         </main>
     </div>
+
+
 <div id="modal-receita" class="modal-backdrop">
         <div class="modal-box slide-down">
             <div class="modal-header">
@@ -181,54 +183,56 @@
                 </button>
             </div>
 
-            <form class="modal-form">
-                <div class="input-group">
-                    <label>Descrição da Venda/Entrada</label>
-                    <input type="text" placeholder="Ex: Venda Corporativa - Lote 50 Velas" required>
-                </div>
+            <form class="modal-form" action="/financeiro/receita/nova" method="POST">
+    <div class="input-group">
+        <label>Descrição da Venda/Entrada</label>
+        <input type="text" name="descricao" placeholder="Ex: Venda Corporativa - Lote 50 Velas" required>
+    </div>
 
-                <div class="form-row-2">
-                    <div class="input-group">
-                        <label>Data de Emissão</label>
-                        <input type="date" id="data-despesa">
-                    </div>
-                    <div class="input-group">
-                        <label>Data</label>
-                        <input type="date" id="data-hoje">
-                    </div>
-                </div>
-                <div class="input-group">
-                        <label>Valor (R$)</label>
-                        <input type="number" placeholder="0,00" step="0.01" class="input-green">
-                    </div>
-                
+    <div class="form-row-2">
+        <div class="input-group">
+            <label>Data de Emissão</label>
+            <input type="date" name="data_emissao" id="data-despesa">
+        </div>
+        <div class="input-group">
+            <label>Data Vencimento/Recebimento</label>
+            <input type="date" name="data_venc" id="data-hoje" required>
+        </div>
+    </div>
+    
+    <div class="input-group">
+        <label>Valor (R$)</label>
+        <input type="number" name="valor" placeholder="0,00" step="0.01" class="input-green" required>
+    </div>
 
-                <div class="form-row-2">
-                    <div class="input-group">
-                        <label>Categoria</label>
-                        <select>
-                            <option>Venda Loja Online</option>
-                            <option>Venda Corporativa (B2B)</option>
-                            <option>Rendimento de Investimento</option>
-                            <option>Outros</option>
-                        </select>
-                    </div>
-                    <div class="input-group">
-                        <label>Status</label>
-                        <select>
-                            <option value="recebido">Recebido (Pago)</option>
-                            <option value="pendente">Pendente (A receber)</option>
-                        </select>
-                    </div>
-                </div>
+    <div class="form-row-2">
+        <div class="input-group">
+            <label>Categoria</label>
+            <select name="categoria">
+                <option value="Venda Online">Venda Loja Online</option>
+                <option value="Venda B2B">Venda Corporativa (B2B)</option>
+                <option value="Investimento">Rendimento de Investimento</option>
+                <option value="Outros">Outros</option>
+            </select>
+        </div>
+        <div class="input-group">
+            <label>Status</label>
+            <select name="status">
+                <option value="Recebido">Recebido (Pago)</option>
+                <option value="Pendente">Pendente (A receber)</option>
+            </select>
+        </div>
+    </div>
 
                 <div class="modal-footer">
-                    <button type="button" class="btn-ghost" onclick="fecharModalReceita()">Cancelar</button>
-                    <button type="submit" class="btn-confirm-income">Confirmar Entrada</button>
-                </div>
+        <button type="button" class="btn-ghost" onclick="fecharModalReceita()">Cancelar</button>
+        <button type="submit" class="btn-confirm-income">Confirmar Entrada</button>
+    </div>
             </form>
         </div>
     </div>
+
+     
 <div id="modal-despesa" class="modal-backdrop">
         <div class="modal-box slide-down">
             <div class="modal-header">
@@ -238,58 +242,60 @@
                 </button>
             </div>
 
-            <form class="modal-form">
-                <div class="input-group">
-                    <label>Descrição da Despesa</label>
-                    <input type="text" placeholder="Ex: Conta de Luz - Ateliê" required>
-                </div>
+            <form class="modal-form" action="/financeiro/despesa/nova" method="POST">
+    <div class="input-group">
+        <label>Descrição da Despesa</label>
+        <input type="text" name="descricao" placeholder="Ex: Conta de Luz - Ateliê" required>
+    </div>
 
-                <div class="form-row-2">
-                    <div class="input-group">
-                        <label>Valor (R$)</label>
-                        <input type="number" placeholder="0,00" step="0.01" class="input-red">
-                    </div>
-                    
-                    <div class="input-group">
-                        <label>Data</label>
-                        <input type="date" id="data-despesa">
-                    </div>
-                </div>
-                      
-                <div class="form-row-2">
-                    <div class="input-group">
-                        <label>Categoria</label>
-                        <select>
-                            <option>Matéria-prima (Cera/Essência)</option>
-                            <option>Embalagens e Vidros</option>
-                            <option>Logística e Frete</option>
-                            <option>Marketing e Anúncios</option>
-                            <option>Infraestrutura (Luz/Água/Aluguel)</option>
-                            <option>Folha de Pagamento</option>
-                            <option>Impostos</option>
-                            <option>Outros</option>
-                        </select>
-                    </div>
-                    <div class="input-group">
-                        <label>Status</label>
-                        <select>
-                            <option value="pendente">Pendente (A pagar)</option>
-                            <option value="pago">Pago</option>
-                            <option value="agendado">Agendado</option>
-                        </select>
-                    </div>
-                </div>
+    <div class="form-row-2">
+        <div class="input-group">
+            <label>Valor (R$)</label>
+            <input type="number" name="valor" placeholder="0,00" step="0.01" class="input-red" required>
+        </div>
+        
+        <div class="input-group">
+            <label>Data Vencimento</label>
+            <input type="date" name="data_venc" id="data-despesa" required>
+        </div>
+    </div>
+          
+    <div class="form-row-2">
+        <div class="input-group">
+            <label>Categoria</label>
+            <select name="categoria">
+                <option value="Materia-prima">Matéria-prima (Cera/Essência)</option>
+                <option value="Embalagens">Embalagens e Vidros</option>
+                <option value="Logistica">Logística e Frete</option>
+                <option value="Marketing">Marketing e Anúncios</option>
+                <option value="Infraestrutura">Infraestrutura (Luz/Água)</option>
+                <option value="Pessoal">Folha de Pagamento</option>
+                <option value="Impostos">Impostos</option>
+                <option value="Outros">Outros</option>
+            </select>
+        </div>
+        <div class="input-group">
+            <label>Status</label>
+            <select name="status">
+                <option value="Pendente">Pendente (A pagar)</option>
+                <option value="Pago">Pago</option>
+                <option value="Agendado">Agendado</option>
+            </select>
+        </div>
+    </div>
 
-                <div class="input-group">
-                    <label>Fornecedor (Opcional)</label>
-                    <input type="text" placeholder="Busque ou digite o nome...">
-                </div>
+    <div class="input-group">
+        <label>Fornecedor (Opcional)</label>
+        <input type="text" name="fornecedor" placeholder="Busque ou digite o nome...">
+    </div>
 
-                <div class="modal-footer">
-                    <button type="button" class="btn-ghost" onclick="fecharModalDespesa()">Cancelar</button>
-                    <button type="submit" class="btn-confirm-expense">Registrar Saída</button>
-                </div>
-            </form>
+    <div class="modal-footer">
+        <button type="button" class="btn-ghost" onclick="fecharModalDespesa()">Cancelar</button>
+        <button type="submit" class="btn-confirm-expense">Registrar Saída</button>
+    </div>
+</form>
+
+
         </div>
     </div>
     <script src="../../static/scriptinterno.js"></script>
