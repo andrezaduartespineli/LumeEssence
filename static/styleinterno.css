@@ -25,7 +25,7 @@ body {
 .login-visual {
     flex: 1.2; /* Ocupa um pouco mais da metade */
     /* Substitua pelo nome da imagem da vela que geramos */
-    background-image: url('../imagens/new.png'); 
+    background-image: url('../static/imagens/new.png'); 
     background-size: cover;
     background-position: center;
     position: relative;

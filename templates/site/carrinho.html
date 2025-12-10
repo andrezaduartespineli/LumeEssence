@@ -3,25 +3,23 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Contato - Lume Essence</title>
-    <link rel="icon" href="imagens/Logo/pequenalogosemfnfo.png">
-    
+    <title>Carrinho - Lume Essence</title>
+    <link rel="icon" href="imagens/Logo/pequenalogosemfnfo.png"> 
     <link href='https://fonts.googleapis.com/css?family=Quicksand' rel='stylesheet'>
     <link href="https://fonts.googleapis.com/css2?family=Montserrat:ital,wght@0,100..900;1,100..900&display=swap" rel="stylesheet">
     
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     
-    <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="../../static/stylesite.css">
 </head>
 <body>
-
-    <div class="container">
+<div class="container">
                 <div class="logo">
-                    <img src="imagens/Logo/horizontalsemfundo.png" alt="Lume Essence">
+                    <img src="../../static/imagens/Logo/horizontalsemfundo.png" alt="Lume Essence">
                 </div>
-            </div>
- 
-    <div class="navbar">
+            </div>   
+             
+  <div class="navbar">
     <div class="nav-links">
         <a href="index.html">Início</a>
         <a href="produtos.html">Produtos</a>
@@ -38,19 +36,19 @@
 
         <div class="header-icons">
 <div class="user-menu-wrapper">
-    <a href="login.html" class="user-icon-link">
+    <a href="../site/login.html" class="user-icon-link">
         <i class="fa-regular fa-user"></i>
     </a>
 
     <div class="user-dropdown">
         <ul>
-           <li>
-                <a href="../LumeEssence/area_cliente/area-cliente.html">
+            <li>
+                <a href="../area_cliente/area-cliente.html">
                     <i class="fa-solid fa-user-gear"></i> Minha Conta
                 </a>
             </li>
             <li>
-                <a href="../LumeEssence/area_cliente/meus-pedidos.html">
+                <a href="../area_cliente/meus-pedidos.html">
                     <i class="fa-solid fa-box"></i> Meus Pedidos
                 </a>
             </li>
@@ -71,86 +69,103 @@
         </a>
     </div>
 </div>
-    <div class="contact-page-container">
+    <div class="titulo">
+        <h2>Seu Carrinho</h2>
+    </div>
+
+    <div class="cart-container">
         
-        <div class="titulo">
-            <h2>Fale Conosco</h2>
-            <p style="text-align: center; font-family: 'Montserrat', sans-serif; margin-bottom: 30px;">
-                Tem alguma dúvida sobre nossos aromas ou pedidos? Preencha o formulário abaixo.
-            </p>
-        </div>
-
-        <div class="contact-wrapper">
+        <div class="cart-items">
             
-            <div class="contact-form-area">
-                <form action="#" method="POST">
-                    
-                    <div class="form-group">
-                        <label for="nome">Nome completo</label>
-                        <input type="text" id="nome" name="nome" placeholder="Seu nome" required>
-                    </div>
-
-                    <div class="form-row">
-                        <div class="form-group">
-                            <label for="email">E-mail</label>
-                            <input type="email" id="email" name="email" placeholder="seu@email.com" required>
-                        </div>
-                        <div class="form-group">
-                            <label for="telefone">Telefone</label>
-                            <input type="tel" id="telefone" name="telefone" placeholder="(DD) 99999-9999">
-                        </div>
-                    </div>
-
-                    <div class="form-group">
-                        <label for="mensagem">Mensagem</label>
-                        <textarea id="mensagem" name="mensagem" rows="5" placeholder="Como podemos ajudar?" required></textarea>
-                    </div>
-
-                    <div class="recaptcha-placeholder">
-                        <div class="recaptcha-box">
-                            <input type="checkbox" id="robot-check">
-                            <label for="robot-check">Não sou um robô</label>
-                            <img src="https://www.gstatic.com/recaptcha/api2/logo_48.png" alt="captcha icon">
-                        </div>
-                    </div>
-
-                    <button type="submit" class="btn-enviar">Enviar mensagem</button>
-                </form>
+            <div class="cart-header-row">
+                <div class="col-product">Produto</div>
+                <div class="col-qty">Qtd.</div>
+                <div class="col-price">Preço</div>
+                <div class="col-action"></div>
             </div>
 
-            <div class="contact-info-area">
-                <h3>Entre em contato</h3>
+            <div class="cart-item">
+                <div class="item-info">
+                    <img src="../../static/imagens/vela.png" alt="Vela Lavanda">
+                    <div class="item-details">
+                        <h4>Vela Aromática Lavanda</h4>
+                        <p>Aroma: Lavanda</p>
+                    </div>
+                </div>
                 
-                <div class="info-item">
-                    <i class="fab fa-whatsapp"></i>
-                    <div>
-                        <strong>WhatsApp</strong>
-                        <p>(11) 98946-1731</p>
-                    </div>
+                <div class="item-quantity">
+                    <button class="qty-btn minus"><i class="fas fa-minus"></i></button>
+                    <input type="number" value="1" min="1" readonly>
+                    <button class="qty-btn plus"><i class="fas fa-plus"></i></button>
                 </div>
 
-                <div class="info-item">
-                    <i class="fas fa-phone-alt"></i>
-                    <div>
-                        <strong>Telefone</strong>
-                        <p>(11) 98946-1731</p>
-                    </div>
-                </div>
+                <div class="item-price" data-price="68.00">R$ 68,00</div>
 
-                <div class="info-item">
-                    <i class="far fa-envelope"></i>
-                    <div>
-                        <strong>E-mail</strong>
-                        <p>decor.parafinesse@gmail.com</p> </div>
-                </div>
-
-                <div class="social-contact">
-                    <a href="#"><i class="fab fa-instagram"></i></a>
-                    <a href="#"><i class="fab fa-facebook"></i></a>
+                <div class="item-remove">
+                    <button class="btn-remove"><i class="fas fa-trash-alt"></i></button>
                 </div>
             </div>
+
+            <div class="cart-item">
+                <div class="item-info">
+                    <img src="../../static/imagens/homespray.png" alt="Home Spray">
+                    <div class="item-details">
+                        <h4>Home Spray Bambu</h4>
+                        <p>Aroma: Bambu</p>
+                    </div>
+                </div>
+                
+                <div class="item-quantity">
+                    <button class="qty-btn minus"><i class="fas fa-minus"></i></button>
+                    <input type="number" value="2" min="1" readonly>
+                    <button class="qty-btn plus"><i class="fas fa-plus"></i></button>
+                </div>
+
+                <div class="item-price" data-price="45.00">R$ 90,00</div>
+
+                <div class="item-remove">
+                    <button class="btn-remove"><i class="fas fa-trash-alt"></i></button>
+                </div>
+            </div>
+
+            <a href="produtos.html" class="continue-shopping">
+                <i class="fas fa-arrow-left"></i> Continuar comprando
+            </a>
 
         </div>
+
+        <div class="cart-summary">
+            <h3>Resumo do Pedido</h3>
+            
+            <div class="summary-row">
+                <span>Subtotal</span>
+                <span id="cart-subtotal">R$ 158,00</span>
+            </div>
+
+            <div class="shipping-calc">
+                <label>Calcular Frete</label>
+                <div class="shipping-input">
+                    <input type="text" placeholder="CEP">
+                    <button>OK</button>
+                </div>
+                <br>
+                <p class="shipping-result">Frete: <span>R$ 15,00</span></p>
+            </div>
+
+            <hr>
+
+            <div class="summary-total">
+                <span>Total</span>
+                <span id="cart-total">R$ 173,00</span>
+            </div>
+
+            <div class="payment-info">
+                <p>ou <strong>R$ 164,35</strong> via Pix (5% off)</p>
+            </div>
+
+            <a href="checkout.html" class="btn-checkout" style="text-decoration: none; text-align: center; display: block;">Finalizar Compra</a>
+        </div>
+
     </div>
 
 <footer>
@@ -236,6 +251,31 @@
 
   </div>
 </footer>
+
+    <script>
+        // Seleciona todos os botões de mais e menos
+        const plusBtns = document.querySelectorAll('.plus');
+        const minusBtns = document.querySelectorAll('.minus');
+
+        plusBtns.forEach(btn => {
+            btn.addEventListener('click', function() {
+                const input = this.parentElement.querySelector('input');
+                let value = parseInt(input.value);
+                input.value = value + 1;
+                // Aqui você adicionaria a lógica para atualizar o preço total
+            });
+        });
+
+        minusBtns.forEach(btn => {
+            btn.addEventListener('click', function() {
+                const input = this.parentElement.querySelector('input');
+                let value = parseInt(input.value);
+                if (value > 1) {
+                    input.value = value - 1;
+                }
+            });
+        });
+    </script>
 
 </body>
 </html>

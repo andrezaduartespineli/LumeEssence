@@ -3,24 +3,25 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Carrinho - Lume Essence</title>
-    <link rel="icon" href="imagens/Logo/pequenalogosemfnfo.png"> 
+    <title>Rastrear Pedido - Lume Essence</title>
+    <link rel="icon" href="imagens/Logo/pequenalogosemfnfo.png">
+    
     <link href='https://fonts.googleapis.com/css?family=Quicksand' rel='stylesheet'>
     <link href="https://fonts.googleapis.com/css2?family=Montserrat:ital,wght@0,100..900;1,100..900&display=swap" rel="stylesheet">
     
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     
-    <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="../../static/stylesite.css">
 </head>
 <body>
 
-    <div class="container">
+   <div class="container">
                 <div class="logo">
-                    <img src="imagens/Logo/horizontalsemfundo.png" alt="Lume Essence">
+                    <img src="../../static/imagens/Logo/horizontalsemfundo.png" alt="Lume Essence">
                 </div>
-            </div>
- 
-    <div class="navbar">
+            </div>   
+             
+  <div class="navbar">
     <div class="nav-links">
         <a href="index.html">Início</a>
         <a href="produtos.html">Produtos</a>
@@ -37,19 +38,19 @@
 
         <div class="header-icons">
 <div class="user-menu-wrapper">
-    <a href="login.html" class="user-icon-link">
+    <a href="../site/login.html" class="user-icon-link">
         <i class="fa-regular fa-user"></i>
     </a>
 
     <div class="user-dropdown">
         <ul>
             <li>
-                <a href="../LumeEssence/area_cliente/area-cliente.html">
+                <a href="../area_cliente/area-cliente.html">
                     <i class="fa-solid fa-user-gear"></i> Minha Conta
                 </a>
             </li>
             <li>
-                <a href="../LumeEssence/area_cliente/meus-pedidos.html">
+                <a href="../area_cliente/meus-pedidos.html">
                     <i class="fa-solid fa-box"></i> Meus Pedidos
                 </a>
             </li>
@@ -71,103 +72,65 @@
     </div>
 </div>
 
-    <div class="titulo">
-        <h2>Seu Carrinho</h2>
+    <div class="auth-container">
+        <div class="auth-card tracking-card-width">
+            <div class="tracking-icon">
+                <i class="fas fa-shipping-fast"></i>
+            </div>
+            <h2>Rastreie seu Pedido</h2>
+            <span class="auth-subtitle">Digite o código enviado para o seu e-mail</span>
+
+            <div class="auth-form">
+    <div class="form-group tracking-group">
+        <input type="text" id="trackingInput" placeholder="Ex: LE123456789BR" required>
+        <button type="button" class="btn-tracking" onclick="simularRastreio()">
+            <i class="fas fa-search"></i>
+        </button>
     </div>
+</div>
 
-    <div class="cart-container">
-        
-        <div class="cart-items">
-            
-            <div class="cart-header-row">
-                <div class="col-product">Produto</div>
-                <div class="col-qty">Qtd.</div>
-                <div class="col-price">Preço</div>
-                <div class="col-action"></div>
-            </div>
-
-            <div class="cart-item">
-                <div class="item-info">
-                    <img src="imagens/vela.png" alt="Vela Lavanda">
-                    <div class="item-details">
-                        <h4>Vela Aromática Lavanda</h4>
-                        <p>Aroma: Lavanda</p>
-                    </div>
-                </div>
+            <div id="trackingResult" class="tracking-result" style="display: none;">
                 
-                <div class="item-quantity">
-                    <button class="qty-btn minus"><i class="fas fa-minus"></i></button>
-                    <input type="number" value="1" min="1" readonly>
-                    <button class="qty-btn plus"><i class="fas fa-plus"></i></button>
-                </div>
-
-                <div class="item-price" data-price="68.00">R$ 68,00</div>
-
-                <div class="item-remove">
-                    <button class="btn-remove"><i class="fas fa-trash-alt"></i></button>
-                </div>
-            </div>
-
-            <div class="cart-item">
-                <div class="item-info">
-                    <img src="imagens/homespray.png" alt="Home Spray">
-                    <div class="item-details">
-                        <h4>Home Spray Bambu</h4>
-                        <p>Aroma: Bambu</p>
-                    </div>
-                </div>
+                <hr class="divider-light">
                 
-                <div class="item-quantity">
-                    <button class="qty-btn minus"><i class="fas fa-minus"></i></button>
-                    <input type="number" value="2" min="1" readonly>
-                    <button class="qty-btn plus"><i class="fas fa-plus"></i></button>
+                <div class="order-info">
+                    <p><strong>Pedido:</strong> #9823</p>
+                    <p><strong>Status:</strong> <span style="color: #28a745;">Em trânsito</span></p>
                 </div>
 
-                <div class="item-price" data-price="45.00">R$ 90,00</div>
+                <ul class="timeline">
+                    
+                    <li class="timeline-item active">
+                        <div class="timeline-dot"></div>
+                        <div class="timeline-content">
+                            <h4>Objeto saiu para entrega ao destinatário</h4>
+                            <span>São Paulo / SP</span>
+                            <small>Hoje, 09:30</small>
+                        </div>
+                    </li>
 
-                <div class="item-remove">
-                    <button class="btn-remove"><i class="fas fa-trash-alt"></i></button>
-                </div>
+                    <li class="timeline-item">
+                        <div class="timeline-dot"></div>
+                        <div class="timeline-content">
+                            <h4>Encaminhado para o Centro de Distribuição</h4>
+                            <span>Cajamar / SP</span>
+                            <small>Ontem, 18:45</small>
+                        </div>
+                    </li>
+
+                    <li class="timeline-item">
+                        <div class="timeline-dot"></div>
+                        <div class="timeline-content">
+                            <h4>Objeto postado</h4>
+                            <span>Lume Essence - SP</span>
+                            <small>01/12/2025, 14:20</small>
+                        </div>
+                    </li>
+
+                </ul>
             </div>
-
-            <a href="produtos.html" class="continue-shopping">
-                <i class="fas fa-arrow-left"></i> Continuar comprando
-            </a>
 
         </div>
-
-        <div class="cart-summary">
-            <h3>Resumo do Pedido</h3>
-            
-            <div class="summary-row">
-                <span>Subtotal</span>
-                <span id="cart-subtotal">R$ 158,00</span>
-            </div>
-
-            <div class="shipping-calc">
-                <label>Calcular Frete</label>
-                <div class="shipping-input">
-                    <input type="text" placeholder="CEP">
-                    <button>OK</button>
-                </div>
-                <br>
-                <p class="shipping-result">Frete: <span>R$ 15,00</span></p>
-            </div>
-
-            <hr>
-
-            <div class="summary-total">
-                <span>Total</span>
-                <span id="cart-total">R$ 173,00</span>
-            </div>
-
-            <div class="payment-info">
-                <p>ou <strong>R$ 164,35</strong> via Pix (5% off)</p>
-            </div>
-
-            <a href="checkout.html" class="btn-checkout" style="text-decoration: none; text-align: center; display: block;">Finalizar Compra</a>
-        </div>
-
     </div>
 
 <footer>
@@ -255,28 +218,25 @@
 </footer>
 
     <script>
-        // Seleciona todos os botões de mais e menos
-        const plusBtns = document.querySelectorAll('.plus');
-        const minusBtns = document.querySelectorAll('.minus');
+        function simularRastreio() {
+            const input = document.getElementById('trackingInput');
+            const result = document.getElementById('trackingResult');
+            
+            if(input.value.trim() === "") {
+                alert("Por favor, digite um código de rastreio.");
+                return;
+            }
 
-        plusBtns.forEach(btn => {
-            btn.addEventListener('click', function() {
-                const input = this.parentElement.querySelector('input');
-                let value = parseInt(input.value);
-                input.value = value + 1;
-                // Aqui você adicionaria a lógica para atualizar o preço total
-            });
-        });
+            // Simula um carregamento de 1 segundo
+            input.disabled = true;
+            document.querySelector('.btn-tracking').innerHTML = '<i class="fas fa-spinner fa-spin"></i>';
 
-        minusBtns.forEach(btn => {
-            btn.addEventListener('click', function() {
-                const input = this.parentElement.querySelector('input');
-                let value = parseInt(input.value);
-                if (value > 1) {
-                    input.value = value - 1;
-                }
-            });
-        });
+            setTimeout(() => {
+                input.disabled = false;
+                document.querySelector('.btn-tracking').innerHTML = '<i class="fas fa-search"></i>';
+                result.style.display = "block"; // Mostra o resultado
+            }, 1000);
+        }
     </script>
 
 </body>

@@ -3,22 +3,24 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Cadastro - Lume Essence</title>
+    <title>Vela Lavanda Dream - Lume Essence</title>
     <link rel="icon" href="imagens/Logo/pequenalogosemfnfo.png">
+    
     <link href='https://fonts.googleapis.com/css?family=Quicksand' rel='stylesheet'>
     <link href="https://fonts.googleapis.com/css2?family=Montserrat:ital,wght@0,100..900;1,100..900&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-    <link rel="stylesheet" href="style.css">
+    
+    <link rel="stylesheet" href="../../static/stylesite.css">
 </head>
 <body>
 
     <div class="container">
                 <div class="logo">
-                    <img src="imagens/Logo/horizontalsemfundo.png" alt="Lume Essence">
+                    <img src="../../static/imagens/Logo/horizontalsemfundo.png" alt="Lume Essence">
                 </div>
-            </div>
-    
-    <div class="navbar">
+            </div>   
+             
+  <div class="navbar">
     <div class="nav-links">
         <a href="index.html">Início</a>
         <a href="produtos.html">Produtos</a>
@@ -35,19 +37,19 @@
 
         <div class="header-icons">
 <div class="user-menu-wrapper">
-    <a href="login.html" class="user-icon-link">
+    <a href="../site/login.html" class="user-icon-link">
         <i class="fa-regular fa-user"></i>
     </a>
 
     <div class="user-dropdown">
         <ul>
-           <li>
-                <a href="../LumeEssence/area_cliente/area-cliente.html">
+            <li>
+                <a href="../area_cliente/area-cliente.html">
                     <i class="fa-solid fa-user-gear"></i> Minha Conta
                 </a>
             </li>
             <li>
-                <a href="../LumeEssence/area_cliente/meus-pedidos.html">
+                <a href="../area_cliente/meus-pedidos.html">
                     <i class="fa-solid fa-box"></i> Meus Pedidos
                 </a>
             </li>
@@ -68,86 +70,85 @@
         </a>
     </div>
 </div>
+    <div class="product-page-container">
+        
+        <div class="breadcrumbs">
+            <a href="index.html">Início</a> > <a href="produtos.html">Produtos</a> > <strong>Lavanda Dream</strong>
+        </div>
 
-    <div class="auth-container">
-        <div class="auth-card">
-            <h2>Criar Conta</h2>
-            <span class="auth-subtitle">Preencha seus dados para se cadastrar</span>
+        <div class="product-main-wrapper">
+            
+            <div class="product-gallery-section">
+                <div class="thumbnails-list">
+                    <img src="../../static/imagens/vela.png" class="thumb active" onclick="changeImage(this)">
+                    <img src="../../static/imagens/aromatizador.png" class="thumb" onclick="changeImage(this)">
+                    <img src="../../static/imagens/kit.png" class="thumb" onclick="changeImage(this)">
+                </div>
+                
+                <div class="main-image-display">
+                    <img src="../../static/imagens/vela.png" id="mainImage" alt="Vela Lavanda">
+                </div>
+            </div>
 
-            <form class="auth-form">
-                <div class="form-group">
-                    <label>Nome Completo</label>
-                    <input type="text" placeholder="Seu nome" required>
+            <div class="product-details-section">
+                <h1>Vela Aromática Lavanda Dream</h1>
+                <span class="sku">Ref: LE-001</span>
+
+                <div class="price-container">
+                    <span class="old-price">R$ 75,00</span>
+                    <span class="current-price">R$ 68,00</span>
+                    <span class="payment-detail">R$ 64,60 via Pix (5% OFF)</span>
+                    <span class="installments">ou 2x de R$ 34,00 sem juros</span>
                 </div>
 
-                <div class="form-group">
-                    <label>E-mail</label>
-                    <input type="email" placeholder="seu@email.com.br" required>
+                <hr class="divider">
+
+                <div class="purchase-actions">
+                    <div class="quantity-selector">
+                        <button onclick="updateQty(-1)">-</button>
+                        <input type="number" id="productQty" value="1" readonly>
+                        <button onclick="updateQty(1)">+</button>
+                    </div>
+                    <button class="btn-add-cart">ADICIONAR AO CARRINHO</button>
                 </div>
 
-                <div class="form-group">
-                    <label>Celular</label>
-                    <input type="number" placeholder="(00) 00000-0000" required>
+                <div class="shipping-simulator">
+                    <label><i class="fas fa-truck"></i> Calcular Frete</label>
+                    <div class="shipping-input-group">
+                        <input type="text" placeholder="Digite seu CEP">
+                        <button>Calcular</button>
+                    </div>
+                    <a href="https://buscacepinter.correios.com.br/app/endereco/index.php" target="_blank" class="cep-link">Não sei meu CEP</a>
                 </div>
 
-                <div class="form-group">
-                    <label>CPF</label>
-                    <input type="text" placeholder="000.000.000-00" required>
-                </div>
-
-                <div class="form-group">
-                    <label>CEP</label>
-                    <input type="number" placeholder="00000-000" required>
-                </div>
-
-                <div class="form-group">
-                    <label>Endereço</label>
-                    <input type="text" placeholder="" required>
-                </div>
-
-                <div class="form-group">
-                    <label>Número</label>
-                    <input type="number" placeholder="" required>
-                </div>
-
-                <div class="form-group">
-                    <label>Complemento</label>
-                    <input type="text" placeholder="">
-                </div>
-
-                <div class="form-group">
-                    <label>Bairro</label>
-                    <input type="text" placeholder="">
-                </div>
-
-                <div class="form-group">
-                    <label>Cidade</label>
-                    <input type="text" placeholder="" required>
-                </div>
-
-                <div class="form-group">
-                    <label>Estado</label>
-                    <input type="text" placeholder="" required>
-                </div>
-
-                <div class="form-group">
-                    <label>Senha</label>
-                    <input type="password" placeholder="Crie uma senha forte" required>
-                </div>
-
-                <div class="form-group">
-                    <label>Confirmar Senha</label>
-                    <input type="password" placeholder="Repita a senha" required>
-                </div>
-
-                <button type="submit" class="btn-auth">CADASTRAR</button>
-            </form>
-
-            <div class="auth-footer">
-                Já tem uma conta? <a href="login.html">Faça Login</a>
             </div>
         </div>
-    </div>
+
+        <div class="product-description-block">
+            <h3>Descrição do Produto</h3>
+            <div class="description-content">
+                <p><strong>Um ritual de calma e sofisticação.</strong></p>
+                <p>A vela Lavanda Dream foi criada para transformar seu momento de autocuidado. Combinando o poder relaxante da lavanda francesa com notas suaves de baunilha, ela cria uma atmosfera perfeita para leitura, banhos relaxantes ou meditação.</p>
+                
+                <br>
+                <h4>Família Olfativa:</h4>
+                <p>Floral Aromático</p>
+                
+                <ul>
+                    <li><strong>Notas de Saída:</strong> Lavanda, Bergamota.</li>
+                    <li><strong>Notas de Corpo:</strong> Gerânio, Eucalipto.</li>
+                    <li><strong>Notas de Fundo:</strong> Baunilha, Musk.</li>
+                </ul>
+
+                <br>
+                <h4>Composição:</h4>
+                <p>Cera 100% vegetal (blend de coco, arroz e palma), livre de parafina. Pavio de algodão. Essência Premium.</p>
+                
+                <p class="warning-text"><em>* Por ser um produto artesanal, podem ocorrer pequenas variações de cor.</em></p>
+            </div>
+        </div>
+
+        </div>
 
 <footer>
   <div class="footer-container">
@@ -232,5 +233,8 @@
 
   </div>
 </footer>
+
+    <script src="../../static/scriptsite.js"></script>
+
 </body>
 </html>

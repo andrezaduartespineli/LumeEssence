@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Rastrear Pedido - Lume Essence</title>
+    <title>Contato - Lume Essence</title>
     <link rel="icon" href="imagens/Logo/pequenalogosemfnfo.png">
     
     <link href='https://fonts.googleapis.com/css?family=Quicksand' rel='stylesheet'>
@@ -11,43 +11,46 @@
     
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     
-    <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="../../static/stylesite.css">
 </head>
 <body>
 
     <div class="container">
                 <div class="logo">
-                    <img src="imagens/Logo/horizontalsemfundo.png" alt="Lume Essence">
+                    <img src="../../static/imagens/Logo/horizontalsemfundo.png" alt="Lume Essence">
                 </div>
-            </div>
- 
-    <div class="navbar">
-        <div class="nav-links">
-            <a href="index.html">Início</a>
-            <a href="produtos.html">Produtos</a>
-            <a href="sobre.html">Sobre</a>
-            <a href="contato.html">Contato</a>
+            </div>   
+             
+  <div class="navbar">
+    <div class="nav-links">
+        <a href="index.html">Início</a>
+        <a href="produtos.html">Produtos</a>
+        <a href="sobre.html">Sobre</a>
+        <a href="contato.html">Contato</a>
+    </div>
+
+    <div class="nav-icons-area" style="display: flex; align-items: center; gap: 20px;">
+        
+        <div class="search-box">
+            <input type="text" placeholder="Buscar...">
+            <button type="submit"><i class="fas fa-search"></i></button>
         </div>
-        <div class="nav-icons-area" style="display: flex; align-items: center; gap: 20px;">
-            <div class="search-box">
-                <input type="text" placeholder="Buscar...">
-                <button type="submit"><i class="fas fa-search"></i></button>
-            </div>
-            <div class="header-icons">
+
+        <div class="header-icons">
 <div class="user-menu-wrapper">
-    <a href="login.html" class="user-icon-link">
+    <a href="../site/login.html" class="user-icon-link">
         <i class="fa-regular fa-user"></i>
     </a>
 
     <div class="user-dropdown">
         <ul>
             <li>
-                <a href="../LumeEssence/area_cliente/area-cliente.html">
+                <a href="../area_cliente/area-cliente.html">
                     <i class="fa-solid fa-user-gear"></i> Minha Conta
                 </a>
             </li>
             <li>
-                <a href="../LumeEssence/area_cliente/meus-pedidos.html">
+                <a href="../area_cliente/meus-pedidos.html">
                     <i class="fa-solid fa-box"></i> Meus Pedidos
                 </a>
             </li>
@@ -61,69 +64,86 @@
     </div>
 </div>
 </div>
-            <a href="carrinho.html" class="cart-link">
-                <i class="fas fa-shopping-bag"></i>
-                <span class="cart-count">3</span>
-            </a>
-        </div>
-    </div>
 
-    <div class="auth-container">
-        <div class="auth-card tracking-card-width">
-            <div class="tracking-icon">
-                <i class="fas fa-shipping-fast"></i>
-            </div>
-            <h2>Rastreie seu Pedido</h2>
-            <span class="auth-subtitle">Digite o código enviado para o seu e-mail</span>
-
-            <div class="auth-form">
-    <div class="form-group tracking-group">
-        <input type="text" id="trackingInput" placeholder="Ex: LE123456789BR" required>
-        <button type="button" class="btn-tracking" onclick="simularRastreio()">
-            <i class="fas fa-search"></i>
-        </button>
+        <a href="carrinho.html" class="cart-link" title="Carrinho">
+            <i class="fas fa-shopping-bag"></i>
+            <span class="cart-count">3</span>
+        </a>
     </div>
 </div>
 
-            <div id="trackingResult" class="tracking-result" style="display: none;">
+    <div class="contact-page-container">
+        
+        <div class="titulo">
+            <h2>Fale Conosco</h2>
+            <p style="text-align: center; font-family: 'Montserrat', sans-serif; margin-bottom: 30px;">
+                Tem alguma dúvida sobre nossos aromas ou pedidos? Preencha o formulário abaixo.
+            </p>
+        </div>
+
+        <div class="contact-wrapper">
+            
+            <div class="contact-form-area">
+                <form action="#" method="POST">
+                    
+                    <div class="form-group">
+                        <label for="nome">Nome completo</label>
+                        <input type="text" id="nome" name="nome" placeholder="Seu nome" required>
+                    </div>
+
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label for="email">E-mail</label>
+                            <input type="email" id="email" name="email" placeholder="seu@email.com" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="telefone">Telefone</label>
+                            <input type="tel" id="telefone" name="telefone" placeholder="(DD) 99999-9999">
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="mensagem">Mensagem</label>
+                        <textarea id="mensagem" name="mensagem" rows="5" placeholder="Como podemos ajudar?" required></textarea>
+                    </div>
+
+                    <div class="recaptcha-placeholder">
+                        <div class="recaptcha-box">
+                            <input type="checkbox" id="robot-check">
+                            <label for="robot-check">Não sou um robô</label>
+                            <img src="https://www.gstatic.com/recaptcha/api2/logo_48.png" alt="captcha icon">
+                        </div>
+                    </div>
+
+                    <button type="submit" class="btn-enviar">Enviar mensagem</button>
+                </form>
+            </div>
+
+            <div class="contact-info-area">
+                <h3>Entre em contato</h3>
                 
-                <hr class="divider-light">
-                
-                <div class="order-info">
-                    <p><strong>Pedido:</strong> #9823</p>
-                    <p><strong>Status:</strong> <span style="color: #28a745;">Em trânsito</span></p>
+                <div class="info-item">
+                    <i class="fab fa-whatsapp"></i>
+                    <div>
+                        <strong>WhatsApp</strong>
+                        <p>(61) 99610-0308</p>
+                    </div>
                 </div>
 
-                <ul class="timeline">
-                    
-                    <li class="timeline-item active">
-                        <div class="timeline-dot"></div>
-                        <div class="timeline-content">
-                            <h4>Objeto saiu para entrega ao destinatário</h4>
-                            <span>São Paulo / SP</span>
-                            <small>Hoje, 09:30</small>
-                        </div>
-                    </li>
+                <div class="info-item">
+                    <i class="fab fa-instagram"></i>
+                    <div>
+                        <strong>Instagram</strong>
+                        <a href="https://www.instagram.com/lumeessence.oficial?igsh=dTBkZ2h1Zno4bGZl"><p>@lumeessence.oficial</p></a>
+                    </div>
+                </div>
 
-                    <li class="timeline-item">
-                        <div class="timeline-dot"></div>
-                        <div class="timeline-content">
-                            <h4>Encaminhado para o Centro de Distribuição</h4>
-                            <span>Cajamar / SP</span>
-                            <small>Ontem, 18:45</small>
-                        </div>
-                    </li>
-
-                    <li class="timeline-item">
-                        <div class="timeline-dot"></div>
-                        <div class="timeline-content">
-                            <h4>Objeto postado</h4>
-                            <span>Lume Essence - SP</span>
-                            <small>01/12/2025, 14:20</small>
-                        </div>
-                    </li>
-
-                </ul>
+                <div class="info-item">
+                    <i class="far fa-envelope"></i>
+                    <div>
+                        <strong>E-mail</strong>
+                        <p>lumeessence.contato@gmail.com</p> </div>
+                </div>
             </div>
 
         </div>
@@ -212,28 +232,6 @@
 
   </div>
 </footer>
-
-    <script>
-        function simularRastreio() {
-            const input = document.getElementById('trackingInput');
-            const result = document.getElementById('trackingResult');
-            
-            if(input.value.trim() === "") {
-                alert("Por favor, digite um código de rastreio.");
-                return;
-            }
-
-            // Simula um carregamento de 1 segundo
-            input.disabled = true;
-            document.querySelector('.btn-tracking').innerHTML = '<i class="fas fa-spinner fa-spin"></i>';
-
-            setTimeout(() => {
-                input.disabled = false;
-                document.querySelector('.btn-tracking').innerHTML = '<i class="fas fa-search"></i>';
-                result.style.display = "block"; // Mostra o resultado
-            }, 1000);
-        }
-    </script>
 
 </body>
 </html>
