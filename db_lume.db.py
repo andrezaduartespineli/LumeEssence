@@ -53,21 +53,21 @@ cur.execute('DROP TABLE IF EXISTS tb_clientes')
 
 sql_cliente = '''CREATE TABLE "tb_clientes" (
     "id_cliente" INTEGER PRIMARY KEY AUTOINCREMENT,
-    "cpf" BIGINT NOT NULL,
     "nome" VARCHAR(45) NOT NULL,
     "data_nasc" DATETIME NOT NULL,
+    "cpf" BIGINT NOT NULL,
     "genero" VARCHAR(45) NOT NULL,
-    "nome_social" VARCHAR(45) DEFAULT NULL,
     "tel_cel" BIGINT NOT NULL,
     "email" VARCHAR(45) NOT NULL,
     "cep" int NOT NULL,
-    "logradouro" VARCHAR(45) NOT NULL,
+    "endereco" VARCHAR(45) NOT NULL,
     "n" int NOT NULL,
     "complemento" VARCHAR(100) DEFAULT NULL,
     "referencia" VARCHAR(100) DEFAULT NULL,
     "bairro" VARCHAR(45) NOT NULL,
     "cidade" VARCHAR(45) NOT NULL,
     "estado" VARCHAR(2) NOT NULL,
+    "senha" VARCHAR(100) NOT NULL,
     "data_cad" DATETIME NOT NULL
     )'''
 
