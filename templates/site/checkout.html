@@ -37,87 +37,34 @@
     </div>
     <br>
 
-            <section class="checkout-step">
-                <h3>1. Identificação</h3>
-                <form class="form-grid">
-                    <div class="input-group full-width">
-                        <label>E-mail</label>
-                        <input type="email" placeholder="seu@email.com" required>
-                    </div>
-                    <div class="input-group">
-                        <label>Nome</label>
-                        <input type="text" placeholder="Nome" required>
-                    </div>
-                    <div class="input-group">
-                        <label>Celular</label>
-                        <input type="text" placeholder="(00) 00000-0000" required>
-                    </div>
-                    <div class="input-group full-width">
-                        <label>CPF</label>
-                        <input type="text" placeholder="000.000.000-00" required>
-                    </div>
-                </form>
-            </section>
+            <section class="checkout-step" id="step-identificacao">
+    <h3>1. Identificação</h3>
+    
+    <div class="auth-check-box">
+        <p>Para continuar, digite seu e-mail:</p>
+        
+        <div class="input-group-check">
+            <input type="email" id="email-checkout" placeholder="seu@email.com.br" required>
+            <button type="button" class="btn-continue" onclick="verificarEmail()">CONTINUAR</button>
+        </div>
+        
+        <p id="msg-loading" style="display:none; color: #d4a373; margin-top: 10px;">
+            <i class="fas fa-spinner fa-spin"></i> Verificando...
+        </p>
+    </div>
+</section>
 
-            <section class="checkout-step">
-                <h3>2. Endereço de Entrega</h3>
-                <form class="form-grid">
-                    <div class="input-group">
-                        <label>CEP</label>
-                        <input type="text" placeholder="00000-000">
-                    </div>
-                    <div class="input-group">
-                        <a href="#" class="cep-find">Não sei meu CEP</a>
-                    </div>
-                    <div class="input-group full-width">
-                        <label>Endereço</label>
-                        <input type="text" placeholder="Rua, Av..." required>
-                    </div>
-                    <div class="input-group">
-                        <label>Número</label>
-                        <input type="text" placeholder="123" required>
-                    </div>
-                    <div class="input-group">
-                        <label>Complemento</label>
-                        <input type="text" placeholder="Apto, Bloco...">
-                    </div>
-                    <div class="input-group">
-                        <label>Bairro</label>
-                        <input type="text" placeholder="Bairro" required>
-                    </div>
-                    <div class="input-group">
-                        <label>Cidade</label>
-                        <input type="text" placeholder="Cidade" required>
-                    </div>
-                    <div class="input-group">
-                        <label>Estado</label>
-                        <input type="text" placeholder="Estado" required>
-                    </div>             
-                </form>
-                </section>
+<div id="checkout-blocked-layer" style="opacity: 0.5; pointer-events: none;">
+    
+    <section class="checkout-step">
+        <h3>2. Endereço de Entrega</h3>
+        <p style="color: #666;">Faça login para selecionar seus endereços salvos.</p>
+    </section>
 
-               <section class="checkout-step">
-                <h3>3. Entrega</h3>
-                <div class="shipping-options">
-                    <h4>Opções de Frete</h4>
-                    <label class="shipping-option">
-                        <input type="radio" name="frete" checked>
-                        <div class="ship-info">
-                            <span class="ship-name">Econômico (PAC)</span>
-                            <span class="ship-time">Em até 7 dias úteis</span>
-                        </div>
-                        <span class="ship-price">R$ 15,00</span>
-                    </label>
-                    <label class="shipping-option">
-                        <input type="radio" name="frete">
-                        <div class="ship-info">
-                            <span class="ship-name">Rápido (SEDEX)</span>
-                            <span class="ship-time">Em até 3 dias úteis</span>
-                        </div>
-                        <span class="ship-price">R$ 28,90</span>
-                    </label>
-                </div>
-            </section>
+    <section class="checkout-step">
+        <h3>3. Entrega</h3>
+        <p style="color: #666;">Aguardando identificação...</p>
+    </section>
 
             <section class="checkout-step">
                 <h3>4. Pagamento</h3>
@@ -128,33 +75,39 @@
                 </div>
 
                 <div id="credit-content" class="payment-content active">
-                    <form class="form-grid">
+    <div class="form-grid">
+        <div class="input-group full-width">
+            <label>Número do Cartão</label>
+            <input type="text" id="card_number" placeholder="0000 0000 0000 0000">
+        </div>
+        <div class="input-group full-width">
+            <label>Nome Impresso no Cartão</label>
+            <input type="text" id="card_holder" placeholder="Como no cartão" style="text-transform:uppercase;">
+        </div>
+        <div class="input-group">
+            <label>Validade</label>
+            <input type="text" id="card_expiry" placeholder="MM/AA">
+        </div>
+        <div class="input-group">
+            <label>CVV</label>
+            <input type="password" id="card_cvv" placeholder="123">
+        </div>
+        <div class="input-group full-width" style="margin-top: 15px;">
+            <label style="display: flex; align-items: center; gap: 10px; cursor: pointer; font-weight: normal;">
+                <input type="checkbox" id="save_card_check">
+                Salvar cartão para compras futuras
+            </label>
+        </div>
+    </div>
+</div>
                         <div class="input-group full-width">
-                            <label>Número do Cartão</label>
-                            <input type="text" placeholder="0000 0000 0000 0000">
-                        </div>
-                        <div class="input-group full-width">
-                            <label>Nome Impresso no Cartão</label>
-                            <input type="text" placeholder="Como no cartão">
-                        </div>
-                        <div class="input-group">
-                            <label>Validade</label>
-                            <input type="text" placeholder="MM/AA">
-                        </div>
-                        <div class="input-group">
-                            <label>CVV</label>
-                            <input type="text" placeholder="123">
-                        </div>
-                        <div class="input-group full-width">
-                            <label>Parcelamento</label>
-                            <select>
-                                <option>1x de R$ 173,00 sem juros</option>
-                                <option>2x de R$ 86,50 sem juros</option>
-                                <option>3x de R$ 57,66 sem juros</option>
-                            </select>
-                        </div>
-                    </form>
-                </div>
+    <label>Parcelamento</label>
+    <select id="select-parcelas">
+        <option value="1">1x de R$ 173,00 sem juros</option>
+        <option value="2">2x de R$ 86,50 sem juros</option>
+        <option value="3">3x de R$ 57,66 sem juros</option>
+    </select>
+</div>
 
                 <div id="pix-content" class="payment-content" style="display: none;">
                     <div class="pix-box">
@@ -172,10 +125,24 @@
 
             </section>
 
-            <div class="checkout-actions">
-    <a href="carrinho.html" class="btn-cancel-order">Cancelar Pedido</a>
-    <button class="btn-finish-order">CONFIRMAR PEDIDO</button>
-</div>
+            <form id="form-checkout" action="/finalizar_pedido" method="POST">
+    <input type="hidden" name="id_cliente" value="1">
+    <input type="hidden" name="total_pedido" id="input-total" value="173.00">
+    <input type="hidden" name="forma_pagamento" id="input-pagamento" value="credit">
+    <input type="hidden" name="lista_itens" id="input-itens">
+    
+    <input type="hidden" name="card_number_sent" id="hidden-card-number">
+    <input type="hidden" name="card_holder_sent" id="hidden-card-holder">
+    <input type="hidden" name="card_expiry_sent" id="hidden-card-expiry">
+    <input type="hidden" name="save_card_option" id="hidden-save-option">
+    
+    <input type="hidden" name="parcelas_escolhidas" id="hidden-parcelas" value="1">
+
+    <div class="checkout-actions">
+        <a href="carrinho.html" class="btn-cancel-order">Cancelar Pedido</a>
+        <button type="submit" class="btn-finish-order" onclick="prepararEnvio()">CONFIRMAR PEDIDO</button>
+    </div>
+</form>
 
         </main>
 

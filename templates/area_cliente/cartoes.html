@@ -178,48 +178,36 @@
                 <button class="close-modal" onclick="fecharModalCartao()">&times;</button>
             </div>
             
-            <form class="card-form">
-                <div class="input-row">
-                    <label>Número do Cartão</label>
-                    <div class="input-with-icon">
-                        <i class="fa-regular fa-credit-card"></i>
-                        <input type="text" placeholder="0000 0000 0000 0000" maxlength="19" required>
-                    </div>
-                </div>
+            <form class="card-form" action="/cartao/salvar" method="POST">
+    <div class="input-row">
+        <label>Número do Cartão</label>
+        <div class="input-with-icon">
+            <i class="fa-regular fa-credit-card"></i>
+            <input type="text" name="numero_cartao" placeholder="0000 0000 0000 0000" maxlength="19" required>
+        </div>
+    </div>
 
-                <div class="input-row">
-                    <label>Nome do Titular do Cartão</label>
-                    <input type="text" placeholder="Nome Impresso no Cartão" style="text-transform: uppercase;" required>
-                </div>
+    <div class="input-row">
+        <label>Nome do Titular do Cartão</label>
+        <input type="text" name="nome_titular" placeholder="Como no cartão" style="text-transform: uppercase;" required>
+    </div>
 
-                <div class="input-row">
-                    <label>CPF do Titular do Cartão</label>
-                    <input type="text" placeholder="000.000.000-00" maxlength="14" required>
-                </div>
-                
-                <div class="input-row-2">
-                    <div>
-                        <label>Validade</label>
-                        <input type="text" placeholder="MM/AA" maxlength="5" required>
-                    </div>
-                    <div>
-                        <label>CVV <i class="fa-regular fa-circle-question" title="3 dígitos atrás do cartão" style="cursor: help; font-size: 0.8rem;"></i></label>
-                        <input type="password" placeholder="123" maxlength="3" required>
-                    </div>
-                </div>
+    <div class="input-row-2">
+        <div>
+            <label>Validade</label>
+            <input type="text" name="validade" placeholder="MM/AA" maxlength="5" required>
+        </div>
+        <div>
+            <label>CVV</label>
+            <input type="password" placeholder="123" maxlength="3" required>
+        </div>
+    </div>
 
-                <div class="input-row-2">
-                    <label class="input-check-container">
-                        <input type="checkbox" checked>
-                        <span>Salvar para compras futuras</span>
-                    </label>
-                </div>
-
-                <div class="modal-footer">
-                    <button type="button" class="btn-cancel" onclick="fecharModalCartao()">Cancelar</button>
-                    <button type="submit" class="btn-save"><i class="fa-solid fa-lock"></i> Salvar Seguro</button>
-                </div>
-            </form>
+    <div class="modal-footer">
+        <button type="button" class="btn-cancel" onclick="fecharModalCartao()">Cancelar</button>
+        <button type="submit" class="btn-save">Salvar Cartão</button>
+    </div>
+</form>
         </div>
     </div>
 

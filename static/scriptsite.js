@@ -256,3 +256,120 @@ function simularRastreio() {
         }
 
 /* FIM JAVA PAGINA DO RASTREIO*/
+
+/* JAVA PEDIDO CHECKOUT */
+
+    
+function verificarEmail() {
+        const emailInput = document.getElementById('email-checkout');
+        const email = emailInput.value;
+        const msgLoading = document.getElementById('msg-loading');
+
+        // Validação simples
+        if (!email || !email.includes('@')) {
+            alert('Por favor, digite um e-mail válido.');
+            return;
+        }
+
+        // Mostra carregando e bloqueia botão
+        msgLoading.style.display = 'block';
+        emailInput.disabled = true;
+
+        // Chama o Python
+        fetch('/verificar_email', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify({ email: email })
+        })
+        .then(response => response.json())
+        .then(data => {
+            if (data.existe) {
+                // CENÁRIO A: Tem conta -> Vai para Login
+                // Passamos o email na URL para preencher automático lá
+                window.location.href = `/login.html?email=${email}&redirect=checkout`;
+            } else {
+                // CENÁRIO B: Não tem conta -> Vai para Cadastro
+                window.location.href = `/cadastro.html?email=${email}&redirect=checkout`;
+            }
+        })
+        .catch(error => {
+            console.error('Erro:', error);
+            alert('Erro ao verificar e-mail. Tente novamente.');
+            msgLoading.style.display = 'none';
+            emailInput.disabled = false;
+        });
+    }
+
+    // Função para alternar abas (Cartão vs Pix)
+    function selectPayment(method) {
+        // ... sua lógica visual de esconder/mostrar divs ...
+        
+        // Atualiza o input hidden
+        document.getElementById('input-pagamento').value = method;
+    }
+
+  
+    // Função para alternar abas visualmente e atualizar o input hidden
+    function selectPayment(method) {
+        // Esconde todos os conteúdos
+        document.getElementById('credit-content').style.display = 'none';
+        document.getElementById('pix-content').style.display = 'none';
+        
+        // Remove classe ativa dos botões
+        document.querySelectorAll('.tab-btn').forEach(btn => btn.classList.remove('active'));
+        
+        // Mostra o selecionado e atualiza o input hidden
+        if (method === 'credit') {
+            document.getElementById('credit-content').style.display = 'block';
+            // Adicione a classe 'active' ao botão do cartão (adicione IDs aos botões se necessário)
+        } else {
+            document.getElementById('pix-content').style.display = 'block';
+        }
+        
+        // Atualiza o valor para o Python saber qual foi escolhido
+        document.getElementById('input-pagamento').value = method;
+    }
+
+    // --- A "SUPER FUNÇÃO" FINAL (USE APENAS ESTA) ---
+    function prepararEnvio() {
+        
+        // 1. PREPARAR OS ITENS (Simulação)
+        // Na prática, você pegaria isso do seu carrinho real
+        const itensCarrinho = [
+            { id_produto: 1, qtd: 1, preco: 68.00 },
+            { id_produto: 3, qtd: 2, preco: 45.00 }
+        ];
+        // Converte para texto e joga no input oculto 'lista_itens'
+        document.getElementById('input-itens').value = JSON.stringify(itensCarrinho);
+
+        // 2. PREPARAR DADOS DE PAGAMENTO
+        const metodo = document.getElementById('input-pagamento').value;
+        
+        if (metodo === 'credit') {
+            // Se for crédito, pega os dados digitados e joga nos inputs ocultos
+            document.getElementById('hidden-card-number').value = document.getElementById('card_number').value;
+            document.getElementById('hidden-card-holder').value = document.getElementById('card_holder').value;
+            document.getElementById('hidden-card-expiry').value = document.getElementById('card_expiry').value;
+            
+            // Verifica se quer salvar o cartão
+            const salvar = document.getElementById('save_card_check').checked ? 'sim' : 'nao';
+            document.getElementById('hidden-save-option').value = salvar;
+
+            // Pega o número de parcelas escolhido no select
+            const parcelas = document.getElementById('select-parcelas').value;
+            document.getElementById('hidden-parcelas').value = parcelas;
+            
+        } else {
+            // Se for Pix, garantimos que parcelas seja 1
+            document.getElementById('hidden-parcelas').value = "1";
+        }
+        
+        // O formulário será enviado automaticamente após essa função rodar no 'onclick' do botão submit
+    }
+
+/* FIM JAVA PEDIDO CHECKOUT */
+
+
+

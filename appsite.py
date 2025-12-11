@@ -1,174 +1,211 @@
-from flask import Flask, render_template, request, redirect
+from flask import Flask, render_template, request, redirect, session, jsonify
 import sqlite3
-from datetime import datetime # Necessário para registrar a data e hora
+import json
+import uuid
+from datetime import datetime
 
 app = Flask(__name__)
+app.secret_key = 'chave_secreta_lume_essence'  # Necessário para sessões (login)
 
-# Função auxiliar para conectar
+# --- Conexão com Banco ---
 def get_db():
     conn = sqlite3.connect("db_lume.db")
-    # Isso permite acessar as colunas pelo nome (ex: cliente['nome'])
-    conn.row_factory = sqlite3.Row 
+    conn.row_factory = sqlite3.Row  # Permite acessar colunas por nome
     return conn
 
-# -------------------------------
-# Página Inicial
-# -------------------------------
+# --- Rotas Públicas ---
 @app.route("/")
 def index():
-    return render_template("dashboard.html")
+    return render_template("site/index.html")
 
-# -------------------------------
-# CLIENTES
-# -------------------------------
-@app.route("/cliente")
-def cliente():
+@app.route("/produtos")
+def produtos():
+    return render_template("site/produtos.html")
+
+@app.route("/sobre")
+def sobre():
+    return render_template("site/sobre.html")
+
+@app.route("/contato")
+def contato():
+    return render_template("site/contato.html")
+
+@app.route("/contato/enviar", methods=["POST"])
+def enviar_contato():
+    nome = request.form["nome"]
+    email = request.form["email"]
+    tel_cel = request.form["tel_cel"]
+    mensagem = request.form["mensagem"]
+    data_contato = datetime.now()
+
     con = get_db()
     cur = con.cursor()
-    # Pega todos os clientes
-    cur.execute("SELECT * FROM tb_clientes")
-    dados = cur.fetchall()
-    con.close()
-    return render_template("cliente.html", clientes=dados)
-
-@app.route("/cliente/novo", methods=["GET", "POST"])
-def cliente_novo():
-    if request.method == "POST":
-        nome = request.form["nome"]
-        data_nasc = request.form["data_nasc"]
-        cpf = request.form["cpf"]
-        genero = request.form["genero"]
-        tel_cel = request.form["tel_cel"] 
-        email = request.form["email"]
-        cep = request.form["cep"]
-        endereco = request.form["endereco"]
-        n = request.form["n"]
-        complemento = request.form["complemento"]
-        referencia = request.form["referencia"]
-        bairro = request.form["bairro"]
-        cidade = request.form["cidade"]
-        estado = request.form["estado"]
-                                
-        # 2. Gera dados automáticos (Obrigatórios no banco, mas não pedidos no form)
-        data_cad = datetime.now()
-        
-
-        con = get_db()
-        cur = con.cursor()
-        
-        # 3. Insere TODOS os campos obrigatórios da tabela tb_clientes
-        cur.execute("""
-            INSERT INTO tb_clientes (
-                nome, data_nasc, cpf, genero, tel_cel, email, 
-                cep, endereco, n, complemento,referencia, bairro, cidade, estado, data_cad
-            ) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
-        """, (nome, data_nasc, cpf, genero, tel_cel, email, 
-                cep, endereco, n, complemento,referencia, bairro, cidade, estado, data_cad))
-        
-        con.commit()
-        con.close()
-        return redirect("/cliente")
-
-    return render_template("novo-cliente.html") # Verifique se o nome do arquivo HTML é esse
-
-@app.route("/cliente/editar/<int:id>", methods=["GET", "POST"])
-def cliente_editar(id):
-    con = get_db()
-    cur = con.cursor()
-
-    if request.method == "POST":
-        nome = request.form["nome"]
-        data_nasc = request.form["data_nasc"]
-        tel_cel = request.form["tel_cel"]
-        cep = request.form["cep"]
-        endereco = request.form["endereco"]
-        n = request.form["n"]
-        complemento = request.form["complemento"]
-        referencia = request.form["referencia"]
-        bairro = request.form["bairro"]
-        cidade = request.form["cidade"]
-        estado = request.form["estado"]
-        # Adicione outros campos se quiser permitir editar CPF/Data aqui
-
-        cur.execute("""
-            UPDATE tb_clientes
-            SET nome=?, data_nasc=?, tel_cel=?, cep=?, endereco=?, n=?, complemento=?, referencia=?, bairro=?, cidade=?, estado=?
-            WHERE id_cliente=? 
-        """, (nome, data_nasc, tel_cel, cep, endereco, n, complemento, referencia, bairro, cidade, estado, id)) # Atenção: no seu banco a chave é id_cliente
-
-        con.commit()
-        con.close()
-        return redirect("/cliente")
-
-    cur.execute("SELECT * FROM tb_clientes WHERE id_cliente=?", (id,))
-    cliente = cur.fetchone()
-    con.close()
-
-    return render_template("editar-cliente.html", cliente=cliente)
-
-@app.route("/cliente/delete/<int:id>")
-def cliente_delete(id):
-    con = get_db()
-    cur = con.cursor()
-    cur.execute("DELETE FROM tb_clientes WHERE id_cliente=?", (id,))
+    cur.execute("INSERT INTO tb_contatos (nome, email, tel_cel, mensagem, data_contato) VALUES (?, ?, ?, ?, ?)",
+                (nome, email, tel_cel, mensagem, data_contato))
     con.commit()
     con.close()
-    return redirect("/cliente")
+    return redirect("/contato")
 
-# -------------------------------
-# FORNECEDORES
-# -------------------------------
-@app.route("/fornecedores")
-def fornecedor():
+# --- Newsletter ---
+@app.route("/newsletter/cadastrar", methods=["POST"])
+def cadastrar_newsletter():
+    nome = request.form["nome"]
+    whatsapp = request.form["whatsapp"]
+    email = request.form["email"]
+    data_cad = datetime.now()
+
     con = get_db()
     cur = con.cursor()
-    cur.execute("SELECT * FROM tb_fornecedores")
-    dados = cur.fetchall()
-    con.close()
-    return render_template("fornecedores.html", fornecedores=dados)
-
-@app.route("/novo-fornecedor", methods=["GET", "POST"])
-def fornecedor_novo():
-    if request.method == "POST":
-        # Recebendo dados do formulário
-        razao_social = request.form["razao_social"]
-        nome_fantasia = request.form["nome_fantasia"]
-        cnpj = request.form["cnpj"]
-        tel_cel = request.form["tel_cel"]
-        categoria = request.form["categoria"]
-        insc_estadual = request.form.get("insc_estadual", "Isento") # .get evita erro se estiver vazio
-        email = request.form["email"]
-        cep = request.form["cep"]
-        endereco = request.form["endereco"]
-        cidade = request.form["cidade"]
-        estado = request.form["estado"]
-        
-        # Data automática
-        data_cad = datetime.now()
-
-        con = get_db()
-        cur = con.cursor()
-        
-        # Corrigido: Agora tem 12 interrogações para 12 campos
-        cur.execute("""
-            INSERT INTO tb_fornecedores (
-                razao_social, nome_fantasia, cnpj, tel_cel, categoria, 
-                insc_estadual, email, cep, endereco, cidade, estado, data_cad
-            )
-            VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
-        """, (
-            razao_social, nome_fantasia, cnpj, tel_cel, categoria, 
-            insc_estadual, email, cep, endereco, cidade, estado, data_cad
-        ))
-        
+    try:
+        cur.execute("INSERT INTO tb_newsletter (nome, whatsapp, email, data_cad) VALUES (?, ?, ?, ?)",
+                    (nome, whatsapp, email, data_cad))
         con.commit()
+    except:
+        pass # Ignora erro se já existir
+    con.close()
+    return redirect("/")
+
+# --- Autenticação (Login/Cadastro) ---
+@app.route ("/login")
+def login_page():
+    return render_template("site/login.html")
+
+@app.route("/verificar_email", methods=["POST"])
+def verificar_email():
+    dados = request.get_json()
+    email = dados.get("email")
+    con = get_db()
+    cur = con.cursor()
+    cur.execute("SELECT id_cliente FROM tb_clientes WHERE email = ?", (email,))
+    user = cur.fetchone()
+    con.close()
+    return jsonify({"existe": bool(user)})
+
+@app.route("/cadastro-cliente", methods=["POST"])
+def cadastro_cliente():
+    # Recebe todos os campos do seu HTML
+    nome = request.form["nome"]
+    data_nasc = request.form["data_nasc"]
+    cpf = request.form["cpf"]
+    genero = request.form["genero"]
+    tel_cel = request.form["tel_cel"]
+    email = request.form["email"]
+    cep = request.form["cep"]
+    endereco = request.form["endereco"]
+    n = request.form["n"]
+    complemento = request.form.get("complemento", "")
+    referencia = request.form.get("referencia", "")
+    bairro = request.form["bairro"]
+    cidade = request.form["cidade"]
+    estado = request.form["estado"]
+    senha = request.form["senha"] # Ideal: usar hash
+    data_cad = datetime.now()
+
+    con = get_db()
+    cur = con.cursor()
+    cur.execute("""
+        INSERT INTO tb_clientes (nome, data_nasc, cpf, genero, tel_cel, email, cep, endereco, n, complemento, referencia, bairro, cidade, estado, senha, data_cad)
+        VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
+    """, (nome, data_nasc, cpf, genero, tel_cel, email, cep, endereco, n, complemento, referencia, bairro, cidade, estado, senha, data_cad))
+    con.commit()
+    
+    # Loga o usuário automaticamente
+    session['user_id'] = cur.lastrowid
+    session['user_nome'] = nome
+    con.close()
+    
+    return redirect("/area-cliente/area-cliente.html") # Ajuste a rota conforme necessário
+
+# --- Carrinho e Checkout ---
+@app.route("/carrinho")
+def carrinho():
+    return render_template("site/carrinho.html")
+
+@app.route("/checkout")
+def checkout():
+    # Verifica se está logado (Simples)
+    # if 'user_id' not in session:
+    #     return redirect("/login")
+    return render_template("site/checkout.html")
+
+@app.route("/finalizar_pedido", methods=["POST"])
+def finalizar_pedido():
+    # 1. Dados Gerais
+    id_cliente = request.form.get("id_cliente", 1) # Padrão 1 se não estiver logado (teste)
+    if 'user_id' in session:
+        id_cliente = session['user_id']
+        
+    valor_total = request.form["total_pedido"]
+    forma_pagamento = request.form["forma_pagamento"]
+    lista_itens_json = request.form["lista_itens"]
+    qtd_parcelas = request.form.get("parcelas_escolhidas", 1)
+    
+    con = get_db()
+    cur = con.cursor()
+
+    try:
+        # --- Lógica do Cartão (Simulação) ---
+        if forma_pagamento == 'credit':
+            card_number = request.form.get("card_number_sent", "")
+            save_option = request.form.get("save_card_option", "nao")
+            
+            if save_option == 'sim' and card_number:
+                nome_titular = request.form.get("card_holder_sent")
+                validade = request.form.get("card_expiry_sent")
+                ultimos_4 = card_number.replace(" ", "")[-4:]
+                bandeira = "Visa" if card_number.startswith("4") else "Mastercard"
+                token_falso = str(uuid.uuid4())
+
+                cur.execute("""
+                    INSERT INTO tb_cartoes (id_cliente, nome_titular, ultimos_4, bandeira, token_pagamento, validade)
+                    VALUES (?, ?, ?, ?, ?, ?)
+                """, (id_cliente, nome_titular, ultimos_4, bandeira, token_falso, validade))
+
+        # 2. Salvar Pedido
+        data_atual = datetime.now()
+        data_entrega = datetime.now() # Adicione dias se quiser
+
+        # Certifique-se que a coluna 'parcelas' existe no banco
+        cur.execute("""
+            INSERT INTO tb_pedidos (id_cliente, data_pedido, status, valor_total, data_entrega, forma_pagamento, parcelas)
+            VALUES (?, ?, ?, ?, ?, ?, ?)
+        """, (id_cliente, data_atual, 'Pendente', valor_total, data_entrega, forma_pagamento, qtd_parcelas))
+        
+        id_novo_pedido = cur.lastrowid 
+
+        # 3. Salvar Itens
+        itens = json.loads(lista_itens_json)
+        for item in itens:
+            subtotal = float(item['qtd']) * float(item['preco'])
+            cur.execute("""
+                INSERT INTO tb_itensPedido (id_pedido, id_produto, quantidade, preco_unitario, subtotal)
+                VALUES (?, ?, ?, ?, ?)
+            """, (id_novo_pedido, item['id_produto'], item['qtd'], item['preco'], subtotal))
+
+        con.commit()
+        return redirect("/area_cliente/meus-pedidos") # Sucesso
+
+    except Exception as e:
+        con.rollback()
+        print(f"Erro: {e}")
+        return f"Erro ao processar pedido: {e}"
+    finally:
         con.close()
-        return redirect("/fornecedores")
 
-    return render_template("novo-fornecedor.html")
+# --- Área do Cliente (Rotas de Visualização) ---
+@app.route("/area_cliente/area-cliente.html") # Mantendo o nome do arquivo para facilitar
+def area_cliente_home():
+    return render_template("area_cliente/area-cliente.html")
 
-# -------------------------------
-# RUN
-# -------------------------------
+@app.route("/area_cliente/meus-pedidos.html")
+def area_cliente_pedidos():
+    # Aqui você faria um SELECT no banco para mostrar os pedidos reais
+    return render_template("area_cliente/meus-pedidos.html")
+
+# Demais rotas da área do cliente (favoritos, endereços, etc)...
+@app.route("/area_cliente/<page>")
+def area_cliente_pages(page):
+    return render_template(f"area_cliente/{page}")
+
 if __name__ == "__main__":
-    app.run(debug=True)
+    app.run(debug=True, port=5000)

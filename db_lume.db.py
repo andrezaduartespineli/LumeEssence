@@ -63,7 +63,7 @@ sql_newsletter = '''CREATE TABLE "tb_newsletter" (
 
 cur.execute(sql_newsletter)
 
-#Tabela Pedidos
+#Tabela Pedidos ok
 cur.execute('DROP TABLE IF EXISTS tb_pedidos')
 
 sql_pedido = '''CREATE TABLE "tb_pedidos" (
@@ -78,7 +78,7 @@ sql_pedido = '''CREATE TABLE "tb_pedidos" (
 
 cur.execute(sql_pedido)
 
-#Tabela ItensPedido
+#Tabela ItensPedido x
 cur.execute('DROP TABLE IF EXISTS tb_itensPedido')
 
 sql_itensPedido = '''CREATE TABLE "tb_itensPedido" (
@@ -142,7 +142,7 @@ sql_funcionarios = '''CREATE TABLE "tb_funcionarios" (
 cur.execute(sql_funcionarios)
 
 
-#Tabela ContasReceber
+#Tabela ContasReceber ok
 cur.execute('DROP TABLE IF EXISTS tb_contasReceber')
 
 sql_contasReceber = '''CREATE TABLE "tb_contasReceber" (
@@ -158,7 +158,7 @@ sql_contasReceber = '''CREATE TABLE "tb_contasReceber" (
 
 cur.execute(sql_contasReceber)
 
-# --- Tabela Despesas (Contas a Pagar) ---
+# --- Tabela Despesas (Contas a Pagar) --- ok
 cur.execute('DROP TABLE IF EXISTS tb_despesas')
 
 sql_despesas = '''CREATE TABLE "tb_despesas" (
@@ -174,7 +174,7 @@ sql_despesas = '''CREATE TABLE "tb_despesas" (
 
 cur.execute(sql_despesas)
 
-#Tabela Contatos
+#Tabela Contatos ok
 cur.execute('DROP TABLE IF EXISTS tb_contatos')
 
 sql_contato = '''CREATE TABLE "tb_contatos" (
@@ -187,6 +187,28 @@ sql_contato = '''CREATE TABLE "tb_contatos" (
     )'''
 
 cur.execute(sql_contato)
+
+# Tabela de Cartões (Tokenizados) ok
+cur.execute('DROP TABLE IF EXISTS tb_cartoes')
+
+sql_cartoes = '''CREATE TABLE "tb_cartoes" (
+    "id_cartao" INTEGER PRIMARY KEY AUTOINCREMENT,
+    "id_cliente" INTEGER NOT NULL,
+    "nome_titular" VARCHAR(100) NOT NULL,
+    "ultimos_4" VARCHAR(4) NOT NULL,
+    "bandeira" VARCHAR(20) NOT NULL,
+    "token_pagamento" VARCHAR(100) NOT NULL, 
+    "validade" VARCHAR(5) NOT NULL,
+    "parcelas" INTEGER DEFAULT 1,
+    "data_cad" DATETIME DEFAULT CURRENT_TIMESTAMP
+    )'''
+
+# token_pagamento: Aqui ficaria o ID que o banco (Stripe/Pagar.me) te devolve.
+# Vamos gerar um falso apenas para simular.
+# Adicione isso no seu arquivo de banco ou execute num script separado
+# Se for recriar a tabela do zero, adicione "parcelas INTEGER DEFAULT 1" na criação
+
+cur.execute(sql_cartoes)
 
 #Salvar as alterações e fechar a conexão
 con.commit()
