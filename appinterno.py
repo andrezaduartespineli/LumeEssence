@@ -23,7 +23,28 @@ def get_db():
 def dashboard():
     con = get_db()
     cur = con.cursor()
-    # Busca 5 últimos pedidos
+    
+    # 1. KPI: Vendas Hoje (Soma)
+    # A função date('now') compara apenas a parte do dia, ignorando as horas
+    cur.execute("SELECT SUM(valor_total) FROM tb_pedidos WHERE date(data_pedido) = date('now')")
+    vendas_hoje = cur.fetchone()[0]
+    # Se não tiver vendas, o banco retorna None, então transformamos em 0.0
+    vendas_hoje = vendas_hoje if vendas_hoje else 0.0 
+
+    # 2. KPI: Pedidos Pendentes (Contagem)
+    cur.execute("SELECT COUNT(*) FROM tb_pedidos WHERE status = 'Pendente'")
+    pedidos_pendentes = cur.fetchone()[0]
+
+    # 3. KPI: Estoque Baixo (Contagem de produtos com menos de 10 itens)
+    cur.execute("SELECT COUNT(*) FROM tb_produtos WHERE qtd_estoque < 10")
+    estoque_baixo = cur.fetchone()[0]
+
+    # 4. KPI: Novos Clientes (Últimos 7 dias)
+    # Conta registros onde a data é maior ou igual a "hoje menos 7 dias"
+    cur.execute("SELECT COUNT(*) FROM tb_clientes WHERE date(data_cad) >= date('now', '-7 days')")
+    novos_clientes = cur.fetchone()[0]
+
+    # 5. Tabela de Últimos Pedidos (Já tínhamos feito, mantemos aqui)
     try:
         cur.execute("""
             SELECT p.id_pedido, c.nome, p.status, p.valor_total 
@@ -34,8 +55,16 @@ def dashboard():
         ultimos_pedidos = cur.fetchall()
     except:
         ultimos_pedidos = []
+    
     con.close()
-    return render_template("interno/dashboard.html", pedidos=ultimos_pedidos)
+    
+    # Enviamos todas essas variáveis novas para o template
+    return render_template("interno/dashboard.html", 
+                           pedidos=ultimos_pedidos,
+                           vendas_hoje=vendas_hoje,
+                           pedidos_pendentes=pedidos_pendentes,
+                           estoque_baixo=estoque_baixo,
+                           novos_clientes=novos_clientes)
 
 # --- Produtos ---
 @app.route("/produto.html")
@@ -133,7 +162,62 @@ def novo_fornecedor_post():
 @app.route("/financeiro.html")
 @app.route("/financeiro")
 def financeiro():
-    return render_template("interno/financeiro.html")
+    con = get_db()
+    cur = con.cursor()
+    
+    # 1. Buscar Receitas
+    cur.execute("SELECT * FROM tb_contasReceber")
+    receitas_db = cur.fetchall()
+    
+    # 2. Buscar Despesas
+    cur.execute("SELECT * FROM tb_despesas")
+    despesas_db = cur.fetchall()
+    
+    con.close()
+
+    # 3. Processamento em Python (Criar o Extrato Unificado)
+    extrato = []
+    total_receitas = 0
+    total_despesas = 0
+
+    # Processa Receitas
+    for r in receitas_db:
+        valor = float(r['valor'])
+        total_receitas += valor
+        extrato.append({
+            'data': r['data_venc'], # Usando data de vencimento como referência
+            'descricao': r['descricao'],
+            'categoria': r['categoria'],
+            'status': r['status'],
+            'valor': valor,
+            'tipo': 'entrada' # Marca para o CSS saber que é verde
+        })
+
+    # Processa Despesas
+    for d in despesas_db:
+        valor = float(d['valor'])
+        total_despesas += valor
+        extrato.append({
+            'data': d['data_venc'],
+            'descricao': d['descricao'],
+            'categoria': d['categoria'],
+            'status': d['status'],
+            'valor': valor,
+            'tipo': 'saida' # Marca para o CSS saber que é vermelho
+        })
+
+    # 4. Ordenar por Data (Mais recente primeiro)
+    # A data deve estar no formato YYYY-MM-DD para funcionar bem
+    extrato.sort(key=lambda x: x['data'], reverse=True)
+
+    # 5. Cálculo do Saldo
+    saldo_liquido = total_receitas - total_despesas
+
+    return render_template("interno/financeiro.html", 
+                           extrato=extrato, 
+                           total_receitas=total_receitas, 
+                           total_despesas=total_despesas, 
+                           saldo=saldo_liquido)
 
 @app.route("/financeiro/receita/nova", methods=["POST"])
 def nova_receita():
@@ -221,6 +305,21 @@ def clientes():
     clientes = cur.fetchall()
     con.close()
     return render_template("interno/cliente.html", clientes=clientes)
+
+# --- Newsletter (Leads) ---
+@app.route("/newsletter.html")
+@app.route("/newsletter")
+def newsletter():
+    con = get_db()
+    cur = con.cursor()
+    # Busca os leads do mais recente para o mais antigo
+    try:
+        cur.execute("SELECT * FROM tb_newsletter ORDER BY data_cad DESC")
+        leads = cur.fetchall()
+    except:
+        leads = []
+    con.close()
+    return render_template("interno/newsletter.html", leads=leads)
 
 # --- Pedidos (Visualização Admin) ---
 @app.route("/pedido.html")

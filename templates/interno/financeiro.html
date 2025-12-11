@@ -26,12 +26,13 @@
                     <li><a href="funcionarios.html"><i class="fa-solid fa-users"></i> Funcionários</a></li>
                     <li class="active"><a href="financeiro.html"><i class="fa-solid fa-file-invoice-dollar"></i> Financeiro</a></li>
                     <li><a href="cliente.html"><i class="fas fa-user"></i>Clientes</a></li>
+                    <li><a href="newsletter.html"><i class="fa-solid fa-envelope-open-text"></i> Newsletter</a></li>
                     <li class="separator"></li>
                     <li><a href="configuracoes.html"><i class="fa-solid fa-gear"></i> Configurações</a></li>
                 </ul>
             </nav>
             <div class="sidebar-footer">
-                <a href="/login" class="logout-btn"><i class="fa-solid fa-right-from-bracket"></i> Sair</a>
+                <a href="login.html" class="logout-btn"><i class="fa-solid fa-right-from-bracket"></i> Sair</a>
             </div>
         </aside>
 
@@ -72,34 +73,28 @@
             <section class="finance-summary">
                 
                 <div class="card finance-card income">
-                    <div class="icon-box">
-                        <i class="fa-solid fa-arrow-trend-up"></i>
-                    </div>
-                    <div class="finance-info">
-                        <span>Entradas (Mês)</span>
-                        <h3>R$ 45.280,00</h3>
-                    </div>
-                </div>
+    <div class="icon-box"><i class="fa-solid fa-arrow-trend-up"></i></div>
+    <div class="finance-info">
+        <span>Entradas (Total)</span>
+        <h3>R$ {{ "%.2f"|format(total_receitas) }}</h3>
+    </div>
+</div>
 
-                <div class="card finance-card expense">
-                    <div class="icon-box">
-                        <i class="fa-solid fa-arrow-trend-down"></i>
-                    </div>
-                    <div class="finance-info">
-                        <span>Saídas (Mês)</span>
-                        <h3>R$ 12.450,00</h3>
-                    </div>
-                </div>
+<div class="card finance-card expense">
+    <div class="icon-box"><i class="fa-solid fa-arrow-trend-down"></i></div>
+    <div class="finance-info">
+        <span>Saídas (Total)</span>
+        <h3>R$ {{ "%.2f"|format(total_despesas) }}</h3>
+    </div>
+</div>
 
-                <div class="card finance-card balance">
-                    <div class="icon-box">
-                        <i class="fa-solid fa-wallet"></i>
-                    </div>
-                    <div class="finance-info">
-                        <span>Saldo Líquido</span>
-                        <h3>R$ 32.830,00</h3>
-                    </div>
-                </div>
+<div class="card finance-card balance">
+    <div class="icon-box"><i class="fa-solid fa-wallet"></i></div>
+    <div class="finance-info">
+        <span>Saldo Líquido</span>
+        <h3>R$ {{ "%.2f"|format(saldo) }}</h3>
+    </div>
+</div>
             </section>
 
             <section class="toolbar">
@@ -133,39 +128,38 @@
                             </tr>
                         </thead>
                         <tbody>
-                            <tr>
-                                <td>04/12/2025</td>
-                                <td><strong>Venda #4590 - Loja Online</strong></td>
-                                <td>Vendas</td>
-                                <td><span class="badge success">Recebido</span></td>
-                                <td class="text-right value-income">+ R$ 289,90</td>
-                                <td class="action-col"><i class="fa-solid fa-ellipsis"></i></td>
-                            </tr>
-                            <tr>
-                                <td>03/12/2025</td>
-                                <td><strong>Fornecedor: Essências Premium</strong></td>
-                                <td>Matéria-prima</td>
-                                <td><span class="badge success">Pago</span></td>
-                                <td class="text-right value-expense">- R$ 1.250,00</td>
-                                <td class="action-col"><i class="fa-solid fa-ellipsis"></i></td>
-                            </tr>
-                            <tr>
-                                <td>02/12/2025</td>
-                                <td><strong>Conta de Luz - Ateliê</strong></td>
-                                <td>Infraestrutura</td>
-                                <td><span class="badge warning">Pendente</span></td>
-                                <td class="text-right value-expense">- R$ 350,00</td>
-                                <td class="action-col"><i class="fa-solid fa-ellipsis"></i></td>
-                            </tr>
-                            <tr>
-                                <td>01/12/2025</td>
-                                <td><strong>Venda Corporativa - Hotel X</strong></td>
-                                <td>B2B</td>
-                                <td><span class="badge success">Recebido</span></td>
-                                <td class="text-right value-income">+ R$ 5.400,00</td>
-                                <td class="action-col"><i class="fa-solid fa-ellipsis"></i></td>
-                            </tr>
-                        </tbody>
+    {% for item in extrato %}
+    <tr>
+        <td>{{ item['data'] }}</td>
+        
+        <td><strong>{{ item['descricao'] }}</strong></td>
+        
+        <td>{{ item['categoria'] }}</td>
+        
+        <td>
+            {% if item['status'] == 'Pago' or item['status'] == 'Recebido' %}
+                <span class="badge success">{{ item['status'] }}</span>
+            {% else %}
+                <span class="badge warning">{{ item['status'] }}</span>
+            {% endif %}
+        </td>
+
+        {% if item['tipo'] == 'entrada' %}
+            <td class="text-right value-income">+ R$ {{ "%.2f"|format(item['valor']) }}</td>
+        {% else %}
+            <td class="text-right value-expense">- R$ {{ "%.2f"|format(item['valor']) }}</td>
+        {% endif %}
+
+        <td class="action-col"><i class="fa-solid fa-ellipsis"></i></td>
+    </tr>
+    {% else %}
+    <tr>
+        <td colspan="6" style="text-align: center; padding: 20px; color: #999;">
+            Nenhuma movimentação financeira registrada.
+        </td>
+    </tr>
+    {% endfor %}
+</tbody>
                     </table>
                 </div>
             </section>

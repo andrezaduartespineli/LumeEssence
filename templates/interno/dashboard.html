@@ -25,12 +25,13 @@
                     <li><a href="funcionarios.html"><i class="fa-solid fa-users"></i> Funcionários</a></li>
                     <li><a href="financeiro.html"><i class="fa-solid fa-file-invoice-dollar"></i> Financeiro</a></li>
                     <li><a href="cliente.html"><i class="fas fa-user"></i>Clientes</a></li>
+                    <li><a href="newsletter.html"><i class="fa-solid fa-envelope-open-text"></i> Newsletter</a></li>
                     <li class="separator"></li>
                     <li><a href="configuracoes.html"><i class="fa-solid fa-gear"></i> Configurações</a></li>
                 </ul>
             </nav>
             <div class="sidebar-footer">
-                <a href="/login" class="logout-btn"><i class="fa-solid fa-right-from-bracket"></i> Sair</a>
+                <a href="login.html" class="logout-btn"><i class="fa-solid fa-right-from-bracket"></i> Sair</a>
             </div>
         </aside>
 
@@ -66,52 +67,58 @@
         </ul>
     </div>
 </div>
-            </header>
+</header>
             <section class="stats-grid">
-                <div class="card">
-                    <div class="card-info">
-                        <h3>Vendas Hoje</h3>
-                        <p class="number">R$ 1.250,00</p>
-                        <span class="trend positive"><i class="fa-solid fa-arrow-up"></i> +12%</span>
-                    </div>
-                    <div class="card-icon icon-gold">
-                        <i class="fa-solid fa-bag-shopping"></i>
-                    </div>
-                </div>
+    
+    <div class="card">
+        <div class="card-info">
+            <h3>Vendas Hoje</h3>
+            <p class="number">R$ {{ "%.2f"|format(vendas_hoje) }}</p>
+            <span class="trend positive"><i class="fa-solid fa-arrow-up"></i> Hoje</span>
+        </div>
+        <div class="card-icon icon-gold">
+            <i class="fa-solid fa-bag-shopping"></i>
+        </div>
+    </div>
 
-                <div class="card">
-                    <div class="card-info">
-                        <h3>Pedidos Pendentes</h3>
-                        <p class="number">08</p>
-                        <span class="trend neutral">Aguardando envio</span>
-                    </div>
-                    <div class="card-icon icon-blue">
-                        <i class="fa-solid fa-clock"></i>
-                    </div>
-                </div>
+    <div class="card">
+        <div class="card-info">
+            <h3>Pedidos Pendentes</h3>
+            <p class="number">{{ pedidos_pendentes }}</p>
+            <span class="trend neutral">Aguardando envio</span>
+        </div>
+        <div class="card-icon icon-blue">
+            <i class="fa-solid fa-clock"></i>
+        </div>
+    </div>
 
-                <div class="card">
-                    <div class="card-info">
-                        <h3>Estoque Baixo</h3>
-                        <p class="number">15 Itens</p>
-                        <span class="trend negative">Repor urgente</span>
-                    </div>
-                    <div class="card-icon icon-red">
-                        <i class="fa-solid fa-triangle-exclamation"></i>
-                    </div>
-                </div>
+    <div class="card">
+        <div class="card-info">
+            <h3>Estoque Baixo</h3>
+            <p class="number">{{ estoque_baixo }} Itens</p>
+            {% if estoque_baixo > 0 %}
+                <span class="trend negative">Repor urgente</span>
+            {% else %}
+                <span class="trend positive">Estoque saudável</span>
+            {% endif %}
+        </div>
+        <div class="card-icon icon-red">
+            <i class="fa-solid fa-triangle-exclamation"></i>
+        </div>
+    </div>
 
-                <div class="card">
-                    <div class="card-info">
-                        <h3>Novos Clientes</h3>
-                        <p class="number">24</p>
-                        <span class="trend positive">Esta semana</span>
-                    </div>
-                    <div class="card-icon icon-green">
-                        <i class="fa-solid fa-user-plus"></i>
-                    </div>
-                </div>
-            </section>
+    <div class="card">
+        <div class="card-info">
+            <h3>Novos Clientes</h3>
+            <p class="number">{{ novos_clientes }}</p>
+            <span class="trend positive">Últimos 7 dias</span>
+        </div>
+        <div class="card-icon icon-green">
+            <i class="fa-solid fa-user-plus"></i>
+        </div>
+    </div>
+
+</section>
 
             <div class="table-responsive">
     <table>

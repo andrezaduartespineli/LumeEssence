@@ -247,7 +247,7 @@ def finalizar_pedido():
     cur = con.cursor()
 
     try:
-        # Lógica do Cartão (Salvar se solicitado)
+        # 1. Lógica do Cartão (Salvar se solicitado)
         if forma_pagamento == 'credit':
             save_option = request.form.get("save_card_option", "nao")
             card_number = request.form.get("card_number_sent", "")
@@ -267,18 +267,17 @@ def finalizar_pedido():
                 except Exception as e:
                     print(f"Erro ao salvar cartão (tabela pode não existir): {e}")
 
-        # Salvar Pedido
+        # 2. Salvar Pedido
         data_atual = datetime.now()
         data_entrega = datetime.now() 
 
-        # Verifica se tabela tem coluna parcelas, senão ignora
+        # Verifica se tabela tem coluna parcelas, senão ignora (Fallback de segurança)
         try:
             cur.execute("""
                 INSERT INTO tb_pedidos (id_cliente, data_pedido, status, valor_total, data_entrega, forma_pagamento, parcelas)
                 VALUES (?, ?, ?, ?, ?, ?, ?)
             """, (id_cliente, data_atual, 'Pendente', valor_total, data_entrega, forma_pagamento, qtd_parcelas))
         except:
-             # Fallback se não tiver a coluna parcelas
              cur.execute("""
                 INSERT INTO tb_pedidos (id_cliente, data_pedido, status, valor_total, data_entrega, forma_pagamento)
                 VALUES (?, ?, ?, ?, ?, ?)
@@ -286,7 +285,7 @@ def finalizar_pedido():
         
         id_novo_pedido = cur.lastrowid 
 
-        # Salvar Itens
+        # 3. Salvar Itens
         if lista_itens_json:
             itens = json.loads(lista_itens_json)
             for item in itens:
@@ -295,6 +294,23 @@ def finalizar_pedido():
                     INSERT INTO tb_itensPedido (id_pedido, id_produto, quantidade, preco_unitario, subtotal)
                     VALUES (?, ?, ?, ?, ?)
                 """, (id_novo_pedido, item['id_produto'], item['qtd'], item['preco'], subtotal))
+
+        # --- 4. NOVO: LANÇAMENTO AUTOMÁTICO NO FINANCEIRO (RECEITA) ---
+        
+        # Define status: Se for Pix ou Cartão, já entra como "Recebido". Se fosse Boleto, seria "Pendente".
+        status_financeiro = 'Recebido'
+        
+        # Cria a descrição automática (Ex: "Venda Site #5420 - Cliente X")
+        # Nota: Idealmente buscaríamos o nome do cliente, mas aqui usamos o ID para ser rápido
+        descricao_lancamento = f"Venda E-commerce Pedido #{id_novo_pedido}"
+        
+        cur.execute("""
+            INSERT INTO tb_contasReceber (descricao, valor, data_emissao, data_venc, categoria, status, id_pedido, id_cliente)
+            VALUES (?, ?, ?, ?, ?, ?, ?, ?)
+        """, (descricao_lancamento, valor_total, data_atual, data_atual, "Venda Online", status_financeiro, id_novo_pedido, id_cliente))
+        
+        print(f"💰 Venda #{id_novo_pedido} lançada no financeiro com sucesso!")
+        # -------------------------------------------------------------
 
         con.commit()
         
@@ -311,6 +327,7 @@ def finalizar_pedido():
     finally:
         con.close()
 
+        
 # --- Área do Cliente ---
 @app.route("/area_cliente/area-cliente.html")
 def area_cliente_home():
