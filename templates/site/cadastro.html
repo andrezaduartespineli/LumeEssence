@@ -4,27 +4,30 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Cadastro - Lume Essence</title>
-    <link rel="icon" href="imagens/Logo/pequenalogosemfnfo.png">
     <link href='https://fonts.googleapis.com/css?family=Quicksand' rel='stylesheet'>
     <link href="https://fonts.googleapis.com/css2?family=Montserrat:ital,wght@0,100..900;1,100..900&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-    <link rel="stylesheet" href="../../static/stylesite.css">
+    <link rel="stylesheet" href="/static/stylesite.css">
+    <link rel="icon" href="/static/imagens/Logo/pequenalogosemfnfo.png">
 </head>
 <body>
 
     <div class="container">
                 <div class="logo">
-                    <img src="../../static/imagens/Logo/horizontalsemfundo.png" alt="Lume Essence">
+                    <img src="/static/imagens/Logo/horizontalsemfundo.png" alt="Lume Essence">
                 </div>
             </div>   
              
   <div class="navbar">
     <div class="nav-links">
-        <a href="index.html">Início</a>
-        <a href="produtos.html">Produtos</a>
-        <a href="sobre.html">Sobre</a>
-        <a href="contato.html">Contato</a>
-    </div>
+    <a href="/">Início</a>
+    <a href="/produtos">Produtos</a>
+    <a href="/sobre">Sobre</a>
+    <a href="/contato">Contato</a>
+</div>
+...
+<a href="/login" class="user-icon-link">...</a>
+<a href="/carrinho" class="cart-link" title="Carrinho">...</a>
 
     <div class="nav-icons-area" style="display: flex; align-items: center; gap: 20px;">
         
@@ -35,25 +38,25 @@
 
         <div class="header-icons">
 <div class="user-menu-wrapper">
-    <a href="../site/login.html" class="user-icon-link">
+    <a href="/login" class="user-icon-link">
         <i class="fa-regular fa-user"></i>
     </a>
 
     <div class="user-dropdown">
         <ul>
             <li>
-                <a href="../area_cliente/area-cliente.html">
+                <a href="/area_cliente/area-cliente.html">
                     <i class="fa-solid fa-user-gear"></i> Minha Conta
                 </a>
             </li>
             <li>
-                <a href="../area_cliente/meus-pedidos.html">
+                <a href="/area_cliente/meus-pedidos.html">
                     <i class="fa-solid fa-box"></i> Meus Pedidos
                 </a>
             </li>
             <li class="separator"></li>
             <li>
-                <a href="login.html" class="logout-link">
+                <a href="/login" class="logout-link">
                     <i class="fa-solid fa-right-from-bracket"></i> Sair
                 </a>
             </li>
@@ -62,7 +65,7 @@
 </div>
 </div>
 
-        <a href="carrinho.html" class="cart-link" title="Carrinho">
+        <a href="/carrinho" class="cart-link" title="Carrinho">
             <i class="fas fa-shopping-bag"></i>
             <span class="cart-count">3</span>
         </a>
@@ -163,7 +166,7 @@
             </form>
 
             <div class="auth-footer">
-                Já tem uma conta? <a href="login.html">Faça Login</a>
+                Já tem uma conta? <a href="/login">Faça Login</a>
             </div>
         </div>
     </div>
@@ -177,12 +180,12 @@
             <span>Receba nossas novidades e promoções.</span>
       </div>
 
-      <form class="newsletter-form" action="/newsletter/cadastrar" method="POST">
+    <form class="newsletter-form" action="/newsletter/cadastrar" method="POST">
     <input type="text" name="nome" placeholder="Nome completo" required>
     <input type="text" name="whatsapp" placeholder="WhatsApp" required>
     <input type="email" name="email" placeholder="E-mail" required>
     <button type="submit">OK</button>
-      </form>
+    </form>
     </div>
 
     <hr class="footer-divider">
@@ -192,10 +195,10 @@
     <div class="footer-col">
         <h4>Navegação</h4>
         <ul>
-          <li><a href="index.html">Início</a></li>
-          <li><a href="produtos.html">Produtos</a></li>
-          <li><a href="contato.html">Contato</a></li>
-          <li><a href="sobre.html">Sobre</a></li>
+          <li><a href="/">Início</a></li>
+          <li><a href="/produtos">Produtos</a></li>
+          <li><a href="/contato">Contato</a></li>
+          <li><a href="/sobre">Sobre</a></li>
         </ul>
     </div>
 
@@ -248,9 +251,9 @@
     <div class="copyright">
       © 2025 Lume Essence - Todos os direitos reservados
     </div>
-
+     <a href="../interno/login.html" class="admin-footer-link">Acesso da Equipe</a>
   </div>
 </footer>
-<script src="../../static/scriptsite.js"></script>
+<script src="/static/scriptsite.js"></script>
 </body>
 </html>

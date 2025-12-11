@@ -3,18 +3,26 @@ import sqlite3
 import json
 import uuid
 from datetime import datetime
-import os
 
 app = Flask(__name__)
-app.secret_key = 'chave_secreta_lume_essence'  # Necessário para sessões (login)
+app.secret_key = 'chave_secreta_lume_essence'  # Necessário para o carrinho e login
 
-# --- Conexão com Banco ---
+# --- Configuração do Banco de Dados ---
 def get_db():
     conn = sqlite3.connect("db_lume.db")
-    conn.row_factory = sqlite3.Row  # Permite acessar colunas por nome
+    conn.row_factory = sqlite3.Row  # Permite acessar colunas pelo nome (ex: item['nome'])
     return conn
 
-# --- Rotas Públicas ---
+# --- Processador de Contexto (Injeta variáveis em todos os templates) ---
+@app.context_processor
+def inject_cart_count():
+    total_itens = 0
+    if 'carrinho' in session:
+        for item in session['carrinho']:
+            total_itens += item['qtd']
+    return dict(cart_count=total_itens)
+
+# --- Rotas Públicas (Com alias .html para evitar erros 404) ---
 @app.route("/")
 @app.route("/index.html")
 def index():
@@ -25,15 +33,28 @@ def index():
 def produtos():
     con = get_db()
     cur = con.cursor()
-    
-    # Busca apenas produtos que estão marcados como ATIVOS no cadastro (opcional)
-    # Se não tiver coluna 'ativo', use: SELECT * FROM tb_produtos
-    cur.execute("SELECT * FROM tb_produtos") 
-    
+    # Busca produtos ativos
+    cur.execute("SELECT * FROM tb_produtos")
     lista_produtos = cur.fetchall()
     con.close()
-    
     return render_template("site/produtos.html", produtos=lista_produtos)
+
+@app.route("/produto/<int:id_produto>")
+@app.route("/produto-detalhe.html") # Rota legado
+def produto_detalhe(id_produto=None):
+    if not id_produto:
+        # Se acessou direto pelo html antigo, redireciona ou mostra erro
+        return redirect("/produtos")
+        
+    con = get_db()
+    cur = con.cursor()
+    cur.execute("SELECT * FROM tb_produtos WHERE id_produto = ?", (id_produto,))
+    produto = cur.fetchone()
+    con.close()
+    
+    if produto:
+        return render_template("site/produto-detalhe.html", produto=produto)
+    return "Produto não encontrado", 404
 
 @app.route("/sobre")
 @app.route("/sobre.html")
@@ -45,34 +66,32 @@ def sobre():
 def contato():
     return render_template("site/contato.html")
 
-
-@app.route("/cadastro.html")
-@app.route("/cadastro")
-def cadastro_page():
-    return render_template("site/cadastro.html")
-
 @app.route("/contato/enviar", methods=["POST"])
 def enviar_contato():
-    nome = request.form["nome"]
-    email = request.form["email"]
-    tel_cel = request.form["tel_cel"]
-    mensagem = request.form["mensagem"]
+    nome = request.form.get("nome")
+    email = request.form.get("email")
+    tel_cel = request.form.get("tel_cel")
+    mensagem = request.form.get("mensagem")
     data_contato = datetime.now()
 
     con = get_db()
     cur = con.cursor()
-    cur.execute("INSERT INTO tb_contatos (nome, email, tel_cel, mensagem, data_contato) VALUES (?, ?, ?, ?, ?)",
-                (nome, email, tel_cel, mensagem, data_contato))
-    con.commit()
-    con.close()
+    try:
+        cur.execute("INSERT INTO tb_contatos (nome, email, tel_cel, mensagem, data_contato) VALUES (?, ?, ?, ?, ?)",
+                    (nome, email, tel_cel, mensagem, data_contato))
+        con.commit()
+    except Exception as e:
+        print(f"Erro ao salvar contato: {e}")
+    finally:
+        con.close()
     return redirect("/contato")
 
 # --- Newsletter ---
 @app.route("/newsletter/cadastrar", methods=["POST"])
 def cadastrar_newsletter():
-    nome = request.form["nome"]
-    whatsapp = request.form["whatsapp"]
-    email = request.form["email"]
+    nome = request.form.get("nome")
+    whatsapp = request.form.get("whatsapp")
+    email = request.form.get("email")
     data_cad = datetime.now()
 
     con = get_db()
@@ -82,27 +101,15 @@ def cadastrar_newsletter():
                     (nome, whatsapp, email, data_cad))
         con.commit()
     except:
-        pass # Ignora erro se já existir
+        pass 
     con.close()
     return redirect("/")
 
-# --- Autenticação (Login/Cadastro) ---
-@app.route ("/login")
-@app.route ("/login.html")
+# --- Autenticação e Cadastro ---
+@app.route("/login")
+@app.route("/site/login.html")
 def login_page():
     return render_template("site/login.html")
-
-# Rotas compatíveis com links relativos que apontam para /site/login.html
-@app.route("/site/login.html")
-@app.route("/site/login")
-def site_login_alias():
-    return render_template("site/login.html")
-
-# Alias para /site/cadastro.html (links relativos dentro de /site/* esperam esse caminho)
-@app.route("/site/cadastro.html")
-@app.route("/site/cadastro")
-def site_cadastro_alias():
-    return render_template("site/cadastro.html")
 
 @app.route("/verificar_email", methods=["POST"])
 def verificar_email():
@@ -117,22 +124,21 @@ def verificar_email():
 
 @app.route("/cadastro-cliente", methods=["POST"])
 def cadastro_cliente():
-    # Recebe todos os campos do seu HTML
-    nome = request.form["nome"]
-    data_nasc = request.form["data_nasc"]
-    cpf = request.form["cpf"]
-    genero = request.form["genero"]
-    tel_cel = request.form["tel_cel"]
-    email = request.form["email"]
-    cep = request.form["cep"]
-    endereco = request.form["endereco"]
-    n = request.form["n"]
+    nome = request.form.get("nome")
+    data_nasc = request.form.get("data_nasc")
+    cpf = request.form.get("cpf")
+    genero = request.form.get("genero")
+    tel_cel = request.form.get("tel_cel")
+    email = request.form.get("email")
+    cep = request.form.get("cep")
+    endereco = request.form.get("endereco")
+    n = request.form.get("n")
     complemento = request.form.get("complemento", "")
     referencia = request.form.get("referencia", "")
-    bairro = request.form["bairro"]
-    cidade = request.form["cidade"]
-    estado = request.form["estado"]
-    senha = request.form["senha"] # Ideal: usar hash
+    bairro = request.form.get("bairro")
+    cidade = request.form.get("cidade")
+    estado = request.form.get("estado")
+    senha = request.form.get("senha")
     data_cad = datetime.now()
 
     con = get_db()
@@ -143,63 +149,109 @@ def cadastro_cliente():
     """, (nome, data_nasc, cpf, genero, tel_cel, email, cep, endereco, n, complemento, referencia, bairro, cidade, estado, senha, data_cad))
     con.commit()
     
-    # Loga o usuário automaticamente
+    # Auto Login
     session['user_id'] = cur.lastrowid
     session['user_nome'] = nome
     con.close()
     
-    return redirect("/area_cliente/area-cliente.html") # Ajuste a rota conforme necessário
+    return redirect("/area_cliente/area-cliente.html")
 
-# --- Carrinho e Checkout ---
+# --- Carrinho de Compras ---
 @app.route("/carrinho")
-def carrinho():
-    return render_template("site/carrinho.html")
-
-@app.route("/carrinho.html")
-def carrinho_html():
-    return render_template("site/carrinho.html")
-
-# Alias para links relativos que apontam para /site/carrinho.html (ex.: ../site/carrinho.html)
 @app.route("/site/carrinho.html")
-@app.route("/site/carrinho")
-def site_carrinho_alias():
-    return render_template("site/carrinho.html")
+def carrinho():
+    if 'carrinho' not in session or len(session['carrinho']) == 0:
+        return render_template("site/carrinho.html", itens=[], total=0)
+    
+    carrinho_sessao = session['carrinho']
+    itens_completos = []
+    total_geral = 0
 
+    con = get_db()
+    cur = con.cursor()
+
+    for item in carrinho_sessao:
+        cur.execute("SELECT * FROM tb_produtos WHERE id_produto = ?", (item['id'],))
+        produto = cur.fetchone()
+        
+        if produto:
+            subtotal = produto['preco_venda'] * item['qtd']
+            total_geral += subtotal
+            
+            itens_completos.append({
+                'id': produto['id_produto'],
+                'nome': produto['nome_produto'],
+                'imagem': produto['img_produto'],
+                'preco': produto['preco_venda'],
+                'qtd': item['qtd'],
+                'subtotal': subtotal
+            })
+    con.close()
+    return render_template("site/carrinho.html", itens=itens_completos, total=total_geral)
+
+@app.route("/adicionar-carrinho/<int:id_produto>")
+def adicionar_carrinho(id_produto):
+    if 'carrinho' not in session:
+        session['carrinho'] = []
+
+    encontrado = False
+    for item in session['carrinho']:
+        if item['id'] == id_produto:
+            item['qtd'] += 1
+            encontrado = True
+            break
+    
+    if not encontrado:
+        session['carrinho'].append({'id': id_produto, 'qtd': 1})
+    
+    session.modified = True
+    return redirect("/carrinho")
+
+@app.route("/remover-carrinho/<int:id_produto>")
+def remover_carrinho(id_produto):
+    if 'carrinho' in session:
+        session['carrinho'] = [item for item in session['carrinho'] if item['id'] != id_produto]
+        session.modified = True
+    return redirect("/carrinho")
+
+@app.route("/alterar-qtd/<int:id_produto>/<acao>")
+def alterar_qtd(id_produto, acao):
+    if 'carrinho' in session:
+        for item in session['carrinho']:
+            if item['id'] == id_produto:
+                if acao == 'mais':
+                    item['qtd'] += 1
+                elif acao == 'menos' and item['qtd'] > 1:
+                    item['qtd'] -= 1
+                break
+        session.modified = True
+    return redirect("/carrinho")
+
+# --- Checkout e Pedidos ---
 @app.route("/checkout")
 def checkout():
-    # Verifica se está logado (Simples)
-    # if 'user_id' not in session:
-    #     return redirect("/login")
-    return render_template("site/checkout.html")
-
-@app.route("/checkout.html")
-def checkout_html():
+    # if 'user_id' not in session: return redirect("/login")
     return render_template("site/checkout.html")
 
 @app.route("/finalizar_pedido", methods=["POST"])
 def finalizar_pedido():
-    # 1. Dados Gerais
-    id_cliente = request.form.get("id_cliente", 1) # Padrão 1 se não estiver logado (teste)
-    if 'user_id' in session:
-        id_cliente = session['user_id']
-        
-    valor_total = request.form["total_pedido"]
-    forma_pagamento = request.form["forma_pagamento"]
-    lista_itens_json = request.form["lista_itens"]
-    try:
-        qtd_parcelas = int(request.form.get("parcelas_escolhidas", 1))
-    except Exception:
-        qtd_parcelas = 1
+    # Pega ID do usuário logado ou usa 1 para teste
+    id_cliente = session.get('user_id', 1) 
+    
+    valor_total = request.form.get("total_pedido")
+    forma_pagamento = request.form.get("forma_pagamento")
+    lista_itens_json = request.form.get("lista_itens")
+    qtd_parcelas = request.form.get("parcelas_escolhidas", 1)
     
     con = get_db()
     cur = con.cursor()
 
     try:
-        # --- Lógica do Cartão (Simulação) ---
+        # Lógica do Cartão (Salvar se solicitado)
         if forma_pagamento == 'credit':
-            card_number = request.form.get("card_number_sent", "")
             save_option = request.form.get("save_card_option", "nao")
-
+            card_number = request.form.get("card_number_sent", "")
+            
             if save_option == 'sim' and card_number:
                 nome_titular = request.form.get("card_holder_sent")
                 validade = request.form.get("card_expiry_sent")
@@ -207,108 +259,90 @@ def finalizar_pedido():
                 bandeira = "Visa" if card_number.startswith("4") else "Mastercard"
                 token_falso = str(uuid.uuid4())
 
-                # tb_cartoes tem coluna 'parcelas' no schema; gravamos também aí
-                cur.execute("""
-                    INSERT INTO tb_cartoes (id_cliente, nome_titular, ultimos_4, bandeira, token_pagamento, validade, parcelas)
-                    VALUES (?, ?, ?, ?, ?, ?, ?)
-                """, (id_cliente, nome_titular, ultimos_4, bandeira, token_falso, validade, qtd_parcelas))
+                try:
+                    cur.execute("""
+                        INSERT INTO tb_cartoes (id_cliente, nome_titular, ultimos_4, bandeira, token_pagamento, validade)
+                        VALUES (?, ?, ?, ?, ?, ?)
+                    """, (id_cliente, nome_titular, ultimos_4, bandeira, token_falso, validade))
+                except Exception as e:
+                    print(f"Erro ao salvar cartão (tabela pode não existir): {e}")
 
-        # 2. Salvar Pedido
+        # Salvar Pedido
         data_atual = datetime.now()
-        data_entrega = datetime.now() # Adicione dias se quiser
+        data_entrega = datetime.now() 
 
-        # Inserir pedido (schema tb_pedidos não tem coluna 'parcelas')
-        cur.execute("""
-            INSERT INTO tb_pedidos (id_cliente, data_pedido, status, valor_total, data_entrega, forma_pagamento)
-            VALUES (?, ?, ?, ?, ?, ?)
-        """, (id_cliente, data_atual, 'Pendente', valor_total, data_entrega, forma_pagamento))
+        # Verifica se tabela tem coluna parcelas, senão ignora
+        try:
+            cur.execute("""
+                INSERT INTO tb_pedidos (id_cliente, data_pedido, status, valor_total, data_entrega, forma_pagamento, parcelas)
+                VALUES (?, ?, ?, ?, ?, ?, ?)
+            """, (id_cliente, data_atual, 'Pendente', valor_total, data_entrega, forma_pagamento, qtd_parcelas))
+        except:
+             # Fallback se não tiver a coluna parcelas
+             cur.execute("""
+                INSERT INTO tb_pedidos (id_cliente, data_pedido, status, valor_total, data_entrega, forma_pagamento)
+                VALUES (?, ?, ?, ?, ?, ?)
+            """, (id_cliente, data_atual, 'Pendente', valor_total, data_entrega, forma_pagamento))
         
         id_novo_pedido = cur.lastrowid 
 
-        # 3. Salvar Itens
-        itens = json.loads(lista_itens_json)
-        for item in itens:
-            subtotal = float(item['qtd']) * float(item['preco'])
-            cur.execute("""
-                INSERT INTO tb_itensPedido (id_pedido, id_produto, quantidade, preco_unitario, subtotal)
-                VALUES (?, ?, ?, ?, ?)
-            """, (id_novo_pedido, item['id_produto'], item['qtd'], item['preco'], subtotal))
+        # Salvar Itens
+        if lista_itens_json:
+            itens = json.loads(lista_itens_json)
+            for item in itens:
+                subtotal = float(item['qtd']) * float(item['preco'])
+                cur.execute("""
+                    INSERT INTO tb_itensPedido (id_pedido, id_produto, quantidade, preco_unitario, subtotal)
+                    VALUES (?, ?, ?, ?, ?)
+                """, (id_novo_pedido, item['id_produto'], item['qtd'], item['preco'], subtotal))
 
         con.commit()
-        return redirect("/area_cliente/meus-pedidos") # Sucesso
+        
+        # Limpa o carrinho
+        session['carrinho'] = []
+        session.modified = True
+        
+        return redirect("/area_cliente/meus-pedidos.html")
 
     except Exception as e:
         con.rollback()
-        print(f"Erro: {e}")
+        print(f"Erro Crítico no Checkout: {e}")
         return f"Erro ao processar pedido: {e}"
     finally:
         con.close()
 
-# --- Área do Cliente (Rotas de Visualização) ---
-@app.route("/area_cliente/area-cliente.html") # Mantendo o nome do arquivo para facilitar
+# --- Área do Cliente ---
+@app.route("/area_cliente/area-cliente.html")
 def area_cliente_home():
     return render_template("area_cliente/area-cliente.html")
 
 @app.route("/area_cliente/meus-pedidos.html")
 def area_cliente_pedidos():
-    # 1. Verifica se está logado
-    if 'user_id' not in session:
-        return redirect("/login")
-    
-    id_cliente_logado = session['user_id']
-
+    id_cliente = session.get('user_id', 1)
     con = get_db()
     cur = con.cursor()
-    
-    # 2. Busca APENAS os pedidos desse cliente (WHERE id_cliente = ?)
-    # Também fazemos JOIN com 'tb_itensPedido' e 'tb_produtos' se quisermos mostrar os itens,
-    # mas para simplificar a lista principal, vamos pegar só os dados do pedido.
-    cur.execute("""
-        SELECT * FROM tb_pedidos 
-        WHERE id_cliente = ? 
-        ORDER BY data_pedido DESC
-    """, (id_cliente_logado,))
-    
-    meus_pedidos = cur.fetchall()
+    cur.execute("SELECT * FROM tb_pedidos WHERE id_cliente = ? ORDER BY data_pedido DESC", (id_cliente,))
+    pedidos = cur.fetchall()
     con.close()
+    return render_template("area_cliente/meus-pedidos.html", pedidos=pedidos)
 
-    return render_template("area_cliente/meus-pedidos.html", pedidos=meus_pedidos)
+@app.route("/area_cliente/favoritos.html")
+def area_favoritos():
+    return render_template("area_cliente/favoritos.html")
 
+@app.route("/area_cliente/enderecos.html")
+def area_enderecos():
+    return render_template("area_cliente/enderecos.html")
 
-# Demais rotas da área do cliente (favoritos, endereços, etc)...
-@app.route("/area_cliente/<page>")
-def area_cliente_pages(page):
-    return render_template(f"area_cliente/{page}")
+@app.route("/area_cliente/cartoes.html")
+def area_cartoes():
+    # Opcional: Buscar cartões do banco para mostrar
+    return render_template("area_cliente/cartoes.html")
 
-@app.route('/site/<path:subpath>')
-def site_template_proxy(subpath):
-    """Renderiza qualquer template dentro de `templates/site/` se existir.
-    Ex.: /site/categorias/velas.html -> templates/site/categorias/velas.html
-    """
-    # Segurança: só aceitar GET e checar existência do arquivo
-    tpl_path = os.path.join(app.root_path, 'templates', 'site', subpath)
-    if os.path.exists(tpl_path) and os.path.isfile(tpl_path):
-        return render_template(f"site/{subpath}")
-    else:
-        from flask import abort
-        abort(404)
+@app.route("/area_cliente/meus-dados.html")
+def area_dados():
+    return render_template("area_cliente/meus-dados.html")
 
-
-@app.route('/<path:page>')
-def site_page_proxy(page):
-    """Renderiza templates `templates/site/<page>` quando existir (páginas no nível raiz).
-    Ex.: /produtos.html -> templates/site/produtos.html
-    """
-    if not page.endswith('.html'):
-        from flask import abort
-        abort(404)
-    tpl_path = os.path.join(app.root_path, 'templates', 'site', page)
-    if os.path.exists(tpl_path) and os.path.isfile(tpl_path):
-        return render_template(f"site/{page}")
-    else:
-        from flask import abort
-        abort(404)
-
-
+# Inicialização
 if __name__ == "__main__":
     app.run(debug=True, port=5000)

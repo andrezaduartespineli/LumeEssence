@@ -10,13 +10,13 @@
     <link href="https://fonts.googleapis.com/css2?family=Montserrat:ital,wght@0,100..900;1,100..900&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     
-    <link rel="stylesheet" href="../../static/stylesite.css">
+    <link rel="stylesheet" href="/static/stylesite.css">
 </head>
 <body style="background-color: #f8f8f8;">
 
     <div class="checkout-header">
-        <a href="index.html">
-            <img src="../../static/imagens/Logo/horizontalsemfundo.png" alt="Lume Essence Logo">
+        <a href="/">
+            <img src="/static/imagens/Logo/horizontalsemfundo.png" alt="Lume Essence Logo">
         </a>
         <div class="secure-badge">
             <i class="fas fa-lock"></i> Ambiente Seguro
@@ -28,12 +28,12 @@
         <main class="checkout-forms">
             
             <div class="breadcrumbs">
-            <a href="index.html">Início</a> > <a href="carrinho.html">Carrinho</a> > <strong>Finalizar Compra</strong>
+            <a href="/">Início</a> > <a href="/carrinho">Carrinho</a> > <strong>Finalizar Compra</strong>
         </div>
 
     <div class="login-alert">
         <i class="fas fa-user-circle"></i>
-        <span>Já é cliente? <a href="login.html">Clique aqui para entrar</a> e agilizar sua compra.</span>
+        <span>Já é cliente? <a href="/login">Clique aqui para entrar</a> e agilizar sua compra.</span>
     </div>
     <br>
 
@@ -139,7 +139,7 @@
     <input type="hidden" name="parcelas_escolhidas" id="hidden-parcelas" value="1">
 
     <div class="checkout-actions">
-        <a href="carrinho.html" class="btn-cancel-order">Cancelar Pedido</a>
+        <a href="/carrinho" class="btn-cancel-order">Cancelar Pedido</a>
         <button type="submit" class="btn-finish-order" onclick="prepararEnvio()">CONFIRMAR PEDIDO</button>
     </div>
 </form>
@@ -152,7 +152,7 @@
                 
                 <div class="summary-products">
                     <div class="summary-item">
-                        <img src="../../static/imagens/vela.png" alt="Vela">
+                        <img src="/static/imagens/vela.png" alt="Vela">
                         <div class="sum-details">
                             <p class="sum-name">Vela Lavanda Dream</p>
                             <p class="sum-qty">Qtd: 1</p>
@@ -161,7 +161,7 @@
                     </div>
 
                     <div class="summary-item">
-                        <img src="../../static/imagens/homespray.png" alt="Home Spray">
+                        <img src="/static/imagens/homespray.png" alt="Home Spray">
                         <div class="sum-details">
                             <p class="sum-name">Home Spray Bambu</p>
                             <p class="sum-qty">Qtd: 2</p>
@@ -204,13 +204,12 @@
             <span>Receba nossas novidades e promoções.</span>
       </div>
 
-      <form class="newsletter-form" action="/newsletter/cadastrar" method="POST">
+    <form class="newsletter-form" action="/newsletter/cadastrar" method="POST">
     <input type="text" name="nome" placeholder="Nome completo" required>
     <input type="text" name="whatsapp" placeholder="WhatsApp" required>
     <input type="email" name="email" placeholder="E-mail" required>
     <button type="submit">OK</button>
     </form>
-    </div>
     </div>
 
     <hr class="footer-divider">
@@ -220,10 +219,10 @@
     <div class="footer-col">
         <h4>Navegação</h4>
         <ul>
-          <li><a href="index.html">Início</a></li>
-          <li><a href="produtos.html">Produtos</a></li>
-          <li><a href="contato.html">Contato</a></li>
-          <li><a href="sobre.html">Sobre</a></li>
+          <li><a href="/">Início</a></li>
+          <li><a href="/produtos">Produtos</a></li>
+          <li><a href="/contato">Contato</a></li>
+          <li><a href="/sobre">Sobre</a></li>
         </ul>
     </div>
 
@@ -276,11 +275,11 @@
     <div class="copyright">
       © 2025 Lume Essence - Todos os direitos reservados
     </div>
-
+     <a href="../interno/login.html" class="admin-footer-link">Acesso da Equipe</a>
   </div>
 </footer>
 
-<script src="../../static/scriptsite.js"></script>
+<script src="/static/scriptsite.js"></script>
 
 </body>
 </html>
