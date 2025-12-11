@@ -60,51 +60,49 @@ LumeEssence/
 └── templates/          # Templates HTML (Jinja2)
     ├── site/           # Páginas da Loja (Home, Checkout, Login)
     ├── interno/        # Páginas do Admin (Dashboard, Cadastros)
-    └── area_cliente/   # Páginas logadas do usuário
-⚡ Como Rodar o Projeto
-Pré-requisitos
+    └── area_cliente/   # Páginas logadas do usuário 
+```
+
+
+
+## ⚡ Como Rodar o Projeto
+
+# Pré-requisitos
 Python 3.x instalado.
 
-Passo a Passo
+# Passo a Passo
 Clone o repositório:
-
-Bash
 
 git clone [https://github.com/andrezaduartespineli/LumeEssence.git](https://github.com/andrezaduartespineli/LumeEssence.git)
 cd LumeEssence
 
 
 # Crie o Ambiente Virtual (Opcional, mas recomendado):
-
 python -m venv .venv
 
 
-# Windows:
+## Windows:
 .venv\Scripts\activate
 
-# Linux/Mac:
+## Linux/Mac:
 source .venv/bin/activate
 
 
-#Instale as dependências:
-
+# Instale as dependências:
 pip install flask
 
 
-#Inicialize o Banco de Dados: Este comando criará o arquivo db_lume.db com todas as tabelas necessárias.
-
+# Inicialize o Banco de Dados: Este comando criará o arquivo db_lume.db com todas as tabelas necessárias.
 python db_lume.db.py
 
 
-#Execute as Aplicações: O sistema roda em duas portas simultâneas. Abra dois terminais:
+# Execute as Aplicações: O sistema roda em duas portas simultâneas. Abra dois terminais:
 
-#Terminal 1 (Loja):
-
+# Terminal 1 (Loja):
 python appsite.py
 Acesse: http://127.0.0.1:5000
 
-#Terminal 2 (Admin):
-
+# Terminal 2 (Admin):
 python appinterno.py
 Acesse: http://127.0.0.1:5001
 

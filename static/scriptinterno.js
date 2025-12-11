@@ -163,4 +163,25 @@ function toggleProfileMenu() {
            
        /* -----  FIM JAVA DO CADASTRO DE PRODUTOS ----- */
 
+       /* JAVA FOTO DE FUNCIONARIO*/
+
+       function mostrarPreview(input) {
+            if (input.files && input.files[0]) {
+                var reader = new FileReader();
+                
+                reader.onload = function(e) {
+                    // Esconde o ícone e texto
+                    document.getElementById('uploadContent').style.display = 'none';
+                    // Mostra a imagem e define o src
+                    var img = document.getElementById('previewImg');
+                    img.src = e.target.result;
+                    img.style.display = 'block';
+                }
+                
+                reader.readAsDataURL(input.files[0]);
+            }
+        }
+
+       /* FIM JAVA FOTO DE FUNCIONARIO */
+
        document.getElementById('data_cad_fornecedor').value = new Date().toISOString().split('T')[0];

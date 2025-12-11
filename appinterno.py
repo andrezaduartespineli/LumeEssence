@@ -273,6 +273,9 @@ def view_novo_funcionario():
 
 @app.route("/funcionario/novo", methods=["POST"])
 def novo_funcionario_post():
+    print("--- Tentando cadastrar funcionário ---")
+    
+    # Dados de texto
     nome = request.form.get("nome")
     cpf = request.form.get("cpf")
     data_nasc = request.form.get("data_nasc")
@@ -285,15 +288,39 @@ def novo_funcionario_post():
     permissao = request.form.get("permissao")
     ativo = 1 if request.form.get("ativo") else 0
 
+    # Lógica de Upload da Foto
+    nome_arquivo = "sem_foto_humano.png" # Foto padrão se não enviar nada
+    if 'foto' in request.files:
+        arquivo = request.files['foto']
+        if arquivo.filename != "":
+            # Cria um nome seguro e único para não substituir fotos de outros
+            import os
+            from werkzeug.utils import secure_filename
+            
+            nome_seguro = secure_filename(arquivo.filename)
+            # Salva na pasta uploads
+            arquivo.save(os.path.join(app.config['UPLOAD_FOLDER'], nome_seguro))
+            nome_arquivo = nome_seguro
+
     con = get_db()
     cur = con.cursor()
-    cur.execute("""
-        INSERT INTO tb_funcionarios (nome, cpf, data_nasc, tel_cel, email_pessoal, cargo, departamento, email_login, senha, permissao, ativo)
-        VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
-    """, (nome, cpf, data_nasc, tel_cel, email_pessoal, cargo, departamento, email_login, senha, permissao, ativo))
-    con.commit()
-    con.close()
-    return redirect("/funcionarios")
+    
+    try:
+        # Note que adicionei a coluna 'foto' no INSERT
+        cur.execute("""
+            INSERT INTO tb_funcionarios (nome, cpf, data_nasc, tel_cel, email_pessoal, cargo, departamento, email_login, senha, permissao, foto, ativo)
+            VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
+        """, (nome, cpf, data_nasc, tel_cel, email_pessoal, cargo, departamento, email_login, senha, permissao, nome_arquivo, ativo))
+        
+        con.commit()
+        return redirect("/funcionarios")
+        
+    except Exception as e:
+        con.rollback()
+        print(f"❌ ERRO: {e}")
+        return f"Erro ao salvar: {e}"
+    finally:
+        con.close()
 
 # --- Clientes ---
 @app.route("/cliente.html")
@@ -305,6 +332,21 @@ def clientes():
     clientes = cur.fetchall()
     con.close()
     return render_template("interno/cliente.html", clientes=clientes)
+
+# --- Mensagens de Contato (Fale Conosco) ---
+@app.route("/mensagens.html")
+@app.route("/mensagens")
+def mensagens():
+    con = get_db()
+    cur = con.cursor()
+    # Busca as mensagens, da mais recente para a mais antiga
+    try:
+        cur.execute("SELECT * FROM tb_contatos ORDER BY data_contato DESC")
+        msgs = cur.fetchall()
+    except:
+        msgs = []
+    con.close()
+    return render_template("interno/mensagens.html", mensagens=msgs)
 
 # --- Newsletter (Leads) ---
 @app.route("/newsletter.html")

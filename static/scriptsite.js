@@ -157,55 +157,32 @@ function changeImage(element) {
   /* Fim da pagina de Checkout */    
   
   /* Java do modal de newsletter */
+document.addEventListener("DOMContentLoaded", function() {
+    
+    // 1. VERIFICAÇÃO: Só entra aqui se NÃO tiver o registro na memória da sessão
+    if (!sessionStorage.getItem('jaMostrouNewsletter')) {
 
-    document.addEventListener("DOMContentLoaded", function() {
         const modal = document.getElementById('newsletter-modal');
-        const closeBtn = document.getElementById('close-modal');
-        const form = document.querySelector('.newsletter-form');
-
-        // Verifica se o usuário já viu/fechou o modal anteriormente
-        // Se NÃO tiver a marcação no navegador, executa
-        if (!localStorage.getItem('lumeEssencePopupClosed')) {
-            
-            // Espera 2.5 segundos para mostrar o modal (menos intrusivo)
-            setTimeout(() => {
-                modal.style.display = 'flex';
-                // Pequeno delay para permitir a transição CSS funcionar
-                setTimeout(() => {
-                    modal.classList.add('active');
-                }, 10);
-            }, 2500);
-        }
-
-        // Função para fechar o modal
-        function closeModal() {
-            modal.classList.remove('active');
-            setTimeout(() => {
-                modal.style.display = 'none';
-            }, 500); // Espera a animação de fade-out terminar
-            
-            // Salva no navegador que o usuário fechou, para não mostrar de novo
-            localStorage.setItem('lumeEssencePopupClosed', 'true');
-        }
-
-        // Eventos de clique para fechar
-        closeBtn.addEventListener('click', closeModal);
         
-        // Fecha se clicar fora da caixinha branca
-        modal.addEventListener('click', (e) => {
-            if (e.target === modal) {
-                closeModal();
-            }
-        });
+        if (modal) {
+            // Remove a classe show pra garantir que começa invisível
+            modal.classList.remove('show');
 
-        // Opcional: Feedback ao enviar o formulário
-        form.addEventListener('submit', function(e) {
-            e.preventDefault();
-            // Aqui você colocaria a lógica real de envio (PHP/JS)
-            alert('Bem-vindo(a) à Lume Essence! Seu cupom é: LUME10');
-            closeModal();
-        });
-    });
+            // 2. TEMPORIZADOR: Espera 2 segundos antes de aparecer (dá tempo do site carregar)
+            setTimeout(() => {
+                modal.classList.add('show');
+
+                // 3. GRAVA NA MEMÓRIA: "Já mostrei pro usuário nessa aba"
+                sessionStorage.setItem('jaMostrouNewsletter', 'true');
+            }, 2000); 
+        }
+    }
+});
+
+function fecharModalNewsletter() {
+    const modal = document.getElementById('newsletter-modal');
+    modal.classList.remove('show');
+}
 /* FIm Java do modal de newsletter */
 
 /* JAVA PAGINA DO CARRINHO*/

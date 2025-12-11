@@ -1,0 +1,95 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Mensagens de Contato | Lume Admin</title>
+    <link rel="icon" href="/static/imagens/Logo/grandelogosemfundo.png">
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@300;400;600&family=Quicksand:wght@400;500;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="stylesheet" href="/static/styleinterno.css">
+</head>
+<body>
+
+    <div class="admin-container">
+        
+        <aside class="sidebar">
+            <div class="sidebar-header">
+                <h2 class="brand-text">LUME <span>ADMIN</span></h2>
+            </div>
+            <nav class="sidebar-nav">
+                <ul>
+                    <li><a href="dashboard.html"><i class="fa-solid fa-chart-line"></i> Visão Geral</a></li>
+                    <li><a href="pedido.html"><i class="fa-solid fa-bag-shopping"></i>Pedidos</a></li>
+                    <li><a href="produto.html"><i class="fa-solid fa-box-open"></i> Produtos</a></li>
+                    <li><a href="fornecedores.html"><i class="fa-solid fa-truck-fast"></i> Fornecedores</a></li>
+                    <li><a href="funcionarios.html"><i class="fa-solid fa-users"></i> Funcionários</a></li>
+                    <li><a href="financeiro.html"><i class="fa-solid fa-file-invoice-dollar"></i> Financeiro</a></li>
+                    <li><a href="cliente.html"><i class="fas fa-user"></i>Clientes</a></li>
+                    <li><a href="newsletter.html"><i class="fa-solid fa-envelope-open-text"></i> Newsletter</a></li>
+                    <li class="active"><a href="mensagens.html"><i class="fa-regular fa-comment-dots"></i> Mensagens</a></li>
+                    <li class="separator"></li>
+                    <li><a href="configuracoes.html"><i class="fa-solid fa-gear"></i> Configurações</a></li>
+                </ul>
+            </nav>
+            <div class="sidebar-footer">
+                <a href="login.html" class="logout-btn"><i class="fa-solid fa-right-from-bracket"></i> Sair</a>
+            </div>
+        </aside>
+
+        <main class="main-content">
+            <header class="top-bar">
+                <div class="welcome-text">
+                    <h1>Fale Conosco</h1>
+                    <p>Mensagens enviadas pelos clientes através do site.</p>
+                </div>
+            </header>
+
+            <section class="table-container" style="background: white; padding: 20px; border-radius: 12px; margin-top: 20px;">
+                <table style="width: 100%; border-collapse: collapse;">
+                    <thead>
+                        <tr style="border-bottom: 2px solid #eee; text-align: left;">
+                            <th style="padding: 15px;">Data</th>
+                            <th style="padding: 15px;">Remetente</th>
+                            <th style="padding: 15px;">Contato</th>
+                            <th style="padding: 15px; width: 40%;">Mensagem</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for m in mensagens %}
+                        <tr style="border-bottom: 1px solid #f9f9f9;">
+                            <td style="padding: 15px; color: #888; font-size: 0.9rem;">
+                                {{ m['data_contato'] }}
+                            </td>
+                            
+                            <td style="padding: 15px;">
+                                <strong>{{ m['nome'] }}</strong>
+                            </td>
+                            
+                            <td style="padding: 15px;">
+                                <div style="display: flex; flex-direction: column; gap: 5px;">
+                                    <span style="font-size: 0.85rem;"><i class="fa-regular fa-envelope"></i> {{ m['email'] }}</span>
+                                    <span style="font-size: 0.85rem;"><i class="fa-brands fa-whatsapp"></i> {{ m['tel_cel'] }}</span>
+                                </div>
+                            </td>
+                            
+                            <td style="padding: 15px;">
+                                <div style="background: #f8f9fa; padding: 10px; border-radius: 6px; font-size: 0.9rem; color: #555; line-height: 1.4;">
+                                    {{ m['mensagem'] }}
+                                </div>
+                            </td>
+                        </tr>
+                        {% else %}
+                        <tr>
+                            <td colspan="4" style="text-align: center; padding: 40px; color: #999;">
+                                Nenhuma mensagem recebida ainda.
+                            </td>
+                        </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            </section>
+        </main>
+    </div>
+</body>
+</html>

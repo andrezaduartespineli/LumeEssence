@@ -68,6 +68,9 @@ def contato():
 
 @app.route("/contato/enviar", methods=["POST"])
 def enviar_contato():
+    print("--- Recebendo formulário de contato ---")
+    
+    # 1. Recebe os dados do HTML
     nome = request.form.get("nome")
     email = request.form.get("email")
     tel_cel = request.form.get("tel_cel")
@@ -76,40 +79,68 @@ def enviar_contato():
 
     con = get_db()
     cur = con.cursor()
+
     try:
-        cur.execute("INSERT INTO tb_contatos (nome, email, tel_cel, mensagem, data_contato) VALUES (?, ?, ?, ?, ?)",
-                    (nome, email, tel_cel, mensagem, data_contato))
+        # 2. Tenta salvar no banco
+        cur.execute("""
+            INSERT INTO tb_contatos (nome, email, tel_cel, mensagem, data_contato) 
+            VALUES (?, ?, ?, ?, ?)
+        """, (nome, email, tel_cel, mensagem, data_contato))
+        
         con.commit()
+        print("✅ Mensagem salva com sucesso!")
+        
+        # Opcional: Você pode criar uma página de "obrigado.html" ou só recarregar
+        return redirect("/contato") 
+
     except Exception as e:
-        print(f"Erro ao salvar contato: {e}")
+        con.rollback()
+        print(f"❌ ERRO AO SALVAR CONTATO: {e}")
+        return f"Erro ao enviar mensagem: {e}"
     finally:
         con.close()
-    return redirect("/contato")
-
+        
 # --- Newsletter ---
 @app.route("/newsletter/cadastrar", methods=["POST"])
 def cadastrar_newsletter():
-    nome = request.form.get("nome")
-    whatsapp = request.form.get("whatsapp")
+    # Recebe os dados (pode vir vazio se o form não tiver o campo)
+    nome = request.form.get("nome", "Anônimo")
+    whatsapp = request.form.get("whatsapp", "")
     email = request.form.get("email")
     data_cad = datetime.now()
+
+    print(f"--- Tentando cadastrar Newsletter: {email} ---") # Log no terminal
 
     con = get_db()
     cur = con.cursor()
     try:
-        cur.execute("INSERT INTO tb_newsletter (nome, whatsapp, email, data_cad) VALUES (?, ?, ?, ?)",
-                    (nome, whatsapp, email, data_cad))
+        cur.execute("""
+            INSERT INTO tb_newsletter (nome, whatsapp, email, data_cad) 
+            VALUES (?, ?, ?, ?)
+        """, (nome, whatsapp, email, data_cad))
         con.commit()
-    except:
-        pass 
-    con.close()
+        print("✅ Sucesso! Lead salvo no banco.")
+    except Exception as e:
+        con.rollback()
+        print(f"❌ ERRO AO SALVAR NEWSLETTER: {e}") # Isso vai te dizer o problema exato
+    finally:
+        con.close()
+        
+    # Redireciona de volta para a Home
     return redirect("/")
+
 
 # --- Autenticação e Cadastro ---
 @app.route("/login")
 @app.route("/site/login.html")
 def login_page():
     return render_template("site/login.html")
+
+# --- Rota para EXIBIR a tela de cadastro ---
+@app.route("/cadastro")
+@app.route("/cadastro.html")
+def cadastro_page():
+    return render_template("site/cadastro.html")
 
 @app.route("/verificar_email", methods=["POST"])
 def verificar_email():
@@ -124,37 +155,53 @@ def verificar_email():
 
 @app.route("/cadastro-cliente", methods=["POST"])
 def cadastro_cliente():
-    nome = request.form.get("nome")
-    data_nasc = request.form.get("data_nasc")
-    cpf = request.form.get("cpf")
-    genero = request.form.get("genero")
-    tel_cel = request.form.get("tel_cel")
-    email = request.form.get("email")
-    cep = request.form.get("cep")
-    endereco = request.form.get("endereco")
-    n = request.form.get("n")
-    complemento = request.form.get("complemento", "")
-    referencia = request.form.get("referencia", "")
-    bairro = request.form.get("bairro")
-    cidade = request.form.get("cidade")
-    estado = request.form.get("estado")
-    senha = request.form.get("senha")
-    data_cad = datetime.now()
+    print("--- Tentando cadastrar cliente ---") # Aviso no terminal
+    
+    try:
+        # 1. Recebe os dados
+        nome = request.form.get("nome")
+        data_nasc = request.form.get("data_nasc")
+        cpf = request.form.get("cpf")
+        genero = request.form.get("genero")
+        tel_cel = request.form.get("tel_cel")
+        email = request.form.get("email")
+        cep = request.form.get("cep")
+        endereco = request.form.get("endereco")
+        n = request.form.get("n")
+        complemento = request.form.get("complemento", "")
+        referencia = request.form.get("referencia", "")
+        bairro = request.form.get("bairro")
+        cidade = request.form.get("cidade")
+        estado = request.form.get("estado")
+        senha = request.form.get("senha")
+        data_cad = datetime.now()
 
-    con = get_db()
-    cur = con.cursor()
-    cur.execute("""
-        INSERT INTO tb_clientes (nome, data_nasc, cpf, genero, tel_cel, email, cep, endereco, n, complemento, referencia, bairro, cidade, estado, senha, data_cad)
-        VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
-    """, (nome, data_nasc, cpf, genero, tel_cel, email, cep, endereco, n, complemento, referencia, bairro, cidade, estado, senha, data_cad))
-    con.commit()
-    
-    # Auto Login
-    session['user_id'] = cur.lastrowid
-    session['user_nome'] = nome
-    con.close()
-    
-    return redirect("/area_cliente/area-cliente.html")
+        # 2. Conecta e Salva
+        con = get_db()
+        cur = con.cursor()
+        
+        cur.execute("""
+            INSERT INTO tb_clientes (nome, data_nasc, cpf, genero, tel_cel, email, cep, endereco, n, complemento, referencia, bairro, cidade, estado, senha, data_cad)
+            VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
+        """, (nome, data_nasc, cpf, genero, tel_cel, email, cep, endereco, n, complemento, referencia, bairro, cidade, estado, senha, data_cad))
+        
+        con.commit()
+        
+        # Pega o ID para logar
+        novo_id = cur.lastrowid
+        con.close()
+        
+        print(f"✅ Sucesso! Cliente cadastrado com ID: {novo_id}")
+        
+        # Loga o usuário
+        session['user_id'] = novo_id
+        session['user_nome'] = nome
+        
+        return redirect("/area_cliente/area-cliente.html")
+
+    except Exception as e:
+        print(f"❌ ERRO AO CADASTRAR: {e}") # Isso vai aparecer no seu terminal
+        return f"Erro ao cadastrar: {e}"
 
 # --- Carrinho de Compras ---
 @app.route("/carrinho")
@@ -235,9 +282,7 @@ def checkout():
 
 @app.route("/finalizar_pedido", methods=["POST"])
 def finalizar_pedido():
-    # Pega ID do usuário logado ou usa 1 para teste
     id_cliente = session.get('user_id', 1) 
-    
     valor_total = request.form.get("total_pedido")
     forma_pagamento = request.form.get("forma_pagamento")
     lista_itens_json = request.form.get("lista_itens")
@@ -247,42 +292,27 @@ def finalizar_pedido():
     cur = con.cursor()
 
     try:
-        # 1. Lógica do Cartão (Salvar se solicitado)
+        # 1. Salvar Cartão (Se solicitado)
         if forma_pagamento == 'credit':
             save_option = request.form.get("save_card_option", "nao")
             card_number = request.form.get("card_number_sent", "")
-            
             if save_option == 'sim' and card_number:
                 nome_titular = request.form.get("card_holder_sent")
                 validade = request.form.get("card_expiry_sent")
                 ultimos_4 = card_number.replace(" ", "")[-4:]
                 bandeira = "Visa" if card_number.startswith("4") else "Mastercard"
                 token_falso = str(uuid.uuid4())
-
                 try:
-                    cur.execute("""
-                        INSERT INTO tb_cartoes (id_cliente, nome_titular, ultimos_4, bandeira, token_pagamento, validade)
-                        VALUES (?, ?, ?, ?, ?, ?)
-                    """, (id_cliente, nome_titular, ultimos_4, bandeira, token_falso, validade))
-                except Exception as e:
-                    print(f"Erro ao salvar cartão (tabela pode não existir): {e}")
+                    cur.execute("INSERT INTO tb_cartoes (id_cliente, nome_titular, ultimos_4, bandeira, token_pagamento, validade) VALUES (?, ?, ?, ?, ?, ?)", 
+                                (id_cliente, nome_titular, ultimos_4, bandeira, token_falso, validade))
+                except: pass
 
         # 2. Salvar Pedido
         data_atual = datetime.now()
-        data_entrega = datetime.now() 
-
-        # Verifica se tabela tem coluna parcelas, senão ignora (Fallback de segurança)
-        try:
-            cur.execute("""
-                INSERT INTO tb_pedidos (id_cliente, data_pedido, status, valor_total, data_entrega, forma_pagamento, parcelas)
-                VALUES (?, ?, ?, ?, ?, ?, ?)
-            """, (id_cliente, data_atual, 'Pendente', valor_total, data_entrega, forma_pagamento, qtd_parcelas))
-        except:
-             cur.execute("""
-                INSERT INTO tb_pedidos (id_cliente, data_pedido, status, valor_total, data_entrega, forma_pagamento)
-                VALUES (?, ?, ?, ?, ?, ?)
-            """, (id_cliente, data_atual, 'Pendente', valor_total, data_entrega, forma_pagamento))
-        
+        cur.execute("""
+            INSERT INTO tb_pedidos (id_cliente, data_pedido, status, valor_total, data_entrega, forma_pagamento, parcelas)
+            VALUES (?, ?, ?, ?, ?, ?, ?)
+        """, (id_cliente, data_atual, 'Pendente', valor_total, data_atual, forma_pagamento, qtd_parcelas))
         id_novo_pedido = cur.lastrowid 
 
         # 3. Salvar Itens
@@ -290,43 +320,28 @@ def finalizar_pedido():
             itens = json.loads(lista_itens_json)
             for item in itens:
                 subtotal = float(item['qtd']) * float(item['preco'])
-                cur.execute("""
-                    INSERT INTO tb_itensPedido (id_pedido, id_produto, quantidade, preco_unitario, subtotal)
-                    VALUES (?, ?, ?, ?, ?)
-                """, (id_novo_pedido, item['id_produto'], item['qtd'], item['preco'], subtotal))
+                cur.execute("INSERT INTO tb_itensPedido (id_pedido, id_produto, quantidade, preco_unitario, subtotal) VALUES (?, ?, ?, ?, ?)", 
+                            (id_novo_pedido, item['id_produto'], item['qtd'], item['preco'], subtotal))
 
-        # --- 4. NOVO: LANÇAMENTO AUTOMÁTICO NO FINANCEIRO (RECEITA) ---
-        
-        # Define status: Se for Pix ou Cartão, já entra como "Recebido". Se fosse Boleto, seria "Pendente".
-        status_financeiro = 'Recebido'
-        
-        # Cria a descrição automática (Ex: "Venda Site #5420 - Cliente X")
-        # Nota: Idealmente buscaríamos o nome do cliente, mas aqui usamos o ID para ser rápido
-        descricao_lancamento = f"Venda E-commerce Pedido #{id_novo_pedido}"
-        
+        # --- 4. NOVO: LANÇAR NO FINANCEIRO AUTOMATICAMENTE ---
+        status_fin = 'Recebido' # Assume recebido para Pix/Cartão
         cur.execute("""
             INSERT INTO tb_contasReceber (descricao, valor, data_emissao, data_venc, categoria, status, id_pedido, id_cliente)
             VALUES (?, ?, ?, ?, ?, ?, ?, ?)
-        """, (descricao_lancamento, valor_total, data_atual, data_atual, "Venda Online", status_financeiro, id_novo_pedido, id_cliente))
-        
-        print(f"💰 Venda #{id_novo_pedido} lançada no financeiro com sucesso!")
-        # -------------------------------------------------------------
+        """, (f"Venda Site #{id_novo_pedido}", valor_total, data_atual, data_atual, "Venda Online", status_fin, id_novo_pedido, id_cliente))
+        # -----------------------------------------------------
 
         con.commit()
-        
-        # Limpa o carrinho
         session['carrinho'] = []
         session.modified = True
-        
         return redirect("/area_cliente/meus-pedidos.html")
 
     except Exception as e:
         con.rollback()
-        print(f"Erro Crítico no Checkout: {e}")
-        return f"Erro ao processar pedido: {e}"
+        print(f"Erro: {e}")
+        return f"Erro: {e}"
     finally:
         con.close()
-
         
 # --- Área do Cliente ---
 @app.route("/area_cliente/area-cliente.html")

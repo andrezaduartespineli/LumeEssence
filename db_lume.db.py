@@ -118,7 +118,7 @@ sql_produto = '''CREATE TABLE "tb_produtos" (
     )'''
 cur.execute(sql_produto)
 
-# Tabela Funcionários - NOVO
+# Tabela Funcionários
 cur.execute('DROP TABLE IF EXISTS tb_funcionarios')
 sql_funcionarios = '''CREATE TABLE "tb_funcionarios" (
     "id_funcionario" INTEGER PRIMARY KEY AUTOINCREMENT,
@@ -132,6 +132,7 @@ sql_funcionarios = '''CREATE TABLE "tb_funcionarios" (
     "email_login" VARCHAR(100) NOT NULL,
     "senha" VARCHAR(100) NOT NULL,
     "permissao" VARCHAR(20) NOT NULL,
+    "foto" VARCHAR(255),  
     "ativo" BOOLEAN DEFAULT 1,
     "data_cad" DATETIME DEFAULT CURRENT_TIMESTAMP
     )'''

@@ -565,13 +565,13 @@
     <div class="copyright">
       © 2025 Lume Essence - Todos os direitos reservados
     </div>
-     <a href="../interno/login.html" class="admin-footer-link">Acesso da Equipe</a>
+     <a href="/interno/login.html" class="admin-footer-link">Acesso da Equipe</a>
   </div>
 </footer>
 
 <div id="newsletter-modal" class="modal-overlay">
     <div class="modal-container">
-        <button id="close-modal" class="close-btn">&times;</button>
+        <button class="close-modal-btn" onclick="fecharModalNewsletter()">&times;</button>
         
         <div class="modal-image">
             <img src="/static/imagens/new.png" alt="Vela Lume Essence" onerror="this.style.display='none'">
@@ -582,14 +582,14 @@
             <h2>Sua jornada de calma começa aqui</h2>
             <p>Cadastre-se na nossa lista VIP para receber novidades aromáticas e ganhe <strong>10% de desconto</strong> na sua primeira compra.</p>
             
-            <form class="newsletter-form" action="/newsletter/cadastrar" method="POST">
-    <input type="text" name="nome" placeholder="Seu nome completo" required>
-    <input type="text" name="whatsapp" placeholder="WhatsApp" required>
-    <input type="email" name="email" placeholder="Seu melhor e-mail" required>
-    <input type="hidden" name="origem" value="modal">
-    <button type="submit">Quero meus 10% OFF</button>
-</form>
-          </div>
+            <form action="/newsletter/cadastrar" method="POST" class="newsletter-form">
+                     <input type="text" name="nome" placeholder="Seu nome completo" required>
+                     <input type="text" name="whatsapp" placeholder="WhatsApp" required>
+                     <input type="email" name="email" placeholder="Seu melhor e-mail" required>
+                     <button type="submit">Quero meus 10% OFF</button>
+                </form>
+            </div>
+        </div>
     </div>
 </div>
 
