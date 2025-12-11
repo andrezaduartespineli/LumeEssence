@@ -105,101 +105,48 @@
             </div>
 
             <div class="orders-list">
+    
+    {% if not pedidos %}
+        <p>Você ainda não fez nenhum pedido.</p>
+    {% else %}
 
-                <div class="order-card">
-                    <div class="order-header">
-                        <div class="order-id">
-                            <span class="label">Pedido</span>
-                            <strong>#5420</strong>
-                        </div>
-                        <div class="order-date">
-                            <span class="label">Data</span>
-                            <strong>05/12/2025</strong>
-                        </div>
-                        <div class="order-status">
-                            <span class="badge transit">Em Trânsito</span>
-                        </div>
-                    </div>
-
-                    <div class="order-body">
-                        <div class="product-thumbs">
-                            <img src="../../static/imagens/lavanda.png" alt="Vela" title="Vela Lavanda">
-                            <img src="../../static/imagens/homespray.png" alt="Home Spray" title="Home Spray">
-                        </div>
-                        <div class="order-total-info">
-                            <span>Total</span>
-                            <strong>R$ 245,90</strong>
-                        </div>
-                    </div>
-
-                    <div class="order-footer">
-                        <a href="../rastreio.html" class="btn-track-small"><i class="fa-solid fa-truck-fast"></i> Rastrear</a>
-                        <a href="#" class="btn-details">Ver Detalhes</a>
-                    </div>
+        {% for p in pedidos %}
+        <div class="order-card">
+            <div class="order-header">
+                <div class="order-id">
+                    <span class="label">Pedido</span>
+                    <strong>#{{ p['id_pedido'] }}</strong>
                 </div>
-
-                <div class="order-card">
-                    <div class="order-header">
-                        <div class="order-id">
-                            <span class="label">Pedido</span>
-                            <strong>#5415</strong>
-                        </div>
-                        <div class="order-date">
-                            <span class="label">Data</span>
-                            <strong>02/12/2025</strong>
-                        </div>
-                        <div class="order-status">
-                            <span class="badge delivered">Entregue</span>
-                        </div>
-                    </div>
-
-                    <div class="order-body">
-                        <div class="product-thumbs">
-                            <img src="../../static/imagens/baunilha.png" alt="Vela" title="Vela Vanilla">
-                            <span class="more-items">+1</span> </div>
-                        <div class="order-total-info">
-                            <span>Total</span>
-                            <strong>R$ 89,90</strong>
-                        </div>
-                    </div>
-
-                    <div class="order-footer">
-                        <a href="#" class="btn-buy-again"><i class="fa-solid fa-rotate-right"></i> Comprar Novamente</a>
-                        <a href="#" class="btn-details">Ver Detalhes</a>
-                    </div>
+                <div class="order-date">
+                    <span class="label">Data</span>
+                    <strong>{{ p['data_pedido'] }}</strong>
                 </div>
-
-                <div class="order-card">
-                    <div class="order-header">
-                        <div class="order-id">
-                            <span class="label">Pedido</span>
-                            <strong>#5390</strong>
-                        </div>
-                        <div class="order-date">
-                            <span class="label">Data</span>
-                            <strong>20/11/2025</strong>
-                        </div>
-                        <div class="order-status">
-                            <span class="badge canceled">Cancelado</span>
-                        </div>
-                    </div>
-
-                    <div class="order-body">
-                        <div class="product-thumbs">
-                            <img src="../../static/imagens/kit.png" alt="Kit" style="filter: grayscale(1);">
-                        </div>
-                        <div class="order-total-info">
-                            <span>Total</span>
-                            <strong>R$ 150,00</strong>
-                        </div>
-                    </div>
-
-                    <div class="order-footer">
-                        <a href="#" class="btn-details">Ver Detalhes</a>
-                    </div>
+                <div class="order-status">
+                    <span class="badge {{ 'delivered' if p['status'] == 'Entregue' else 'transit' }}">
+                        {{ p['status'] }}
+                    </span>
                 </div>
-
             </div>
+
+            <div class="order-body">
+                <div class="product-thumbs">
+                    <i class="fa-solid fa-box-open" style="font-size: 2rem; color: #ccc;"></i>
+                </div>
+                <div class="order-total-info">
+                    <span>Total</span>
+                    <strong>R$ {{ p['valor_total'] }}</strong>
+                </div>
+            </div>
+
+            <div class="order-footer">
+                <a href="#" class="btn-details">Ver Detalhes</a>
+            </div>
+        </div>
+        {% endfor %}
+
+    {% endif %}
+
+</div>
 
         </main>
     </div>

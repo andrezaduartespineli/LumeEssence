@@ -113,48 +113,55 @@
                 </div>
             </section>
 
-            <section class="data-table-section">
-                <div class="section-header">
-                    <h2>Últimos Pedidos</h2>
-                    <button class="btn-action">Ver Todos</button>
-                </div>
+            <div class="table-responsive">
+    <table>
+        <thead>
+            <tr>
+                <th>Pedido #</th>
+                <th>Cliente</th>
+                <th>Status</th>
+                <th>Valor</th>
+                <th>Ação</th>
+            </tr>
+        </thead>
+        <tbody>
+            
+            {% for p in pedidos %}
+            <tr>
+                <td>#{{ p['id_pedido'] }}</td>
+                <td>{{ p['nome'] }}</td>
                 
-                <div class="table-responsive">
-                    <table>
-                        <thead>
-                            <tr>
-                                <th>Pedido #</th>
-                                <th>Cliente</th>
-                                <th>Status</th>
-                                <th>Valor</th>
-                                <th>Ação</th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            <tr>
-                                <td>#4501</td>
-                                <td>Ana Souza</td>
-                                <td><span class="status-badge success">Pago</span></td>
-                                <td>R$ 189,90</td>
-                                <td><button class="btn-icon"><i class="fa-solid fa-eye"></i></button></td>
-                            </tr>
-                            <tr>
-                                <td>#4502</td>
-                                <td>Carlos Lima</td>
-                                <td><span class="status-badge warning">Pendente</span></td>
-                                <td>R$ 450,00</td>
-                                <td><button class="btn-icon"><i class="fa-solid fa-eye"></i></button></td>
-                            </tr>
-                            <tr>
-                                <td>#4503</td>
-                                <td>Mariana X.</td>
-                                <td><span class="status-badge processing">Enviando</span></td>
-                                <td>R$ 89,90</td>
-                                <td><button class="btn-icon"><i class="fa-solid fa-eye"></i></button></td>
-                            </tr>
-                        </tbody>
-                    </table>
-                </div>
+                <td>
+                    {% if p['status'] == 'Pago' or p['status'] == 'Entregue' %}
+                        <span class="status-badge success">{{ p['status'] }}</span>
+                    {% elif p['status'] == 'Pendente' %}
+                        <span class="status-badge warning">{{ p['status'] }}</span>
+                    {% elif p['status'] == 'Enviado' or p['status'] == 'Separando' %}
+                        <span class="status-badge processing">{{ p['status'] }}</span>
+                    {% else %}
+                        <span class="status-badge">{{ p['status'] }}</span>
+                    {% endif %}
+                </td>
+                
+                <td>R$ {{ p['valor_total'] }}</td>
+                
+                <td>
+                    <a href="/pedidos" class="btn-icon" title="Ver Detalhes">
+                        <i class="fa-solid fa-eye"></i>
+                    </a>
+                </td>
+            </tr>
+            {% else %}
+            <tr>
+                <td colspan="5" style="text-align: center; color: #999; padding: 20px;">
+                    Nenhuma venda realizada recentemente.
+                </td>
+            </tr>
+            {% endfor %}
+
+        </tbody>
+    </table>
+</div>
             </section>
 
         </main>

@@ -91,91 +91,37 @@
                         </tr>
                     </thead>
                     <tbody>
-                        
-                        <tr>
-                            <td class="col-id">#45</td>
-                            <td>
-                                <div class="info-group">
-                                    <span class="info-main">Ana Clara Silva</span>
-                                    <span class="info-sub"><strong>CPF:</strong> 123.456.789-00</span>
-                                    <span class="info-sub">Feminino • 20/05/1995</span> </div>
-                            </td>
-                            <td>
-                                <div class="info-group">
-                                    <span class="info-main">ana@email.com</span>
-                                    <span class="info-sub">(11) 99999-8888</span>
-                                </div>
-                            </td>
-                            <td>
-                                <div class="address-text">
-                                    Rua das Flores, 123, Apto 45<br>
-                                    Jardim Paulista - São Paulo/SP<br>
-                                    <span class="cep">CEP: 01400-000</span>
-                                </div>
-                            </td>
-                            <td>09/12/2025</td> <td class="actions-cell">
-                                <a href="#" class="btn-icon btn-edit" title="Editar"><i class="fa-solid fa-pen"></i></a>
-                                <a href="#" class="btn-icon btn-delete" title="Excluir"><i class="fa-solid fa-trash"></i></a>
-                            </td>
-                        </tr>
-
-                        <tr>
-                            <td class="col-id">#44</td>
-                            <td>
-                                <div class="info-group">
-                                    <span class="info-main">Carlos Eduardo</span>
-                                    <span class="info-sub"><strong>CPF:</strong> 333.444.555-66</span>
-                                    <span class="info-sub">Masculino • 15/08/1988</span>
-                                </div>
-                            </td>
-                            <td>
-                                <div class="info-group">
-                                    <span class="info-main">carlos.edu@gmail.com</span>
-                                    <span class="info-sub">(21) 98888-7777</span>
-                                </div>
-                            </td>
-                            <td>
-                                <div class="address-text">
-                                    Av. Atlântica, 2000<br>
-                                    Copacabana - Rio de Janeiro/RJ<br>
-                                    <span class="cep">CEP: 22000-000</span>
-                                </div>
-                            </td>
-                            <td>08/12/2025</td>
-                            <td class="actions-cell">
-                                <a href="#" class="btn-icon btn-edit"><i class="fa-solid fa-pen"></i></a>
-                                <a href="#" class="btn-icon btn-delete"><i class="fa-solid fa-trash"></i></a>
-                            </td>
-                        </tr>
-
-                        <tr>
-                            <td class="col-id">#43</td>
-                            <td>
-                                <div class="info-group">
-                                    <span class="info-main">Mariana Ximenes</span>
-                                    <span class="info-sub"><strong>CPF:</strong> 999.888.777-66</span>
-                                    <span class="info-sub">Feminino • 02/02/2000</span>
-                                </div>
-                            </td>
-                            <td>
-                                <div class="info-group">
-                                    <span class="info-main">mari@outlook.com</span>
-                                    <span class="info-sub">(41) 99123-4567</span>
-                                </div>
-                            </td>
-                            <td>
-                                <span style="color: #999; font-style: italic; font-size: 0.85rem;">
-                                    <i class="fa-solid fa-triangle-exclamation"></i> Cadastro Incompleto
-                                </span>
-                            </td>
-                            <td>01/12/2025</td>
-                            <td class="actions-cell">
-                                <a href="#" class="btn-icon btn-edit"><i class="fa-solid fa-pen"></i></a>
-                                <a href="#" class="btn-icon btn-delete"><i class="fa-solid fa-trash"></i></a>
-                            </td>
-                        </tr>
-
-                    </tbody>
+    {% for c in clientes %}
+    <tr>
+        <td class="col-id">#{{ c['id_cliente'] }}</td>
+        <td>
+            <div class="info-group">
+                <span class="info-main">{{ c['nome'] }}</span>
+                <span class="info-sub"><strong>CPF:</strong> {{ c['cpf'] }}</span>
+                <span class="info-sub">{{ c['genero'] }} • {{ c['data_nasc'] }}</span>
+            </div>
+        </td>
+        <td>
+            <div class="info-group">
+                <span class="info-main">{{ c['email'] }}</span>
+                <span class="info-sub">{{ c['tel_cel'] }}</span>
+            </div>
+        </td>
+        <td>
+            <div class="address-text">
+                {{ c['endereco'] }}, {{ c['n'] }} <br>
+                {{ c['bairro'] }} - {{ c['cidade'] }}/{{ c['estado'] }}<br>
+                <span class="cep">CEP: {{ c['cep'] }}</span>
+            </div>
+        </td>
+        <td>{{ c['data_cad'] }}</td>
+        <td class="actions-cell">
+            <a href="#" class="btn-icon btn-edit" title="Editar"><i class="fa-solid fa-pen"></i></a>
+            <a href="/cliente/delete/{{ c['id_cliente'] }}" class="btn-icon btn-delete" title="Excluir"><i class="fa-solid fa-trash"></i></a>
+        </td>
+    </tr>
+    {% endfor %}
+    </tbody>
                 </table>
                 
                 <div class="pagination">

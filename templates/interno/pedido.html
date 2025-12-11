@@ -99,134 +99,68 @@
                         </tr>
                     </thead>
                     <tbody>
-                        
-                        <tr>
-                            <td class="order-id">#5420</td>
-                            <td class="order-date">Hoje, 14:30</td>
-                            <td>
-                                <div class="customer-info">
-                                    <strong>Fernanda Lima</strong>
-                                    <span>São Paulo, SP</span>
-                                </div>
-                            </td>
-                            <td class="order-summary">2x Vela Lavanda, 1x Home Spray...</td>
-                            <td class="order-total">R$ 245,90</td>
-                            
-                            <td>
-                                <div class="pay-method">
-                                    <i class="fa-solid fa-barcode" style="color: #555;"></i>
-                                    <span>Boleto</span>
-                                </div>
-                            </td>
+    {% for p in pedidos %}
+    <tr>
+        <td class="order-id">#{{ p['id_pedido'] }}</td>
+        
+        <td class="order-date">
+            {{ p['data_pedido'] }}
+        </td>
+        
+        <td>
+            <div class="customer-info">
+                <strong>{{ p['nome'] }}</strong>
+                </div>
+        </td>
+        
+        <td class="order-summary">Ver detalhes...</td>
+        
+        <td class="order-total">R$ {{ p['valor_total'] }}</td>
+        
+        <td>
+            <div class="pay-method">
+                {% if p['forma_pagamento'] == 'credit' %}
+                    <i class="fa-regular fa-credit-card" style="color: #2c3e50;"></i>
+                    <span>Cartão ({{ p['parcelas'] }}x)</span>
+                {% else %}
+                    <i class="fa-brands fa-pix" style="color: #32bcad;"></i>
+                    <span>Pix</span>
+                {% endif %}
+            </div>
+        </td>
 
-                            <td><span class="badge-status status-pending">Aguardando</span></td>
-                            <td>
-                                <button class="btn-icon-action" title="Ver Detalhes"><i class="fa-solid fa-eye"></i></button>
-                            </td>
-                        </tr>
+        <td>
+            {% if p['status'] == 'Pendente' %}
+                <span class="badge-status status-pending">Pendente</span>
+            {% elif p['status'] == 'Enviado' %}
+                <span class="badge-status status-shipped">Enviado</span>
+            {% elif p['status'] == 'Entregue' %}
+                <span class="badge-status status-delivered">Entregue</span>
+            {% elif p['status'] == 'Cancelado' %}
+                <span class="badge-status status-canceled">Cancelado</span>
+            {% else %}
+                <span class="badge-status">{{ p['status'] }}</span>
+            {% endif %}
+        </td>
 
-                        <tr>
-                            <td class="order-id">#5419</td>
-                            <td class="order-date">Hoje, 10:15</td>
-                            <td>
-                                <div class="customer-info">
-                                    <strong>Carlos Eduardo</strong>
-                                    <span>Rio de Janeiro, RJ</span>
-                                </div>
-                            </td>
-                            <td class="order-summary">1x Kit Presente Completo</td>
-                            <td class="order-total">R$ 189,90</td>
-                            
-                            <td>
-                                <div class="pay-method">
-                                    <i class="fa-brands fa-pix" style="color: #32bcad;"></i> <span>Pix</span>
-                                </div>
-                            </td>
-
-                            <td><span class="badge-status status-processing">Separando</span></td>
-                            <td>
-                                <button class="btn-icon-action" title="Imprimir Etiqueta"><i class="fa-solid fa-print"></i></button>
-                                <button class="btn-icon-action" title="Ver Detalhes"><i class="fa-solid fa-eye"></i></button>
-                            </td>
-                        </tr>
-
-                        <tr>
-                            <td class="order-id">#5418</td>
-                            <td class="order-date">Ontem, 18:40</td>
-                            <td>
-                                <div class="customer-info">
-                                    <strong>Mariana Ximenes</strong>
-                                    <span>Curitiba, PR</span>
-                                </div>
-                            </td>
-                            <td class="order-summary">3x Vela Bamboo (Grande)</td>
-                            <td class="order-total">R$ 299,70</td>
-                            
-                            <td>
-                                <div class="pay-method">
-                                    <i class="fa-regular fa-credit-card" style="color: #2c3e50;"></i>
-                                    <span>Cartão (3x)</span>
-                                </div>
-                            </td>
-
-                            <td><span class="badge-status status-shipped">Enviado</span></td>
-                            <td>
-                                <button class="btn-icon-action" title="Rastreio"><i class="fa-solid fa-truck"></i></button>
-                                <button class="btn-icon-action" title="Ver Detalhes"><i class="fa-solid fa-eye"></i></button>
-                            </td>
-                        </tr>
-
-                        <tr>
-                            <td class="order-id">#5415</td>
-                            <td class="order-date">02/12/2025</td>
-                            <td>
-                                <div class="customer-info">
-                                    <strong>Ana Souza</strong>
-                                    <span>Belo Horizonte, MG</span>
-                                </div>
-                            </td>
-                            <td class="order-summary">1x Vela Vanilla</td>
-                            <td class="order-total">R$ 89,90</td>
-                            
-                            <td>
-                                <div class="pay-method">
-                                    <i class="fa-regular fa-credit-card" style="color: #2c3e50;"></i>
-                                    <span>Cartão (1x)</span>
-                                </div>
-                            </td>
-
-                            <td><span class="badge-status status-delivered">Entregue</span></td>
-                            <td>
-                                <button class="btn-icon-action" title="Ver Detalhes"><i class="fa-solid fa-eye"></i></button>
-                            </td>
-                        </tr>
-
-                        <tr>
-                            <td class="order-id text-muted">#5410</td>
-                            <td class="order-date">01/12/2025</td>
-                            <td>
-                                <div class="customer-info text-muted">
-                                    <strong>João Pedro</strong>
-                                    <span>Salvador, BA</span>
-                                </div>
-                            </td>
-                            <td class="order-summary text-muted">2x Refil Difusor</td>
-                            <td class="order-total text-muted">R$ 120,00</td>
-                            
-                            <td>
-                                <div class="pay-method text-muted">
-                                    <i class="fa-brands fa-pix"></i>
-                                    <span>Pix</span>
-                                </div>
-                            </td>
-
-                            <td><span class="badge-status status-canceled">Cancelado</span></td>
-                            <td>
-                                <button class="btn-icon-action" title="Ver Detalhes"><i class="fa-solid fa-eye"></i></button>
-                            </td>
-                        </tr>
-
-                    </tbody>
+        <td>
+            <button class="btn-icon-action" title="Ver Detalhes">
+                <i class="fa-solid fa-eye"></i>
+            </button>
+            
+            <a href="#" class="btn-icon-action" title="Editar Status">
+                <i class="fa-solid fa-pen"></i>
+            </a>
+        </td>
+    </tr>
+    {% else %}
+    <tr>
+        <td colspan="8" style="text-align: center; padding: 20px; color: #999;">
+            Nenhum pedido encontrado.
+        </td>
+    </tr>
+    {% endfor %}
+</tbody>
                 </table>
             </section>
 

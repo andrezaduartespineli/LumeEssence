@@ -87,65 +87,50 @@
                 </div>
             </section>
 
-            <section class="products-grid">
+           <section class="products-grid">
+    
+    {% for p in produtos %}
+    <div class="product-card">
+        <div class="product-image">
+            <img src="../../static/uploads/{{ p['img_produto'] }}" 
+                 onerror="this.src='../../static/imagens/sem_foto.png'" 
+                 alt="{{ p['nome_produto'] }}">
+            
+            {% if p['qtd_estoque'] > 10 %}
+                <span class="stock-badge in-stock">Em Estoque</span>
+            {% elif p['qtd_estoque'] > 0 %}
+                <span class="stock-badge low-stock">Baixo Estoque</span>
+            {% else %}
+                <span class="stock-badge out-stock">Esgotado</span>
+            {% endif %}
+
+            <div class="hover-actions">
+                <a href="#" class="btn-icon-circle"><i class="fa-solid fa-pen"></i></a>
+                <a href="#" class="btn-icon-circle delete"><i class="fa-solid fa-trash"></i></a>
+            </div>
+        </div>
+        
+        <div class="product-info">
+            <span class="category">Ref: {{ p['sku'] }}</span>
+            
+            <h3>{{ p['nome_produto'] }}</h3>
+            
+            <div class="price-row">
+                <span class="price">R$ {{ p['preco_venda'] }}</span>
                 
-                <div class="product-card">
-                    <div class="product-image">
-                        <img src="../../static/imagens/lavanda.png" alt="Vela Lavanda"> <span class="stock-badge in-stock">Em Estoque</span>
-                        <div class="hover-actions">
-                            <button class="btn-icon-circle"><i class="fa-solid fa-pen"></i></button>
-                            <button class="btn-icon-circle delete"><i class="fa-solid fa-trash"></i></button>
-                        </div>
-                    </div>
-                    <div class="product-info">
-                        <span class="category">Velas Aromáticas</span>
-                        <h3>Vela Calmante Lavanda</h3>
-                        <div class="price-row">
-                            <span class="price">R$ 89,90</span>
-                            <span class="stock-qty">12 un.</span>
-                        </div>
-                    </div>
-                </div>
+                {% if p['qtd_estoque'] == 0 %}
+                    <span class="stock-qty text-red">0 un.</span>
+                {% else %}
+                    <span class="stock-qty">{{ p['qtd_estoque'] }} un.</span>
+                {% endif %}
+            </div>
+        </div>
+    </div>
+    {% else %}
+    <p style="grid-column: 1/-1; text-align: center; padding: 40px;">Nenhum produto cadastrado.</p>
+    {% endfor %}
 
-                <div class="product-card">
-                    <div class="product-image">
-                        <div class="no-image"><i class="fa-regular fa-image"></i></div>
-                        <span class="stock-badge low-stock">Baixo Estoque</span>
-                        <div class="hover-actions">
-                            <button class="btn-icon-circle"><i class="fa-solid fa-pen"></i></button>
-                            <button class="btn-icon-circle delete"><i class="fa-solid fa-trash"></i></button>
-                        </div>
-                    </div>
-                    <div class="product-info">
-                        <span class="category">Home Spray</span>
-                        <h3>Bamboo & Chá Branco</h3>
-                        <div class="price-row">
-                            <span class="price">R$ 65,00</span>
-                            <span class="stock-qty text-red">03 un.</span>
-                        </div>
-                    </div>
-                </div>
-
-                <div class="product-card">
-                    <div class="product-image">
-                        <img src="../../static/imagens/kit.png" alt="Kit Presente">
-                        <span class="stock-badge out-stock">Esgotado</span>
-                        <div class="hover-actions">
-                            <button class="btn-icon-circle"><i class="fa-solid fa-pen"></i></button>
-                            <button class="btn-icon-circle delete"><i class="fa-solid fa-trash"></i></button>
-                        </div>
-                    </div>
-                    <div class="product-info">
-                        <span class="category">Kits</span>
-                        <h3>Kit Ritual Completo</h3>
-                        <div class="price-row">
-                            <span class="price">R$ 189,90</span>
-                            <span class="stock-qty">0 un.</span>
-                        </div>
-                    </div>
-                </div>
-
-            </section>
+</section>
 
         </main>
     </div>

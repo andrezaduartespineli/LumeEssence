@@ -147,100 +147,38 @@
                 </div>
             </div>
 
-            <div class="products-grid">
+           <div class="products-grid">
 
-                <div class="product-card-shop">
-                    <div class="product-image">
-                        <img src="../../static/imagens/vela.png" alt="Vela Lavanda">
-                        <span class="tag-novo">Novo</span>
-                    </div>
-                    <div class="product-info">
-                        <h4>Vela Aromática Lavanda</h4>
-                        <div class="price-box">
-                            <span class="price-full">R$ 68,00</span>
-                            <span class="price-pix">R$ 64,60 com Pix</span>
-                        </div>
-                        <a href="produto-detalhe.html" class="btn-details">Ver Detalhes</a>
-                        <a href="" class="btn-buy-now">Comprar Agora</a>
-                    </div>
-                </div>
-
-                <div class="product-card-shop">
-                    <div class="product-image">
-                        <img src="../../static/imagens/aromabaunilha.png" alt="Aromatizador Baunilha">
-                    </div>
-                    <div class="product-info">
-                        <h4>Aromatizador Baunilha</h4>
-                        <div class="price-box">
-                            <span class="price-full">R$ 74,00</span>
-                            <span class="price-pix">R$ 70,30 com Pix</span>
-                        </div>
-                        <a href="produto-detalhe.html" class="btn-details">Ver Detalhes</a>
-                        <a href="" class="btn-buy-now">Comprar Agora</a>
-                    </div>
-                </div>
-
-                <div class="product-card-shop">
-                    <div class="product-image">
-                        <img src="../../static/imagens/homespray.png" alt="Home Spray">
-                    </div>
-                    <div class="product-info">
-                        <h4>Home Spray Bambu</h4>
-                        <div class="price-box">
-                            <span class="price-full">R$ 45,00</span>
-                            <span class="price-pix">R$ 42,75 com Pix</span>
-                        </div>
-                        <a href="produto-detalhe.html" class="btn-details">Ver Detalhes</a>
-                        <a href="" class="btn-buy-now">Comprar Agora</a>
-                    </div>
-                </div>
-
-                <div class="product-card-shop">
-                    <div class="product-image">
-                        <img src="../../static/imagens/kit.png" alt="Kit Presente">
-                    </div>
-                    <div class="product-info">
-                        <h4>Kit Lume Experience</h4>
-                        <div class="price-box">
-                            <span class="price-full">R$ 120,00</span>
-                            <span class="price-pix">R$ 114,00 com Pix</span>
-                        </div>
-                        <a href="produto-detalhe.html" class="btn-details">Ver Detalhes</a>
-                        <a href="" class="btn-buy-now">Comprar Agora</a>
-                    </div>
-                </div>
-
-                 <div class="product-card-shop">
-                    <div class="product-image">
-                        <img src="../../static/imagens/morango.png" alt="Vela Morango">
-                    </div>
-                    <div class="product-info">
-                        <h4>Vela Morango</h4>
-                        <div class="price-box">
-                            <span class="price-full">R$ 68,00</span>
-                            <span class="price-pix">R$ 64,60 com Pix</span>
-                        </div>
-                        <a href="produto-detalhe.html" class="btn-details">Ver Detalhes</a>
-                        <a href="" class="btn-buy-now">Comprar Agora</a>
-                    </div>
-                </div>
-
-                 <div class="product-card-shop">
-                    <div class="product-image">
-                        <img src="../../static/imagens/limaosiciliano.png" alt="Vela Limão">
-                    </div>
-                    <div class="product-info">
-                        <h4>Vela Limão Siciliano</h4>
-                        <div class="price-box">
-                            <span class="price-full">R$ 68,00</span>
-                            <span class="price-pix">R$ 64,60 com Pix</span>
-                        </div>
-                        <a href="produto-detalhe.html" class="btn-details">Ver Detalhes</a>
-                        <a href="" class="btn-buy-now">Comprar Agora</a>
-                    </div>
-                </div>
-
+    {% for p in produtos %}
+    <div class="product-card-shop">
+        <div class="product-image">
+            <img src="../../static/uploads/{{ p['img_produto'] }}" 
+                 onerror="this.src='../../static/imagens/sem_foto.png'" 
+                 alt="{{ p['nome_produto'] }}">
+            
             </div>
+        
+        <div class="product-info">
+            <h4>{{ p['nome_produto'] }}</h4>
+            
+            <div class="price-box">
+                <span class="price-full">R$ {{ p['preco_venda'] }}</span>
+                
+                <span class="price-pix">
+                    R$ {{ "%.2f"|format(p['preco_venda'] * 0.95) }} com Pix
+                </span>
+            </div>
+            
+            <a href="/produto/{{ p['id_produto'] }}" class="btn-details">Ver Detalhes</a>
+            
+            <a href="/adicionar-carrinho/{{ p['id_produto'] }}" class="btn-buy-now">Comprar Agora</a>
+        </div>
+    </div>
+    {% else %}
+    <p style="text-align: center; width: 100%;">Em breve novos produtos!</p>
+    {% endfor %}
+
+</div>
             
             <div class="pagination">
                 <span class="active">1</span>
