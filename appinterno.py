@@ -2,6 +2,10 @@ from flask import Flask, render_template, request, redirect, url_for
 import sqlite3
 import os
 from datetime import datetime
+import csv
+import io
+from flask import Response
+import random
 
 app = Flask(__name__)
 app.secret_key = 'admin_secret_key'
@@ -732,5 +736,132 @@ def configuracoes():
 def login():
     return render_template("interno/login.html")
 
+# Rota gerar planilha CSV padrão para upload de novos produtos
+
+@app.route("/gerar_planilha_padrao")
+def gerar_planilha_padrao():
+    # 1. Configuração dos dados
+    categorias = {
+        "Velas Aromáticas": {"prefixo": "VEL", "custo": 25.00, "venda": 59.90, "var": "150g"},
+        "Home Spray":       {"prefixo": "HOM", "custo": 18.00, "venda": 45.00, "var": "250ml"},
+        "Difusores":        {"prefixo": "DIF", "custo": 30.00, "venda": 75.00, "var": "200ml"},
+        "Kits Presente":    {"prefixo": "KIT", "custo": 55.00, "venda": 129.90, "var": "Kit M"}
+    }
+   
+    aromas = [
+        "Lavanda", "Alecrim", "Bamboo", "Baunilha", "Limão Siciliano",
+        "Jasmim", "Coco", "Morango", "Flor de Algodão", "Capim Limão"
+    ]
+
+    # 2. Criação do buffer em memória (para não salvar arquivo no disco do servidor)
+    output = io.StringIO()
+    writer = csv.writer(output, delimiter=';') # Ponto e vírgula é melhor para Excel em português
+
+    # 3. Cabeçalho (exatamente como o banco espera)
+    header = ["nome_produto", "sku", "descricao", "preco_custo", "preco_venda",
+              "qtd_estoque", "fornecedor", "categoria", "aroma", "variacao"]
+    writer.writerow(header)
+
+    # 4. Geração dos 20 produtos (5 por categoria)
+    for cat_nome, cat_dados in categorias.items():
+        # Embaralha aromas para garantir variedade
+        aromas_selecionados = random.sample(aromas, 5)
+       
+        for i, aroma in enumerate(aromas_selecionados, 1):
+            sku = f"{cat_dados['prefixo']}-{str(i).zfill(3)}"
+            nome = f"{cat_nome[:-1]} {aroma}" if cat_nome.endswith('s') else f"{cat_nome} {aroma}"
+           
+            # Descrição personalizada simples
+            descricao = f"Produto artesanal da linha {cat_nome} com essência premium de {aroma}."
+           
+            writer.writerow([
+                nome,
+                sku,
+                descricao,
+                str(cat_dados['custo']).replace('.', ','), # Formato BR para Excel
+                str(cat_dados['venda']).replace('.', ','), # Formato BR para Excel
+                random.randint(10, 50),
+                "Produção Própria",
+                cat_nome,
+                aroma,
+                cat_dados['var']
+            ])
+
+    # 5. Prepara a resposta do Flask para download
+    output.seek(0)
+    return Response(
+        output,
+        mimetype="text/csv",
+        headers={"Content-Disposition": "attachment;filename=novos_produtos.csv"}
+    )
+
+# Rota de importação de CSV produtos
+
+@app.route("/importar_csv", methods=["POST"])
+def importar_csv():
+    if 'arquivo_csv' not in request.files:
+        return "Nenhum arquivo enviado", 400
+   
+    file = request.files['arquivo_csv']
+   
+    if file.filename == '':
+        return "Nenhum arquivo selecionado", 400
+
+    if file:
+        # Processa o arquivo em memória (Text mode)
+        stream = io.TextIOWrapper(file.stream._file, "utf-8", newline='')
+        # Lê usando ponto e vírgula como separador (padrão do script anterior)
+        csv_input = csv.DictReader(stream, delimiter=';')
+       
+        con = get_db()
+        cur = con.cursor()
+       
+        produtos_inseridos = 0
+       
+        try:
+            for row in csv_input:
+                # Dados Padrão para campos que não estão no CSV
+                img_padrao = "sem_foto.png"
+                ativo = 1
+                data_hoje = datetime.now().strftime("%Y-%m-%d")
+               
+                # Tratamento de preços (Trocar vírgula por ponto para o banco)
+                preco_custo = row['preco_custo'].replace(',', '.')
+                preco_venda = row['preco_venda'].replace(',', '.')
+
+                cur.execute("""
+                    INSERT INTO tb_produtos (
+                        nome_produto, sku, descricao, preco_custo, preco_venda,
+                        qtd_estoque, fornecedor, categoria, aroma, variacao,
+                        img_produto, ativo, data_cad
+                    ) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
+                """, (
+                    row['nome_produto'],
+                    row['sku'],
+                    row['descricao'],
+                    preco_custo,
+                    preco_venda,
+                    row['qtd_estoque'],
+                    row['fornecedor'],
+                    row['categoria'],
+                    row['aroma'],
+                    row['variacao'],
+                    img_padrao,
+                    ativo,
+                    data_hoje
+                ))
+                produtos_inseridos += 1
+           
+            con.commit()
+            print(f"✅ Importação concluída! {produtos_inseridos} produtos adicionados.")
+           
+        except Exception as e:
+            con.rollback()
+            return f"Erro na importação: {str(e)}", 500
+        finally:
+            con.close()
+
+        return redirect("/cad_produtos")
+    
 if __name__ == "__main__":
     app.run(debug=True, port=5001)

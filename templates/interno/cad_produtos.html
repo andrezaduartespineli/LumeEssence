@@ -199,6 +199,27 @@
                             </div>
                         </div>
                     </div>
+                    <div class="right-column" style="display: flex; gap: 10px; align-items: center;">
+   
+                                <form action="/importar_csv" method="POST" enctype="multipart/form-data" style="display: flex; gap: 5px;">
+                                    <input type="file" name="arquivo_csv" accept=".csv" required
+                                        style="font-size: 0.8rem; padding: 5px; border: 1px solid #ddd; border-radius: 5px; background: white;">
+                                    <button type="submit" class="btn-action" style="background: #27ae60; color: white; border: none;">
+                                        <i class="fa-solid fa-file-import"></i> Importar
+                                    </button>
+                                </form>
+
+                                <a href="/gerar_planilha_padrao" class="btn-action" style="text-decoration: none; color: #555;">
+                                    <i class="fa-solid fa-download"></i> Baixar Modelo
+                                </a>
+
+                                <form class="search-compact" action="/produtos" method="GET">
+                                    <button type="submit" style="border: none; background: transparent; cursor: pointer; color: #ccc;">
+                                        <i class="fa-solid fa-magnifying-glass"></i>
+                                    </button>
+                                    <input type="text" name="q" placeholder="Buscar..." value="{{ request.args.get('q', '') }}">
+                                </form>
+                            </div>
                 </div>
             </form>
 
