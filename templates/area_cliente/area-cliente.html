@@ -67,6 +67,7 @@
     </div>
 </div>
 </header>
+
     <div class="client-container container">
         
         <aside class="client-sidebar">
@@ -91,97 +92,97 @@
         </aside>
 
         <main class="client-content">
+        
+        <div class="welcome-banner">
+            <h2>Bem-vinda de volta, {{ cliente['nome'].split()[0] }}! ✨</h2>
+            <p>Que a Lume Essence traga luz para o seu dia hoje.</p>
+        </div>
+
+        <section class="stats-row">
+            <div class="stat-card">
+                <div class="icon-box gold"><i class="fa-solid fa-box-open"></i></div>
+                <div>
+                    <h3>Em Trânsito</h3>
+                    <p>1 Pedido a caminho</p>
+                </div>
+            </div>
+        </section>
+
+        <section class="latest-order">
+            <div class="section-header">
+                <h3>Último Pedido <span class="order-number">#5420</span></h3>
+                <a href="../site/rastreio.html" class="btn-track">Rastrear Entrega</a>
+            </div>
             
-            <div class="welcome-banner">
-                <h2>Bem-vinda de volta, Ana! ✨</h2>
-                <p>Que a Lume Essence traga luz para o seu dia hoje.</p>
+            <div class="order-progress-bar">
+                <div class="step completed">
+                    <div class="step-icon"><i class="fa-solid fa-check"></i></div>
+                    <span>Aprovado</span>
+                </div>
+                <div class="step completed">
+                    <div class="step-icon"><i class="fa-solid fa-box"></i></div>
+                    <span>Separado</span>
+                </div>
+                <div class="step active">
+                    <div class="step-icon"><i class="fa-solid fa-truck-fast"></i></div>
+                    <span>Em Trânsito</span>
+                </div>
+                <div class="step">
+                    <div class="step-icon"><i class="fa-solid fa-house-chimney"></i></div>
+                    <span>Entregue</span>
+                </div>
+                <div class="line">
+                    <div class="line-fill" style="width: 66%;"></div> 
+                </div>
             </div>
 
-            <section class="stats-row">
-                <div class="stat-card">
-                    <div class="icon-box gold"><i class="fa-solid fa-box-open"></i></div>
-                    <div>
-                        <h3>Em Trânsito</h3>
-                        <p>1 Pedido a caminho</p>
-                    </div>
+            <div class="order-items-preview">
+                <div class="item-img">
+                    <img src="/static/imagens/vela.png" alt="Vela">
+                    <span class="qty">2x</span>
                 </div>
-                
-            </section>
-
-            <section class="latest-order">
-                <div class="section-header">
-                    <h3>Último Pedido <span class="order-number">#5420</span></h3>
-                    <a href="../site/rastreio.html" class="btn-track">Rastrear Entrega</a>
+                <div class="item-desc">
+                    <h4>Vela Aromática Lavanda (180g)</h4>
+                    <p>Previsão de entrega: <strong>08/12/2025</strong></p>
                 </div>
-                
-                <div class="order-progress-bar">
-                    <div class="step completed">
-                        <div class="step-icon"><i class="fa-solid fa-check"></i></div>
-                        <span>Aprovado</span>
-                    </div>
-                    <div class="step completed">
-                        <div class="step-icon"><i class="fa-solid fa-box"></i></div>
-                        <span>Separado</span>
-                    </div>
-                    <div class="step active">
-                        <div class="step-icon"><i class="fa-solid fa-truck-fast"></i></div>
-                        <span>Em Trânsito</span>
-                    </div>
-                    <div class="step">
-                        <div class="step-icon"><i class="fa-solid fa-house-chimney"></i></div>
-                        <span>Entregue</span>
-                    </div>
-                    <div class="line">
-                        <div class="line-fill" style="width: 66%;"></div> </div>
+                <div class="item-price">
+                    R$ 189,90
                 </div>
+            </div>
+        </section>
 
-                <div class="order-items-preview">
-                    <div class="item-img">
-                        <img src="/static/imagens/vela.png" alt="Vela">
-                        <span class="qty">2x</span>
-                    </div>
-                    <div class="item-desc">
-                        <h4>Vela Aromática Lavanda (180g)</h4>
-                        <p>Previsão de entrega: <strong>08/12/2025</strong></p>
-                    </div>
-                    <div class="item-price">
-                        R$ 189,90
-                    </div>
-                </div>
-            </section>
+        <section class="recent-history">
+            <h3>Histórico Recente</h3>
+            <table class="client-table">
+                <thead>
+                    <tr>
+                        <th>Pedido</th>
+                        <th>Data</th>
+                        <th>Status</th>
+                        <th>Total</th>
+                        <th></th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td>#5415</td>
+                        <td>02/12/2025</td>
+                        <td><span class="badge delivered">Entregue</span></td>
+                        <td>R$ 89,90</td>
+                        <td><a href="#" class="link-detail">Detalhes</a></td>
+                    </tr>
+                    <tr>
+                        <td>#5390</td>
+                        <td>20/11/2025</td>
+                        <td><span class="badge delivered">Entregue</span></td>
+                        <td>R$ 245,00</td>
+                        <td><a href="#" class="link-detail">Detalhes</a></td>
+                    </tr>
+                </tbody>
+            </table>
+        </section>
 
-            <section class="recent-history">
-                <h3>Histórico Recente</h3>
-                <table class="client-table">
-                    <thead>
-                        <tr>
-                            <th>Pedido</th>
-                            <th>Data</th>
-                            <th>Status</th>
-                            <th>Total</th>
-                            <th></th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        <tr>
-                            <td>#5415</td>
-                            <td>02/12/2025</td>
-                            <td><span class="badge delivered">Entregue</span></td>
-                            <td>R$ 89,90</td>
-                            <td><a href="#" class="link-detail">Detalhes</a></td>
-                        </tr>
-                        <tr>
-                            <td>#5390</td>
-                            <td>20/11/2025</td>
-                            <td><span class="badge delivered">Entregue</span></td>
-                            <td>R$ 245,00</td>
-                            <td><a href="#" class="link-detail">Detalhes</a></td>
-                        </tr>
-                    </tbody>
-                </table>
-            </section>
-
-        </main>
+    </main>
     </div>
 <footer>
   <div class="footer-container">

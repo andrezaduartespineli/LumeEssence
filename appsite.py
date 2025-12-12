@@ -262,14 +262,14 @@ def cadastrar_newsletter():
 # ==========================================
 # ROTA DE LOGIN (CORRETA E COMPLETA)
 # ==========================================
+# 1. Rota de Login (GET para ver a página, POST para entrar)
 @app.route("/login", methods=['GET', 'POST'])
-@app.route("/site/login.html") # Pode manter essa rota alternativa se quiser
+@app.route("/site/login.html")
 def login_cliente():
-    # 1. Se já estiver logado, manda pra Área do Cliente
+    # Se já estiver logado, manda pra Área do Cliente
     if 'id_cliente' in session:
         return redirect("/area_cliente/area-cliente.html")
 
-    # 2. Se clicou no botão "ENTRAR" (POST)
     if request.method == 'POST':
         email = request.form['email']
         senha = request.form['senha']
@@ -280,21 +280,19 @@ def login_cliente():
         usuario = cur.fetchone()
         con.close()
         
-        # Verifica senha criptografada
+        # Verifica se o usuário existe e se a senha bate (Criptografada)
         if usuario and check_password_hash(usuario['senha'], senha):
             session['id_cliente'] = usuario['id_cliente']
-            session['nome_cliente'] = usuario['nome'].split()[0] # Pega só o primeiro nome
-            return redirect("/") # Sucesso: vai pra Home
+            session['nome_cliente'] = usuario['nome'].split()[0]
+            return redirect("/") # Sucesso! Vai pra Home
         else:
             return render_template("site/login.html", erro="E-mail ou senha incorretos.")
 
-    # 3. Se só acessou a página (GET)
     return render_template("site/login.html")
 
-# --- Rota para EXIBIR a tela de cadastro ---
-@app.route("/cadastro")
-@app.route("/cadastro.html")
-def cadastro_page():
+# 2. Rota para exibir a página de Cadastro
+@app.route("/cadastro-cliente", methods=['GET'])
+def pagina_cadastro():
     return render_template("site/cadastro.html")
 
 @app.route("/verificar_email", methods=["POST"])
@@ -308,55 +306,73 @@ def verificar_email():
     con.close()
     return jsonify({"existe": bool(user)})
 
-@app.route("/cadastro-cliente", methods=["POST"])
-def cadastro_cliente():
-    print("--- Tentando cadastrar cliente ---") # Aviso no terminal
+# 3. Rota que recebe os dados do Cadastro e Salva no Banco
+# Rota que Recebe os Dados do Cadastro (POST)
+@app.route("/cadastro-cliente", methods=['POST'])
+def cadastrar_cliente_post():
+    # Coleta todos os campos do formulário
+    nome = request.form['nome']
+    data_nasc = request.form['data_nasc']
+    genero = request.form['genero']
+    tel_cel = request.form['tel_cel']
+    email = request.form['email']
+    cpf = request.form['cpf']
+    cep = request.form['cep']
+    endereco = request.form['endereco']
+    numero = request.form['n']
+    complemento = request.form['complemento']
+    referencia = request.form['referencia']
+    bairro = request.form['bairro']
+    cidade = request.form['cidade']
+    estado = request.form['estado']
+    senha = request.form['senha']
+    
+    # Campo de verificação
+    confirma_senha = request.form.get('confirma_senha') 
+
+    # 1. Validação no Python
+    if senha != confirma_senha:
+         return render_template("site/cadastro.html", erro="As senhas não coincidem.")
+
+    # 2. Criptografia
+    senha_hash = generate_password_hash(senha)
+    
+    con = get_db()
+    cur = con.cursor()
     
     try:
-        # 1. Recebe os dados
-        nome = request.form.get("nome")
-        data_nasc = request.form.get("data_nasc")
-        cpf = request.form.get("cpf")
-        genero = request.form.get("genero")
-        tel_cel = request.form.get("tel_cel")
-        email = request.form.get("email")
-        cep = request.form.get("cep")
-        endereco = request.form.get("endereco")
-        n = request.form.get("n")
-        complemento = request.form.get("complemento", "")
-        referencia = request.form.get("referencia", "")
-        bairro = request.form.get("bairro")
-        cidade = request.form.get("cidade")
-        estado = request.form.get("estado")
-        senha = request.form.get("senha")
-        data_cad = datetime.now()
-
-        # 2. Conecta e Salva
-        con = get_db()
-        cur = con.cursor()
+        # Verifica se e-mail já existe
+        cur.execute("SELECT id_cliente FROM tb_clientes WHERE email = ?", (email,))
+        if cur.fetchone():
+            con.close()
+            return render_template("site/cadastro.html", erro="Este e-mail já está em uso.")
         
+        # 3. Insere no Banco (AGORA INCLUINDO confirmar_senha)
         cur.execute("""
-            INSERT INTO tb_clientes (nome, data_nasc, cpf, genero, tel_cel, email, cep, endereco, n, complemento, referencia, bairro, cidade, estado, senha, data_cad)
+            INSERT INTO tb_clientes 
+            (nome, data_nasc, cpf, genero, tel_cel, email, cep, endereco, n, complemento, referencia, bairro, cidade, estado, senha, confirmar_senha) 
             VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
-        """, (nome, data_nasc, cpf, genero, tel_cel, email, cep, endereco, n, complemento, referencia, bairro, cidade, estado, senha, data_cad))
+        """, (nome, data_nasc, cpf, genero, tel_cel, email, cep, endereco, numero, complemento, referencia, bairro, cidade, estado, senha_hash, senha_hash))
         
         con.commit()
         
-        # Pega o ID para logar
-        novo_id = cur.lastrowid
+        # Login Automático
+        cur.execute("SELECT * FROM tb_clientes WHERE email = ?", (email,))
+        usuario = cur.fetchone()
+        session['id_cliente'] = usuario['id_cliente']
+        session['nome_cliente'] = usuario['nome'].split()[0]
+        
         con.close()
+        return redirect("/")
         
-        print(f"✅ Sucesso! Cliente cadastrado com ID: {novo_id}")
-        
-        # Loga o usuário
-        session['user_id'] = novo_id
-        session['user_nome'] = nome
-        
-        return redirect("/area_cliente/area-cliente.html")
-
     except Exception as e:
-        print(f"❌ ERRO AO CADASTRAR: {e}") # Isso vai aparecer no seu terminal
-        return f"Erro ao cadastrar: {e}"
+        con.close()
+        return f"Erro no banco de dados: {e}"
+
+@app.route("/logout")
+def logout():
+    session.clear()
+    return redirect("/login")
 
 # --- Carrinho de Compras ---
 # --- ROTAS COMPLETAS DO CARRINHO ---
@@ -533,9 +549,26 @@ def finalizar_pedido():
         con.close()
         
 # --- Área do Cliente ---
+# --- ROTA DA ÁREA DO CLIENTE ---
 @app.route("/area_cliente/area-cliente.html")
-def area_cliente_home():
-    return render_template("area_cliente/area-cliente.html")
+def area_cliente():
+    # 1. Segurança: Verifica se está logado
+    if 'id_cliente' not in session:
+        return redirect("/login")
+    
+    id_cliente = session['id_cliente']
+    
+    con = get_db()
+    cur = con.cursor()
+    
+    # 2. Busca todos os dados do cliente
+    cur.execute("SELECT * FROM tb_clientes WHERE id_cliente = ?", (id_cliente,))
+    dados_cliente = cur.fetchone()
+    
+    con.close()
+    
+    # 3. Envia para o HTML
+    return render_template("area_cliente/area-cliente.html", cliente=dados_cliente)
 
 @app.route("/area_cliente/meus-pedidos.html")
 def area_cliente_pedidos():

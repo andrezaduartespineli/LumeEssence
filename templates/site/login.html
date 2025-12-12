@@ -72,8 +72,8 @@
             <span class="auth-subtitle">Acesse sua conta para continuar</span>
 
             {% if erro %}
-                <div style="background-color: #ffebee; color: #c62828; padding: 10px; border-radius: 5px; margin-bottom: 15px; font-size: 0.9rem; text-align: center;">
-                    <i class="fas fa-exclamation-circle"></i> {{ erro }}
+                <div style="color: #721c24; background-color: #f8d7da; padding: 10px; margin-bottom: 15px; border-radius: 5px; text-align: center;">
+                    {{ erro }}
                 </div>
             {% endif %}
 
@@ -96,11 +96,11 @@
                 </div>
 
                 <button type="submit" class="btn-auth">ENTRAR</button>
-                
             </form>
+            
             <br>
             <div class="auth-footer">
-              <p>Ainda não tem conta? <a href="/cadastro-cliente">Cadastre-se</a></p>
+                <p>Ainda não tem conta? <a href="/cadastro-cliente">Cadastre-se</a></p>
             </div>
         </div>
     </div>

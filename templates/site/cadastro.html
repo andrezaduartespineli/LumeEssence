@@ -3,42 +3,38 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Cadastro - Lume Essence</title>
+    <title>Login - Lume Essence</title>
+    <link rel="icon" href="/static/imagens/Logo/pequenalogosemfnfo.png">
     <link href='https://fonts.googleapis.com/css?family=Quicksand' rel='stylesheet'>
     <link href="https://fonts.googleapis.com/css2?family=Montserrat:ital,wght@0,100..900;1,100..900&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <link rel="stylesheet" href="/static/stylesite.css">
-    <link rel="icon" href="/static/imagens/Logo/pequenalogosemfnfo.png">
 </head>
 <body>
 
     <div class="container">
-                <div class="logo">
-                    <img src="/static/imagens/Logo/horizontalsemfundo.png" alt="Lume Essence">
-                </div>
-            </div>   
+        <div class="logo">
+            <img src="/static/imagens/Logo/horizontalsemfundo.png" alt="Lume Essence">
+        </div>
+    </div>   
              
   <div class="navbar">
     <div class="nav-links">
-    <a href="/">Início</a>
-    <a href="/produtos">Produtos</a>
-    <a href="/sobre">Sobre</a>
-    <a href="/contato">Contato</a>
-</div>
+        <a href="/">Início</a>
+        <a href="/produtos">Produtos</a>
+        <a href="/sobre">Sobre</a>
+        <a href="/contato">Contato</a>
+    </div>
+
     <div class="nav-icons-area" style="display: flex; align-items: center; gap: 20px;">
         
         <form action="/produtos" method="GET" class="search-box">
-    <input type="text" name="q" placeholder="Buscar..." value="{{ termo_busca if termo_busca else '' }}">
-    <button type="submit"><i class="fas fa-search"></i></button>
-</form>
+            <input type="text" name="q" placeholder="Buscar..." value="{{ termo_busca if termo_busca else '' }}">
+            <button type="submit"><i class="fas fa-search"></i></button>
+        </form>
 
         <div class="header-icons">
-<div class="user-menu-wrapper">
-    <a href="/login" class="user-icon-link">
-        <i class="fa-regular fa-user"></i>
-    </a>
-
-    <div class="user-menu-wrapper">
+            <div class="user-menu-wrapper">
     <a href="{{ '/area_cliente/area-cliente.html' if user_nome else '/login' }}" class="user-icon-link" style="text-decoration: none;">
         <i class="fa-regular fa-user"></i>
         {% if user_nome %}
@@ -59,110 +55,128 @@
         </ul>
     </div>
 </div>
-</div>
+        </div>
 
         <a href="/carrinho" class="cart-link" title="Carrinho">
-    <i class="fas fa-shopping-bag"></i>
-    
-    {% if qtd_carrinho > 0 %}
-        <span class="cart-count">{{ qtd_carrinho }}</span>
-    {% endif %}
-</a>
+            <i class="fas fa-shopping-bag"></i>
+            {% if qtd_carrinho > 0 %}
+                <span class="cart-count">{{ qtd_carrinho }}</span>
+            {% endif %}
+        </a>
     </div>
 </div>
 
     <div class="auth-container">
-        <div class="auth-card">
-            <h2>Criar Conta</h2>
+        <div class="auth-card" style="max-width: 800px;"> <h2>Criar Conta</h2>
             <span class="auth-subtitle">Preencha seus dados para se cadastrar</span>
 
+            {% if erro %}
+                <div style="background-color: #ffebee; color: #c62828; padding: 10px; border-radius: 5px; margin-bottom: 20px; text-align: center;">
+                    <i class="fas fa-exclamation-circle"></i> {{ erro }}
+                </div>
+            {% endif %}
+
             <form class="auth-form" action="/cadastro-cliente" method="POST">
-                <div class="form-group">
-                    <label>Nome Completo</label>
-                    <input type="text" name="nome" placeholder="Seu nome" required>
+                
+                <h3 style="font-size: 1.1rem; color: #A36361; margin-bottom: 15px; border-bottom: 1px solid #eee; padding-bottom: 5px;">Dados Pessoais</h3>
+                
+                <div class="form-row" style="display: flex; gap: 15px; flex-wrap: wrap;">
+                    <div class="form-group" style="flex: 2; min-width: 250px;">
+                        <label>Nome Completo</label>
+                        <input type="text" name="nome" placeholder="Seu nome" required>
+                    </div>
+
+                    <div class="form-group" style="flex: 1; min-width: 150px;">
+                        <label>Data de Nascimento</label>
+                        <input type="date" name="data_nasc" required>
+                    </div>
                 </div>
 
-                <div class="form-group">
-                    <label>Data de Nascimento</label>
-                    <input type="date" name="data_nasc" required>
+                <div class="form-row" style="display: flex; gap: 15px; flex-wrap: wrap;">
+                    <div class="form-group" style="flex: 1;">
+                        <label>Gênero</label>
+                        <select name="genero" required style="width:100%; padding:12px; border:1px solid #ddd; border-radius:5px; font-family: 'Montserrat';">
+                            <option value="Feminino">Feminino</option>
+                            <option value="Masculino">Masculino</option>
+                            <option value="Outro">Outro</option>
+                        </select>
+                    </div>
+
+                    <div class="form-group" style="flex: 1;">
+                        <label>Celular</label>
+                        <input type="tel" name="tel_cel" placeholder="(00) 90000-0000" required>
+                    </div>
+
+                    <div class="form-group" style="flex: 1;">
+                        <label>CPF</label>
+                        <input type="text" name="cpf" placeholder="000.000.000-00" required>
+                    </div>
                 </div>
 
-                <div class="form-group">
-            <label>Gênero</label>
-            <select name="genero" required style="width:100%; padding:12px; border:1px solid #ddd; border-radius:5px;">
-                <option name="genero" value="Feminino">Feminino</option>
-                <option name="genero" value="Masculino">Masculino</option>
-                <option name="genero" value="Outro">Outro</option>
-            </select>
-        </div>
+                <h3 style="font-size: 1.1rem; color: #A36361; margin: 20px 0 15px; border-bottom: 1px solid #eee; padding-bottom: 5px;">Endereço</h3>
+
+                <div class="form-row" style="display: flex; gap: 15px;">
+                    <div class="form-group" style="flex: 1;">
+                        <label>CEP</label>
+                        <input type="text" name="cep" placeholder="00000-000" required>
+                    </div>
+                    <div class="form-group" style="flex: 3;">
+                        <label>Endereço (Rua, Av...)</label>
+                        <input type="text" name="endereco" required>
+                    </div>
+                </div>
+
+                <div class="form-row" style="display: flex; gap: 15px;">
+                    <div class="form-group" style="flex: 1;">
+                        <label>Número</label>
+                        <input type="text" name="n" required>
+                    </div>
+                    <div class="form-group" style="flex: 2;">
+                        <label>Complemento</label>
+                        <input type="text" name="complemento">
+                    </div>
+                </div>
+
+                <div class="form-row" style="display: flex; gap: 15px; flex-wrap: wrap;">
+                    <div class="form-group" style="flex: 1;">
+                        <label>Bairro</label>
+                        <input type="text" name="bairro" required>
+                    </div>
+                    <div class="form-group" style="flex: 1;">
+                        <label>Cidade</label>
+                        <input type="text" name="cidade" required>
+                    </div>
+                    <div class="form-group" style="flex: 0.5; min-width: 80px;">
+                        <label>Estado</label>
+                        <input type="text" name="estado" placeholder="UF" required>
+                    </div>
+                </div>
                 
                 <div class="form-group">
-                    <label>Celular</label>
-                    <input type="number" name="tel_cel" placeholder="(00) 00000-0000" required>
+                    <label>Ponto de Referência</label>
+                    <input type="text" name="referencia">
                 </div>
 
+                <h3 style="font-size: 1.1rem; color: #A36361; margin: 20px 0 15px; border-bottom: 1px solid #eee; padding-bottom: 5px;">Dados de Acesso</h3>
+
                 <div class="form-group">
-                    <label>E-mail</label>
+                    <label>E-mail (Login)</label>
                     <input type="email" name="email" placeholder="seu@email.com.br" required>
                 </div>
 
-                <div class="form-group">
-                    <label>CPF</label>
-                    <input type="text" name="cpf" placeholder="000.000.000-00" required>
-                </div>
+                <div class="form-row" style="display: flex; gap: 15px; flex-wrap: wrap;">
+                    <div class="form-group" style="flex: 1;">
+                        <label>Senha</label>
+                        <input type="password" name="senha" placeholder="Crie uma senha forte" required minlength="6">
+                    </div>
 
-                <div class="form-group">
-                    <label>CEP</label>
-                    <input type="number" name="cep" placeholder="00000-000" required>
+                    <div class="form-group" style="flex: 1;">
+                        <label>Confirmar Senha</label>
+                        <input type="password" name="confirma_senha" placeholder="Repita a senha" required>
+                    </div>
                 </div>
-
-                <div class="form-group">
-                    <label>Endereço</label>
-                    <input type="text" name="endereco" placeholder="" required>
-                </div>
-
-                <div class="form-group">
-                    <label>Número</label>
-                    <input type="number" name="n" placeholder="" required>
-                </div>
-
-                <div class="form-group">
-                    <label>Complemento</label>
-                    <input type="text" name="complemento" placeholder="">
-                </div>
-
-                <div class="form-group">
-                    <label>Ponto de Refêrencia</label>
-                    <input type="text" name="referencia" placeholder="">
-                </div>
-
-                <div class="form-group">
-                    <label>Bairro</label>
-                    <input type="text" name="bairro" placeholder="">
-                </div>
-
-                <div class="form-group">
-                    <label>Cidade</label>
-                    <input type="text" name="cidade" placeholder="" required>
-                </div>
-
-                <div class="form-group">
-                    <label>Estado</label>
-                    <input type="text" name="estado" placeholder="" required>
-                </div>
-
-                <div class="form-group">
-                    <label>Senha</label>
-                    <input type="password" name="senha" placeholder="Crie uma senha forte" required>
-                </div>
-
-                <div class="form-group">
-                    <label>Confirmar Senha</label>
-                    <input type="password" name="confirma_senha" placeholder="Repita a senha" required>
-                </div>
-
                 
-                <button type="submit" class="btn-auth">CADASTRAR</button>
+                <button type="submit" class="btn-auth" style="margin-top: 20px;">FINALIZAR CADASTRO</button>
             </form>
 
             <div class="auth-footer">
@@ -173,13 +187,11 @@
 
 <footer>
   <div class="footer-container">
-    
     <div class="footer-top">
       <div class="newsletter-text">
             <i class="fas fa-tag"></i>
             <span>Receba nossas novidades e promoções.</span>
       </div>
-
     <form class="newsletter-form" action="/newsletter/cadastrar" method="POST">
     <input type="text" name="nome" placeholder="Nome completo" required>
     <input type="text" name="whatsapp" placeholder="WhatsApp" required>
@@ -187,11 +199,8 @@
     <button type="submit">OK</button>
     </form>
     </div>
-
     <hr class="footer-divider">
-
-    <div class="footer-middle">
-      
+    <div class="footer-middle"> 
     <div class="footer-col">
         <h4>Navegação</h4>
         <ul>
@@ -201,7 +210,6 @@
           <li><a href="/sobre">Sobre</a></li>
         </ul>
     </div>
-
     <div class="footer-col">
         <h4>Institucional</h4>
         <ul>
@@ -211,7 +219,6 @@
             <li><a href="rastreio.html">Rastrear Pedido</a></li>
         </ul>
     </div>
-
       <div class="footer-col">
             <h4>Entre em contato</h4>
             <ul class="contact-list">
@@ -222,11 +229,8 @@
             </ul>
       </div>
     </div>
-
     <hr class="footer-divider">
-
     <div class="footer-bottom">
-      
       <div class="payment-section">
             <span>Formas de pagamento:</span>
             <div class="icons">
@@ -237,7 +241,6 @@
             <i class="fas fa-barcode"></i>
             </div>
       </div>
-
       <div class="security-section">
             <span>Segurança:</span>
             <div class="icons">
@@ -245,15 +248,14 @@
             <i class="fab fa-google"></i>
             </div>
       </div>
-
     </div>
-
     <div class="copyright">
       © 2025 Lume Essence - Todos os direitos reservados
     </div>
      <a href="../interno/login.html" class="admin-footer-link">Acesso da Equipe</a>
   </div>
 </footer>
+
 <script src="/static/scriptsite.js"></script>
 </body>
 </html>

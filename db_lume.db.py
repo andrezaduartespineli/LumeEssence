@@ -25,7 +25,7 @@ sql_cliente = '''CREATE TABLE "tb_clientes" (
     "id_cliente" INTEGER PRIMARY KEY AUTOINCREMENT,
     "nome" VARCHAR(100) NOT NULL,
     "data_nasc" DATE,
-    "cpf" VARCHAR(14),
+    "cpf" VARCHAR(11),
     "genero" VARCHAR(20),
     "tel_cel" VARCHAR(20),
     "email" VARCHAR(100) NOT NULL,
