@@ -71,21 +71,48 @@
 </div>
             </header>
 
-            <section class="orders-toolbar">
-                <div class="status-filters">
-                    <button class="filter-pill active">Todos</button>
-                    <button class="filter-pill">Pendente</button>
-                    <button class="filter-pill">Separando</button>
-                    <button class="filter-pill">Enviado</button>
-                    <button class="filter-pill">Entregue</button>
-                    <button class="filter-pill">Cancelados</button>
-                </div>
-                
-                <div class="search-box">
-                    <i class="fa-solid fa-magnifying-glass"></i>
-                    <input type="text" placeholder="Buscar por Nº do pedido ou Cliente...">
-                </div>
-            </section>
+           <section class="orders-toolbar">
+    <div class="status-filters">
+    <a href="/pedidos" 
+       class="filter-pill {{ 'active' if not status_atual or status_atual == 'Todos' }}">
+       Todos
+    </a>
+
+    <a href="/pedidos?status=Pendente" 
+       class="filter-pill {{ 'active' if status_atual == 'Pendente' }}">
+       Pendente
+    </a>
+
+    <a href="/pedidos?status=Separando" 
+       class="filter-pill {{ 'active' if status_atual == 'Separando' }}">
+       Separando
+    </a>
+
+    <a href="/pedidos?status=Enviado" 
+       class="filter-pill {{ 'active' if status_atual == 'Enviado' }}">
+       Enviado
+    </a>
+
+    <a href="/pedidos?status=Entregue" 
+       class="filter-pill {{ 'active' if status_atual == 'Entregue' }}">
+       Entregue
+    </a>
+
+    <a href="/pedidos?status=Cancelado" 
+       class="filter-pill {{ 'active' if status_atual == 'Cancelado' }}">
+       Cancelados
+    </a>
+</div>
+    
+    <form class="search-box" action="/pedidos" method="GET">
+        <button type="submit" style="border: none; background: transparent; cursor: pointer; color: #555;">
+            <i class="fa-solid fa-magnifying-glass"></i>
+        </button>
+        
+        <input type="text" name="q" placeholder="Buscar por Nº do pedido ou Cliente..." 
+               value="{{ request.args.get('q', '') }}">
+    </form>
+</section>
 
             <section class="orders-table-container">
                 <table class="orders-table">

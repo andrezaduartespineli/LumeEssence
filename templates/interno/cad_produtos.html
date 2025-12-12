@@ -1,9 +1,9 @@
- <!DOCTYPE html>
+<!DOCTYPE html>
 <html lang="pt-br">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Novo Produto | Lume Essence Admin</title>
+    <title>{{ 'Editar Produto' if produto else 'Novo Produto' }} | Lume Essence Admin</title>
     <link rel="icon" href="/static/imagens/Logo/grandelogosemfundo.png">
     <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@300;400;600&family=Quicksand:wght@400;500;700&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
@@ -26,8 +26,6 @@
                     <li><a href="funcionarios.html"><i class="fa-solid fa-users"></i> Funcionários</a></li>
                     <li><a href="financeiro.html"><i class="fa-solid fa-file-invoice-dollar"></i> Financeiro</a></li>
                     <li><a href="cliente.html"><i class="fas fa-user"></i>Clientes</a></li>
-                    <li><a href="newsletter.html"><i class="fa-solid fa-envelope-open-text"></i> Newsletter</a></li>
-                    <li><a href="mensagens.html"><i class="fa-regular fa-comment-dots"></i> Mensagens</a></li>
                     <li class="separator"></li>
                     <li><a href="configuracoes.html"><i class="fa-solid fa-gear"></i> Configurações</a></li>
                 </ul>
@@ -41,59 +39,53 @@
             
             <header class="top-bar">
                 <div class="welcome-text">
-                    <h1>Cadastrar Produto</h1>
-                    <p>Adicione novos aromas ao catálogo.</p>
+                    <h1>{{ 'Editar Produto' if produto else 'Cadastrar Produto' }}</h1>
+                    <p>Gerencie o catálogo da loja.</p>
                 </div>
                 <div class="user-profile">
-    <div class="profile-dropdown-trigger" onclick="toggleProfileMenu()">
-        <img src="/static/imagens/fundadora1.jpeg" alt="Admin" class="avatar">
-    </div>
-
-    <div class="profile-dropdown-menu" id="profileMenu">
-        <ul>
-            <li>
-                <a href="configuracoes.html">
-                    <i class="fa-regular fa-user"></i> Meu Perfil
-                </a>
-            </li>
-            <li>
-                <a href="#">
-                    <i class="fa-solid fa-rotate"></i> Trocar Usuário
-                </a>
-            </li>
-            <li class="separator"></li> <li>
-                <a href="/login" class="text-danger">
-                    <i class="fa-solid fa-right-from-bracket"></i> Sair do Sistema
-                </a>
-            </li>
-        </ul>
-    </div>
-</div>
+                    <div class="profile-dropdown-trigger" onclick="toggleProfileMenu()">
+                        <img src="/static/imagens/fundadora1.jpeg" alt="Admin" class="avatar">
+                    </div>
+                    <div class="profile-dropdown-menu" id="profileMenu">
+                        <ul>
+                            <li><a href="configuracoes.html"><i class="fa-regular fa-user"></i> Meu Perfil</a></li>
+                            <li class="separator"></li> 
+                            <li><a href="/login" class="text-danger"><i class="fa-solid fa-right-from-bracket"></i> Sair</a></li>
+                        </ul>
+                    </div>
+                </div>
             </header>
 
-            <form class="product-form-container" action="/produto/novo" method="POST" enctype="multipart/form-data">
-    
-    <div class="form-header">
-        <h2>Informações do Item</h2>
-        <div class="form-actions">
-            <a href="/produtos" class="btn-cancel">Cancelar</a>
-            <button type="submit" class="btn-save">Salvar Produto</button>
-        </div>
-    </div>
+            <form class="product-form-container" 
+                  action="{{ '/produto/atualizar' if produto else '/produto/novo' }}" 
+                  method="POST" enctype="multipart/form-data">
 
-    <div class="form-grid">
-        
-        <div class="left-column">
-            
-            <div class="input-group">
-                <label>Nome do Produto</label>
-                <input type="text" name="nome_produto" placeholder="Ex: Vela Aromática Lavanda" required>
-            </div>
+                {% if produto %}
+                    <input type="hidden" name="id_produto" value="{{ produto['id_produto'] }}">
+                {% endif %}
+                
+                <div class="form-header">
+                    <h2>{{ 'Editar Informações' if produto else 'Informações do Item' }}</h2>
+                    <div class="form-actions">
+                        <a href="/produtos" class="btn-cancel">Cancelar</a>
+                        <button type="submit" class="btn-save">{{ 'Salvar Alterações' if produto else 'Cadastrar Produto' }}</button>
+                    </div>
+                </div>
 
-            <div class="input-group">
-                <label>Fornecedor</label>
-                <input type="text" name="fornecedor" placeholder="Nome do Fornecedor" required>
-            </div>
+                <div class="form-grid">
+                    <div class="left-column">
+                        
+                        <div class="input-group">
+                            <label>Nome do Produto</label>
+                            <input type="text" name="nome_produto" 
+                                   value="{{ produto['nome_produto'] if produto else '' }}" required>
+                        </div>
+
+                        <div class="input-group">
+                            <label>Fornecedor</label>
+                            <input type="text" name="fornecedor" 
+                                   value="{{ produto['fornecedor'] if produto else '' }}" required>
+                        </div>
 
                         <div class="form-row-3">
                             <div class="input-group">
@@ -110,78 +102,86 @@
                                 <select id="aroma" name="aroma">
                                     <option value="Alecrim">Alecrim</option>
                                     <option value="Baunilha">Baunilha</option>
-                                    <option value="Capim Limão">Capim Limão</option>
-                                    <option value="Chá Branco">Chá Branco</option>
-                                    <option value="Chocolate">Chocolate</option>
                                     <option value="Lavanda">Lavanda</option>
                                     <option value="Bamboo">Bamboo</option>
-                                    <option value="Flor de Algodão">Flor de Algodão</option>
                                     <option value="Limão Siciliano">Limão Siciliano</option>
-                                    <option value="Morango">Morango</option>
-                                    <option value="Sem Aroma (Neutro)">Sem Aroma (Neutro)</option>
+                                    <option value="Outro">Outro</option>
                                 </select>
                             </div>
                             <div class="input-group">
-                                <label id="label-tamanho">Peso (Gramas)</label>
+                                <label id="label-tamanho">Peso/Tamanho</label>
                                 <select id="tamanho" name="tamanho">
                                     <option value="100g">100g</option>
                                     <option value="150g">150g</option>
-                                    <option value="230g">230g</option>
-                                    <option value="330g">330g</option>
+                                    <option value="200ml">200ml</option>
                                 </select>
                             </div>
                         </div>
 
-                 
+                        <div class="form-row-2">
+                            <div class="input-group">
+                                <label>Código (SKU)</label>
+                                <input type="text" name="sku" 
+                                       value="{{ produto['sku'] if produto else '' }}" required>
+                            </div>
+                            <div class="input-group">
+                                <label>Estoque Inicial</label>
+                                <input type="number" name="qtd_estoque" 
+                                       value="{{ produto['qtd_estoque'] if produto else '' }}" required>
+                            </div>
+                        </div>
 
-                    <div class="form-row-2">
-                <div class="input-group">
-                    <label>Código (SKU)</label>
-                    <input type="text" name="sku" placeholder="VEL-001" required>
-                </div>
-                <div class="input-group">
-                    <label>Estoque Inicial</label>
-                    <input type="number" name="qtd_estoque" placeholder="0" required>
-                </div>
-            </div>
+                        <div class="form-row-2">
+                            <div class="input-group">
+                                <label>Preço de Custo (R$)</label>
+                                <input type="number" name="preco_custo" step="0.01" 
+                                       value="{{ produto['preco_custo'] if produto else '' }}" required>
+                            </div>
+                            <div class="input-group">
+                                <label>Preço de Venda (R$)</label>
+                                <input type="number" name="preco_venda" step="0.01" 
+                                       value="{{ produto['preco_venda'] if produto else '' }}" required>
+                            </div>
+                        </div>
 
-            <div class="form-row-2">
-                <div class="input-group">
-                    <label>Preço de Custo (R$)</label>
-                    <input type="number" name="preco_custo" step="0.01" placeholder="0,00" required>
-                </div>
-                <div class="input-group">
-                    <label>Preço de Venda (R$)</label>
-                    <input type="number" name="preco_venda" step="0.01" placeholder="0,00" required>
-                </div>
-            </div>
+                        <div class="input-group">
+                            <label>Data de Cadastro</label>
+                            <input type="date" id="data-cadastro" name="data_cad" 
+                                   value="{{ produto['data_cad'] if produto else '' }}" 
+                                   readonly style="background-color: #e9ecef;">
+                        </div>
 
-            <div class="input-group">
-                <label>Data de Cadastro</label>
-                <input type="date" id="data-cadastro" name="data_cad" readonly style="background-color: #e9ecef;">
-            </div>
+                        <div class="input-group">
+                            <label>Descrição Completa</label>
+                            <textarea rows="4" name="descricao" required>{{ produto['descricao'] if produto else '' }}</textarea>
+                        </div>
+                    </div>
 
-            <div class="input-group">
-                <label>Descrição Completa</label>
-                <textarea rows="4" name="descricao" placeholder="Descreva as notas olfativas..." required></textarea>
-            </div>
-        </div>
+                    <div class="right-column">
+                        <div class="upload-card">
+                            <label>Imagem Principal</label>
+                            
+                            {% if produto and produto['img_produto'] %}
+                                <div style="margin-bottom: 15px; text-align: center;">
+                                    <img src="../../static/uploads/{{ produto['img_produto'] }}" 
+                                         onerror="this.src='../../static/imagens/sem_foto.png'"
+                                         style="width: 120px; height: 120px; object-fit: cover; border-radius: 8px; border: 1px solid #ddd;">
+                                    <p style="font-size: 0.8rem; color: #666; margin-top: 5px;">Imagem Atual</p>
+                                </div>
+                            {% endif %}
 
-        <div class="right-column">
-            <div class="upload-card">
-                <label>Imagem Principal</label>
-                <div class="drop-zone">
-                    <i class="fa-solid fa-cloud-arrow-up"></i>
-                    <p>Arraste a foto aqui</p>
-                    <input type="file" name="img_produto" accept="image/*">
+                            <div class="drop-zone">
+                                <i class="fa-solid fa-cloud-arrow-up"></i>
+                                <p>{{ 'Clique para substituir a foto' if produto else 'Arraste a foto aqui' }}</p>
+                                <input type="file" name="img_produto" accept="image/*">
+                            </div>
+                        </div>
+                    </div>
                 </div>
-            </div>
-        </div>
-</div>
-</form>
+            </form>
 
         </main>
     </div>
-<script src="/static/scriptinterno.js"></script>
+    <script src="/static/scriptinterno.js"></script>
 </body>
 </html>

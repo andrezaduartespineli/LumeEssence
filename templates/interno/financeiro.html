@@ -99,11 +99,22 @@
             </section>
 
             <section class="toolbar">
-                <div class="date-filter">
-                    <button class="active">Este Mês</button>
-                    <button>Mês Passado</button>
-                    <button>Personalizar</button>
-                </div>
+                <div class="status-filters">
+    <a href="/financeiro?filtro=atual" 
+       class="tab-btn {{ 'active' if filtro_atual == 'atual' }}">
+       Este Mês
+    </a>
+
+    <a href="/financeiro?filtro=anterior" 
+       class="tab-btn {{ 'active' if filtro_atual == 'anterior' }}">
+       Mês Passado
+    </a>
+
+    <a href="/financeiro?filtro=todos" 
+       class="tab-btn {{ 'active' if filtro_atual == 'todos' }}">
+       Todos
+    </a>
+</div>
                 <div class="action-buttons">
                     <button class="btn-expense"><i class="fa-solid fa-minus"></i> Nova Despesa</button>
                     <button class="btn-income"><i class="fa-solid fa-plus"></i> Nova Receita</button>

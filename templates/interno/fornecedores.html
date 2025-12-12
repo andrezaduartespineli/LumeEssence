@@ -72,18 +72,44 @@
             </header>
 
             <section class="suppliers-toolbar">
-                <div class="filter-tabs">
-                    <button class="tab-btn active">Todos</button>
-                    <button class="tab-btn">Matéria-Prima</button>
-                    <button class="tab-btn">Embalagens</button>
-                    <button class="tab-btn">Logística</button>
-                </div>
+                <div class="status-filters" style="margin-bottom: 20px;">
+    
+    <a href="/fornecedores" 
+       class="filter-pill {{ 'active' if not cat_atual or cat_atual == 'Todos' }}">
+       Todos
+    </a>
+
+    <a href="/fornecedores?categoria=Matéria-prima" 
+       class="filter-pill {{ 'active' if cat_atual == 'Matéria-prima' }}">
+       Matéria-prima
+    </a>
+
+    <a href="/fornecedores?categoria=Embalagens" 
+       class="filter-pill {{ 'active' if cat_atual == 'Embalagens' }}">
+       Embalagens
+    </a>
+
+    <a href="/fornecedores?categoria=Transporte" 
+       class="filter-pill {{ 'active' if cat_atual == 'Transporte' }}">
+       Transporte
+    </a>
+    
+    <a href="/fornecedores?categoria=Serviços" 
+       class="filter-pill {{ 'active' if cat_atual == 'Serviços' }}">
+       Serviços
+    </a>
+
+</div>
                 
                 <div class="toolbar-actions">
-                    <div class="search-compact">
-                        <i class="fa-solid fa-magnifying-glass"></i>
-                        <input type="text" placeholder="Buscar fornecedor...">
-                    </div>
+                     <form class="search-compact" action="/fornecedores" method="GET">
+    <button type="submit" style="border: none; background: transparent; cursor: pointer; color: #ccc;">
+        <i class="fa-solid fa-magnifying-glass"></i>
+    </button>
+    
+    <input type="text" name="q" placeholder="Buscar por Nome, CPF ou E-mail..." 
+           value="{{ request.args.get('q', '') }}">
+</form>
                     <a href="novo-fornecedor.html" class="btn-new-supplier" style="text-decoration: none;">
     <i class="fa-solid fa-plus"></i> Novo Fornecedor
 </a>

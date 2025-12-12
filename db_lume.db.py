@@ -99,23 +99,25 @@ cur.execute(sql_contato)
 # 2. TABELAS DO ADMIN (ERP)
 # ==========================================
 
-# Tabela Produtos - ATUALIZADO (Com Ativo)
+# Tabela Produtos (Atualizada com Categoria, Aroma, Tamanho e Ativo)
 cur.execute('DROP TABLE IF EXISTS tb_produtos')
 sql_produto = '''CREATE TABLE "tb_produtos" (
     "id_produto" INTEGER PRIMARY KEY AUTOINCREMENT,
     "nome_produto" VARCHAR(100) NOT NULL,
     "sku" VARCHAR(20),
     "descricao" TEXT,
-    "preco_custo" DECIMAL(10,2) NOT NULL,
-    "preco_venda" DECIMAL(10,2) NOT NULL,
-    "qtd_estoque" INTEGER NOT NULL,
+    "preco_custo" DECIMAL(10,2),
+    "preco_venda" DECIMAL(10,2),
+    "qtd_estoque" INTEGER,
     "fornecedor" VARCHAR(100),
-    "categoria_id" INTEGER,
-    "subcategoria_id" INTEGER,
+    "categoria" VARCHAR(50), 
+    "aroma" VARCHAR(50),
+    "tamanho" VARCHAR(50),
     "img_produto" VARCHAR(255),
     "ativo" BOOLEAN DEFAULT 1,
     "data_cad" DATETIME
     )'''
+# Obs: "categoria" agora é VARCHAR para aceitar textos como "Velas Aromáticas" vindos do HTML
 cur.execute(sql_produto)
 
 # Tabela Funcionários

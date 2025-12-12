@@ -71,18 +71,46 @@
 </div>
             </header>
 
-            <section class="suppliers-toolbar"> <div class="filter-tabs">
-                    <button class="tab-btn active">Todos</button>
-                    <button class="tab-btn">Velas</button>
-                    <button class="tab-btn">Home Spray</button>
-                    <button class="tab-btn">Kits</button>
-                </div>
+            <section class="suppliers-toolbar"> 
+                <div class="status-filters" style="margin-bottom: 20px;">
+    
+    <a href="/produtos" 
+       class="filter-pill {{ 'active' if not cat_atual or cat_atual == 'Todos' }}">
+       Todos
+    </a>
+
+    <a href="/produtos?cat=1" 
+       class="filter-pill {{ 'active' if cat_atual == '1' }}">
+       Velas
+    </a>
+
+    <a href="/produtos?cat=2" 
+       class="filter-pill {{ 'active' if cat_atual == '2' }}">
+       Home Spray
+    </a>
+
+    <a href="/produtos?cat=3" 
+       class="filter-pill {{ 'active' if cat_atual == '3' }}">
+       Aromatizadores
+    </a>
+
+    <a href="/produtos?cat=4" 
+       class="filter-pill {{ 'active' if cat_atual == '4' }}">
+       Kits
+    </a>
+
+</div>
                 
                 <div class="toolbar-actions">
-                    <div class="search-compact">
-                        <i class="fa-solid fa-magnifying-glass"></i>
-                        <input type="text" placeholder="Buscar produto...">
-                    </div>
+                    
+                    <form class="search-compact" action="/produtos" method="GET">
+    <button type="submit" style="border: none; background: transparent; cursor: pointer; color: #ccc;">
+        <i class="fa-solid fa-magnifying-glass"></i>
+    </button>
+    
+    <input type="text" name="q" placeholder="Buscar por Nome, CPF ou E-mail..." 
+           value="{{ request.args.get('q', '') }}">
+</form>
                     <a href="cad_produtos.html" class="btn-new-supplier" style="text-decoration: none;">
                         <i class="fa-solid fa-plus"></i> Novo Produto
                     </a>
@@ -107,9 +135,15 @@
             {% endif %}
 
             <div class="hover-actions">
-                <a href="#" class="btn-icon-circle"><i class="fa-solid fa-pen"></i></a>
-                <a href="#" class="btn-icon-circle delete"><i class="fa-solid fa-trash"></i></a>
-            </div>
+    <a href="/produto/editar/{{ p['id_produto'] }}" class="btn-icon-circle" title="Editar">
+        <i class="fa-solid fa-pen"></i>
+    </a>
+    
+    <a href="/produto/delete/{{ p['id_produto'] }}" class="btn-icon-circle delete" title="Excluir" 
+       onclick="return confirm('Tem certeza que deseja excluir este produto?');">
+        <i class="fa-solid fa-trash"></i>
+    </a>
+</div>
         </div>
         
         <div class="product-info">

@@ -72,10 +72,14 @@
             </header>
 
             <section class="actions-bar">
-                <div class="search-box">
-                    <i class="fa-solid fa-magnifying-glass"></i>
-                    <input type="text" placeholder="Buscar por nome ou cargo...">
-                </div>
+                <form class="search-box" action="/funcionarios" method="GET">
+    <button type="submit" style="border: none; background: transparent; cursor: pointer; color: #ccc;">
+        <i class="fa-solid fa-magnifying-glass"></i>
+    </button>
+    
+    <input type="text" name="q" placeholder="Buscar por Nome, CPF ou E-mail..." 
+           value="{{ request.args.get('q', '') }}">
+</form>
                 <a href="novo-funcionario.html" class="btn-add-new" style="text-decoration: none;">
     <i class="fa-solid fa-plus"></i> Novo Colaborador
 </a>
