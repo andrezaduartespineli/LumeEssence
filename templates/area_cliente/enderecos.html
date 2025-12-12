@@ -2,44 +2,45 @@
 <html lang="pt-br">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Meus Endereços | Lume Essence</title>
-    
+    <title>Minha Conta | Lume Essence</title>
+    <link rel="icon" href="/static/imagens/Logo/pequenalogosemfnfo.png">
     <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@300;400;600&family=Quicksand:wght@400;500;700&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-    <link rel="stylesheet" href="/static/area-cliente.css">
+    
+    <link rel="stylesheet" href="/static/stylesite.css">
+    <link rel="stylesheet" href="/static/area-cliente.css"> 
 </head>
 <body>
+    
 <header>
-          
-            <div class="container">
-                <div class="logo">
-                    <img src="/static/imagens/Logo/somenteiconesemfundo.png" alt="Lume Essence">
-                </div>
-            </div>
-
-  <div class="navbar">
-    <div class="nav-links">
-        <a href="/">Início</a>
-        <a href="/produtos">Produtos</a>
-        <a href="/sobre">Sobre</a>
-        <a href="/contato">Contato</a>
+    <div class="container">
+        <div class="logo">
+            <img src="/static/imagens/Logo/somenteiconesemfundo.png" alt="Lume Essence">
+        </div>
     </div>
 
-    <div class="nav-icons-area" style="display: flex; align-items: center; gap: 20px;">
-        
-        <form action="/produtos" method="GET" class="search-box">
-    <input type="text" name="q" placeholder="Buscar..." value="{{ termo_busca if termo_busca else '' }}">
-    <button type="submit"><i class="fas fa-search"></i></button>
-</form>
-        
-<div class="header-icons">
-<div class="user-menu-wrapper">
-    <a href="/login" class="user-icon-link">
-        <i class="fa-regular fa-user"></i>
-    </a>
+    <div class="navbar">
+        <div class="nav-links">
+            <a href="/">Início</a>
+            <a href="/produtos">Produtos</a>
+            <a href="/sobre">Sobre</a>
+            <a href="/contato">Contato</a>
+        </div>
 
-    <div class="user-dropdown">
+        <div class="nav-icons-area" style="display: flex; align-items: center; gap: 20px;">
+            
+            <form action="/produtos" method="GET" class="search-box">
+                <input type="text" name="q" placeholder="Buscar..." value="{{ termo_busca if termo_busca else '' }}">
+                <button type="submit"><i class="fas fa-search"></i></button>
+            </form>
+            
+            <div class="header-icons">
+                <div class="user-menu-wrapper">
+                    <a href="/login" class="user-icon-link">
+                        <i class="fa-regular fa-user"></i>
+                    </a>
+
+                    <div class="user-dropdown">
                         <ul>
                             <li>
                                 <a href="/area_cliente/area-cliente.html">
@@ -61,167 +62,146 @@
                     </div>
                 </div>
             </div>
-        <a href="/carrinho" class="cart-link" title="Carrinho">
-            <i class="fas fa-shopping-bag"></i>
-            <span class="cart-count">3</span>
-        </a>
-    </div>
-</div>
-</header>
-    <div class="client-container container">
-        
-        <aside class="client-sidebar">
-            <div class="user-summary">
-                <div class="user-avatar">
-                    {% if cliente['foto_perfil'] %}
-    <img src="/static/uploads/perfil/{{ cliente['foto_perfil'] }}" alt="Foto">
-{% else %}
-    <img src="/static/imagens/sem_foto_perfil.png" onerror="this.src='https://via.placeholder.com/150'" alt="Sem Foto">
-{% endif %}
-                </div>
-                <h3>Olá, Ana Clara</h3>
-                <p>ana@email.com</p>
-            </div>
-            
-            <nav class="account-menu">
-    <a href="/area_cliente/area-cliente.html" class="{{ 'active' if request.path == '/area_cliente/area-cliente.html' else '' }}">
-        <i class="fa-solid fa-house"></i> Visão Geral
-    </a>
-    
-    <a href="/area_cliente/meus-pedidos.html" class="{{ 'active' if request.path == '/area_cliente/meus-pedidos.html' else '' }}">
-        <i class="fa-solid fa-box"></i> Meus Pedidos
-    </a>
-    
-    <a href="/area_cliente/favoritos.html" class="{{ 'active' if request.path == '/area_cliente/favoritos.html' else '' }}">
-        <i class="fa-regular fa-heart"></i> Favoritos
-    </a>
-    
-    <a href="/area_cliente/enderecos.html" class="{{ 'active' if request.path == '/area_cliente/enderecos.html' else '' }}">
-        <i class="fa-solid fa-location-dot"></i> Endereços
-    </a>
-    
-    <a href="/area_cliente/cartoes.html" class="{{ 'active' if request.path == '/area_cliente/cartoes.html' else '' }}">
-        <i class="fa-regular fa-credit-card"></i> Cartões Salvos
-    </a>
-    
-    <a href="/area_cliente/meus-dados.html" class="{{ 'active' if request.path == '/area_cliente/meus-dados.html' else '' }}">
-        <i class="fa-solid fa-user-gear"></i> Meus Dados
-    </a>
-    
-    <a href="/logout" class="logout">
-        <i class="fa-solid fa-right-from-bracket"></i> Sair
-    </a>
-</nav>
-        </aside>
 
-        <main class="client-content">
-            
-            <div class="section-header">
-                <h2>Meus Endereços</h2>
-                <button class="btn-track" onclick="abrirModalEndereco()"><i class="fa-solid fa-plus"></i> Novo Endereço</button>
-            </div>
-
-            <div class="address-grid">
-
-                <div class="address-card default-card">
-                    <div class="card-tag">Padrão</div>
-                    <div class="address-icon">
-                        <i class="fa-solid fa-house-chimney"></i>
-                    </div>
-                    <div class="address-details">
-                        <h3>Minha Casa</h3>
-                        <p><strong>Ana Clara Silva</strong></p>
-                        <p>Rua das Flores, 123, Apto 45</p>
-                        <p>Jardim Paulista - São Paulo, SP</p>
-                        <p>CEP: 01400-000</p>
-                    </div>
-                    <div class="address-actions">
-                        <button class="btn-icon-edit" title="Editar"><i class="fa-solid fa-pen"></i></button>
-                        </div>
-                </div>
-
-                <div class="address-card">
-                    <div class="address-icon">
-                        <i class="fa-solid fa-briefcase"></i>
-                    </div>
-                    <div class="address-details">
-                        <h3>Trabalho (Escritório)</h3>
-                        <p><strong>Lume Essence Ltda</strong></p>
-                        <p>Av. Paulista, 1000, Sala 501</p>
-                        <p>Bela Vista - São Paulo, SP</p>
-                        <p>CEP: 01310-100</p>
-                    </div>
-                    <div class="address-actions">
-                        <button class="btn-text" title="Definir como Padrão">Definir como Padrão</button>
-                        <div class="actions-right">
-                            <button class="btn-icon-edit"><i class="fa-solid fa-pen"></i></button>
-                            <button class="btn-icon-delete"><i class="fa-solid fa-trash"></i></button>
-                        </div>
-                    </div>
-                </div>
-
-                <div class="address-card">
-                    <div class="address-icon">
-                        <i class="fa-solid fa-gift"></i>
-                    </div>
-                    <div class="address-details">
-                        <h3>Casa da Mãe</h3>
-                        <p><strong>Maria Helena Silva</strong></p>
-                        <p>Rua Girassol, 50</p>
-                        <p>Vila Madalena - São Paulo, SP</p>
-                        <p>CEP: 05433-000</p>
-                    </div>
-                    <div class="address-actions">
-                        <button class="btn-text">Definir como Padrão</button>
-                        <div class="actions-right">
-                            <button class="btn-icon-edit"><i class="fa-solid fa-pen"></i></button>
-                            <button class="btn-icon-delete"><i class="fa-solid fa-trash"></i></button>
-                        </div>
-                    </div>
-                </div>
-
-            </div>
-
-        </main>
-    </div>
-
-    <div id="modal-endereco" class="modal-overlay">
-        <div class="modal-content-box">
-            <div class="modal-header">
-                <h3>Novo Endereço</h3>
-                <button class="close-modal" onclick="fecharModalEndereco()">&times;</button>
-            </div>
-            <form class="address-form">
-                <div class="input-row">
-                    <input type="text" placeholder="Nome do Destinatário" class="full-width" required>
-                </div>
-                <div class="input-row-2">
-                    <input type="text" placeholder="CEP (00000-000)" required>
-                    <input type="text" placeholder="Apelido (Ex: Casa, Trabalho)">
-                </div>
-                <div class="input-row-2-1">
-                    <input type="text" placeholder="Endereço (Rua, Av.)" required>
-                    <input type="text" placeholder="Número" required>
-                </div>
-                <div class="input-row-2">
-                    <input type="text" placeholder="Complemento">
-                    <input type="text" placeholder="Bairro" required>
-                </div>
-                <div class="input-row-2">
-                    <input type="text" placeholder="Cidade" required>
-                    <select>
-                        <option>SP</option>
-                        <option>RJ</option>
-                        <option>MG</option>
-                    </select>
-                </div>
-                <div class="modal-footer">
-                    <button type="button" class="btn-cancel" onclick="fecharModalEndereco()">Cancelar</button>
-                    <button type="submit" class="btn-save">Salvar Endereço</button>
-                </div>
-            </form>
+            <a href="/carrinho" class="cart-link" title="Carrinho">
+                <i class="fas fa-shopping-bag"></i>
+                {% if qtd_carrinho > 0 %}
+                    <span class="cart-count">{{ qtd_carrinho }}</span>
+                {% endif %}
+            </a>
         </div>
     </div>
+</header>
+
+<div class="client-container container">
+    
+    <aside class="client-sidebar">
+        <div class="user-summary">
+            <div class="user-avatar">
+                {% if cliente['foto_perfil'] %}
+                    <img src="/static/uploads/perfil/{{ cliente['foto_perfil'] }}" alt="Foto">
+                {% else %}
+                    <img src="/static/imagens/sem_foto_perfil.png" onerror="this.src='https://via.placeholder.com/150'" alt="Sem Foto">
+                {% endif %}
+            </div>
+            <h3>Olá, {{ cliente['nome'].split()[0] }}</h3>
+            <p>{{ cliente['email'] }}</p>
+        </div>
+        
+        <nav class="account-menu">
+            <a href="/area_cliente/area-cliente.html"><i class="fa-solid fa-house"></i> Visão Geral</a>
+            <a href="/area_cliente/meus-pedidos.html"><i class="fa-solid fa-box"></i> Meus Pedidos</a>
+            <a href="/area_cliente/favoritos.html"><i class="fa-regular fa-heart"></i> Favoritos</a>
+            <a href="/area_cliente/enderecos.html" class="active"><i class="fa-solid fa-location-dot"></i> Endereços</a>
+            <a href="/area_cliente/cartoes.html"><i class="fa-regular fa-credit-card"></i> Cartões Salvos</a>
+            <a href="/area_cliente/meus-dados.html"><i class="fa-solid fa-user-gear"></i> Meus Dados</a>
+            <a href="/logout" class="logout"><i class="fa-solid fa-right-from-bracket"></i> Sair</a>
+        </nav>
+    </aside>
+
+    <main class="client-content">
+        
+        <div class="section-header">
+            <h2>Meus Endereços</h2>
+            <button class="btn-track" onclick="document.getElementById('modal-endereco').style.display='flex'"><i class="fa-solid fa-plus"></i> Novo Endereço</button>
+        </div>
+
+        <div class="address-grid">
+
+            <div class="address-card default-card">
+                <div class="card-tag">Padrão</div>
+                <div class="address-icon">
+                    <i class="fa-solid fa-house-chimney"></i>
+                </div>
+                <div class="address-details">
+                    <h3>Meu Cadastro</h3>
+                    <p><strong>{{ cliente['nome'] }}</strong></p>
+                    <p>{{ cliente['endereco'] }}, {{ cliente['n'] }}</p>
+                    <p>{{ cliente['bairro'] }} - {{ cliente['cidade'] }}, {{ cliente['estado'] }}</p>
+                    <p>CEP: {{ cliente['cep'] }}</p>
+                    {% if cliente['complemento'] %}<p>Comp: {{ cliente['complemento'] }}</p>{% endif %}
+                </div>
+                <div class="address-actions">
+                    <a href="/area_cliente/meus-dados.html" class="btn-icon-edit" title="Editar no Perfil"><i class="fa-solid fa-pen"></i></a>
+                </div>
+            </div>
+
+            {% for end in enderecos_extras %}
+            <div class="address-card">
+                <div class="address-icon">
+                    <i class="fa-solid {{ 'fa-briefcase' if 'Trabalho' in end['titulo'] else 'fa-location-dot' }}"></i>
+                </div>
+                <div class="address-details">
+                    <h3>{{ end['titulo'] }}</h3>
+                    <p><strong>{{ cliente['nome'] }}</strong></p>
+                    <p>{{ end['endereco'] }}, {{ end['numero'] }}</p>
+                    <p>{{ end['bairro'] }} - {{ end['cidade'] }}, {{ end['estado'] }}</p>
+                    <p>CEP: {{ end['cep'] }}</p>
+                    {% if end['complemento'] %}<p>Comp: {{ end['complemento'] }}</p>{% endif %}
+                </div>
+                <div class="address-actions">
+                    <button class="btn-text" style="visibility: hidden;">.</button> <div class="actions-right">
+                        <a href="/area_cliente/remover_endereco/{{ end['id_endereco'] }}" class="btn-icon-delete" onclick="return confirm('Apagar este endereço?')" title="Excluir">
+                            <i class="fa-solid fa-trash"></i>
+                        </a>
+                    </div>
+                </div>
+            </div>
+            {% endfor %}
+
+        </div>
+
+    </main>
+</div>
+
+<div id="modal-endereco" class="modal-overlay" style="display: none;">
+    <div class="modal-content-box">
+        <div class="modal-header">
+            <h3>Novo Endereço</h3>
+            <button class="close-modal" onclick="document.getElementById('modal-endereco').style.display='none'">&times;</button>
+        </div>
+        
+        <form class="address-form" action="/area_cliente/adicionar_endereco" method="POST">
+            
+            <div class="input-row">
+                <input type="text" name="titulo" placeholder="Nome do Local (Ex: Trabalho, Casa de Praia)" class="full-width" required>
+            </div>
+            
+            <div class="input-row-2">
+                <input type="text" name="cep" placeholder="CEP (00000-000)" required>
+                <input type="text" name="bairro" placeholder="Bairro" required>
+            </div>
+            
+            <div class="input-row-2-1">
+                <input type="text" name="endereco" placeholder="Endereço (Rua, Av.)" required>
+                <input type="text" name="numero" placeholder="Número" required>
+            </div>
+            
+            <div class="input-row-2">
+                <input type="text" name="complemento" placeholder="Complemento (Opcional)">
+                <input type="text" name="cidade" placeholder="Cidade" required>
+            </div>
+            
+            <div class="input-row">
+                <select name="estado" style="width: 100%; padding: 10px; border: 1px solid #ddd; border-radius: 5px;" required>
+                    <option value="" disabled selected>Selecione o Estado</option>
+                    <option value="DF">Distrito Federal</option>
+                    <option value="GO">Goiás</option>
+                    <option value="SP">São Paulo</option>
+                    <option value="RJ">Rio de Janeiro</option>
+                    <option value="MG">Minas Gerais</option>
+                    <option value="Outro">Outro</option>
+                </select>
+            </div>
+            
+            <div class="modal-footer">
+                <button type="button" class="btn-cancel" onclick="document.getElementById('modal-endereco').style.display='none'">Cancelar</button>
+                <button type="submit" class="btn-save">Salvar Endereço</button>
+            </div>
+        </form>
+    </div>
+</div>
+
 <footer>
   <div class="footer-container">
     
@@ -231,81 +211,56 @@
             <span>Receba nossas novidades e promoções.</span>
       </div>
 
-      
       <form class="newsletter-form" action="/newsletter/cadastrar" method="POST">
-    <input type="text" name="nome" placeholder="Nome completo" required>
-    <input type="text" name="whatsapp" placeholder="WhatsApp" required>
-    <input type="email" name="email" placeholder="E-mail" required>
-    <button type="submit">OK</button>
-    </form>
+        <input type="text" name="nome" placeholder="Nome completo" required>
+        <input type="text" name="whatsapp" placeholder="WhatsApp" required>
+        <input type="email" name="email" placeholder="E-mail" required>
+        <button type="submit">OK</button>
+      </form>
     </div>
 
     <hr class="footer-divider">
-
     <div class="footer-middle">
-      
-    <div class="footer-col">
-        <h4>Navegação</h4>
-        <ul>
-          <li><a href="../site/index.html">Início</a></li>
-          <li><a href="/produtos">Produtos</a></li>
-          <li><a href="../site/contato.html">Contato</a></li>
-          <li><a href="../site/sobre.html">Sobre</a></li>
-        </ul>
-    </div>
-
-    <div class="footer-col">
-        <h4>Institucional</h4>
-        <ul>
-            <li><a href="../site/institucional.html#trocas">Trocas e Devoluções</a></li>
-            <li><a href="../site/institucional.html#privacidade">Política de Privacidade</a></li>
-            <li><a href="../site/institucional.html#termos">Termos de Uso</a></li>
-            <li><a href="../site/rastreio.html">Rastrear Pedido</a></li>
-        </ul>
-    </div>
-
-      <div class="footer-col">
+        <div class="footer-col">
+            <h4>Navegação</h4>
+            <ul>
+              <li><a href="/">Início</a></li>
+              <li><a href="/produtos">Produtos</a></li>
+              <li><a href="/contato">Contato</a></li>
+              <li><a href="/sobre">Sobre</a></li>
+            </ul>
+        </div>
+        <div class="footer-col">
+            <h4>Institucional</h4>
+            <ul>
+                <li><a href="institucional.html#trocas">Trocas e Devoluções</a></li>
+                <li><a href="institucional.html#privacidade">Política de Privacidade</a></li>
+                <li><a href="institucional.html#termos">Termos de Uso</a></li>
+                <li><a href="rastreio.html">Rastrear Pedido</a></li>
+            </ul>
+        </div>
+        <div class="footer-col">
             <h4>Entre em contato</h4>
             <ul class="contact-list">
-            <li><i class="fab fa-whatsapp"></i><a href="https://api.whatsapp.com/send/?phone=5561996100308&text&type=phone_number&app_absent=0"> (61) 99610-0308</a></li>
+            <li><i class="fab fa-whatsapp"></i> (61) 99610-0308</li>
             <li><i class="far fa-envelope"></i> lumeessence.contato@gmail.com</li>
-            <li><i class="fas fa-map-marker-alt"></i> Brasília - DF</li>
-            <li><i class="fab fa-instagram"></i><a href="https://www.instagram.com/lumeessence.oficial?igsh=dTBkZ2h1Zno4bGZl">Instagram</a></li>
             </ul>
-      </div>
+        </div>
     </div>
-
-    <hr class="footer-divider">
-
-    <div class="footer-bottom">
-      
-      <div class="payment-section">
-            <span>Formas de pagamento:</span>
-            <div class="icons">
-            <i class="fab fa-cc-visa"></i>
-            <i class="fab fa-cc-mastercard"></i>
-            <i class="fab fa-cc-amex"></i>
-            <i class="fab fa-pix"></i>
-            <i class="fas fa-barcode"></i>
-            </div>
-      </div>
-
-      <div class="security-section">
-            <span>Segurança:</span>
-            <div class="icons">
-            <i class="fas fa-lock"></i> 
-            <i class="fab fa-google"></i>
-            </div>
-      </div>
-
-    </div>
-
+    
     <div class="copyright">
       © 2025 Lume Essence - Todos os direitos reservados
     </div>
-
   </div>
 </footer>
+
 <script src="/static/scriptareacliente.js"></script>
+
+<script>
+    function fecharModalEndereco() {
+        document.getElementById('modal-endereco').style.display = 'none';
+    }
+</script>
+
 </body>
 </html>

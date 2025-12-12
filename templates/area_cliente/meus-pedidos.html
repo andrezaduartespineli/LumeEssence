@@ -91,12 +91,27 @@
             <h2>Histórico de Pedidos</h2>
         </div>
 
-        <div class="order-tabs">
-            <button class="tab-btn active">Todos</button>
-            <button class="tab-btn">Em Aberto</button>
-            <button class="tab-btn">Entregues</button>
-            <button class="tab-btn">Cancelados</button>
-        </div>
+       <div class="order-tabs">
+    <a href="/area_cliente/meus-pedidos.html" 
+       class="tab-btn {{ 'active' if not status_atual else '' }}">
+       Todos
+    </a>
+
+    <a href="/area_cliente/meus-pedidos.html?status=aberto" 
+       class="tab-btn {{ 'active' if status_atual == 'aberto' else '' }}">
+       Em Aberto
+    </a>
+
+    <a href="/area_cliente/meus-pedidos.html?status=entregue" 
+       class="tab-btn {{ 'active' if status_atual == 'entregue' else '' }}">
+       Entregues
+    </a>
+
+    <a href="/area_cliente/meus-pedidos.html?status=cancelado" 
+       class="tab-btn {{ 'active' if status_atual == 'cancelado' else '' }}">
+       Cancelados
+    </a>
+</div>
 
         <div class="orders-list">
             
@@ -150,18 +165,55 @@
 </div>
 
 <footer>
-    <div class="footer-container">
-        <div class="footer-top">
-            <div class="newsletter-text"><i class="fas fa-tag"></i><span>Receba nossas novidades.</span></div>
-            <form class="newsletter-form" action="/newsletter/cadastrar" method="POST">
-                <input type="text" name="nome" placeholder="Nome" required>
-                <input type="text" name="whatsapp" placeholder="Zap" required>
-                <input type="email" name="email" placeholder="E-mail" required>
-                <button type="submit">OK</button>
-            </form>
-        </div>
-        <div class="copyright">© 2025 Lume Essence</div>
+  <div class="footer-container">
+    
+    <div class="footer-top">
+      <div class="newsletter-text">
+            <i class="fas fa-tag"></i>
+            <span>Receba nossas novidades e promoções.</span>
+      </div>
+
+      <form class="newsletter-form" action="/newsletter/cadastrar" method="POST">
+        <input type="text" name="nome" placeholder="Nome completo" required>
+        <input type="text" name="whatsapp" placeholder="WhatsApp" required>
+        <input type="email" name="email" placeholder="E-mail" required>
+        <button type="submit">OK</button>
+      </form>
     </div>
+
+    <hr class="footer-divider">
+    <div class="footer-middle">
+        <div class="footer-col">
+            <h4>Navegação</h4>
+            <ul>
+              <li><a href="/">Início</a></li>
+              <li><a href="/produtos">Produtos</a></li>
+              <li><a href="/contato">Contato</a></li>
+              <li><a href="/sobre">Sobre</a></li>
+            </ul>
+        </div>
+        <div class="footer-col">
+            <h4>Institucional</h4>
+            <ul>
+                <li><a href="institucional.html#trocas">Trocas e Devoluções</a></li>
+                <li><a href="institucional.html#privacidade">Política de Privacidade</a></li>
+                <li><a href="institucional.html#termos">Termos de Uso</a></li>
+                <li><a href="rastreio.html">Rastrear Pedido</a></li>
+            </ul>
+        </div>
+        <div class="footer-col">
+            <h4>Entre em contato</h4>
+            <ul class="contact-list">
+            <li><i class="fab fa-whatsapp"></i> (61) 99610-0308</li>
+            <li><i class="far fa-envelope"></i> lumeessence.contato@gmail.com</li>
+            </ul>
+        </div>
+    </div>
+    
+    <div class="copyright">
+      © 2025 Lume Essence - Todos os direitos reservados
+    </div>
+  </div>
 </footer>
 
 <script src="/static/scriptareacliente.js"></script>

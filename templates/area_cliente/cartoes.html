@@ -9,231 +9,195 @@
     <link href="https://fonts.googleapis.com/css2?family=Source+Code+Pro:wght@400;600&display=swap" rel="stylesheet">
     
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="stylesheet" href="/static/stylesite.css">
     <link rel="stylesheet" href="/static/area-cliente.css">
 </head>
 <body>
 
 <header>
-          
-            <div class="container">
-                <div class="logo">
-                    <img src="/static/imagens/Logo/somenteiconesemfundo.png" alt="Lume Essence">
-                </div>
-            </div>
-
-  <div class="navbar">
-    <div class="nav-links">
-        <a href="/">Início</a>
-        <a href="/produtos">Produtos</a>
-        <a href="/sobre">Sobre</a>
-        <a href="/contato">Contato</a>
+    <div class="container">
+        <div class="logo">
+            <img src="/static/imagens/Logo/somenteiconesemfundo.png" alt="Lume Essence">
+        </div>
     </div>
 
-    <div class="nav-icons-area" style="display: flex; align-items: center; gap: 20px;">
-        
-        <form action="/produtos" method="GET" class="search-box">
-    <input type="text" name="q" placeholder="Buscar..." value="{{ termo_busca if termo_busca else '' }}">
-    <button type="submit"><i class="fas fa-search"></i></button>
-</form>
-        
-<div class="header-icons">
-<div class="user-menu-wrapper">
-    <a href="/login" class="user-icon-link">
-        <i class="fa-regular fa-user"></i>
-    </a>
+    <div class="navbar">
+        <div class="nav-links">
+            <a href="/">Início</a>
+            <a href="/produtos">Produtos</a>
+            <a href="/sobre">Sobre</a>
+            <a href="/contato">Contato</a>
+        </div>
 
-    <div class="user-dropdown">
+        <div class="nav-icons-area" style="display: flex; align-items: center; gap: 20px;">
+            <form action="/produtos" method="GET" class="search-box">
+                <input type="text" name="q" placeholder="Buscar..." value="{{ termo_busca if termo_busca else '' }}">
+                <button type="submit"><i class="fas fa-search"></i></button>
+            </form>
+            
+            <div class="header-icons">
+                <div class="user-menu-wrapper">
+                    <a href="/login" class="user-icon-link">
+                        <i class="fa-regular fa-user"></i>
+                    </a>
+                    <div class="user-dropdown">
                         <ul>
-                            <li>
-                                <a href="/area_cliente/area-cliente.html">
-                                    <i class="fa-solid fa-user-gear"></i> Minha Conta
-                                </a>
-                            </li>
-                            <li>
-                                <a href="/area_cliente/meus-pedidos.html">
-                                    <i class="fa-solid fa-box"></i> Meus Pedidos
-                                </a>
-                            </li>
+                            <li><a href="/area_cliente/area-cliente.html"><i class="fa-solid fa-user-gear"></i> Minha Conta</a></li>
+                            <li><a href="/area_cliente/meus-pedidos.html"><i class="fa-solid fa-box"></i> Meus Pedidos</a></li>
                             <li class="separator"></li>
-                            <li>
-                                <a href="/logout" class="logout-link">
-                                    <i class="fa-solid fa-right-from-bracket"></i> Sair
-                                </a>
-                            </li>
+                            <li><a href="/logout" class="logout-link"><i class="fa-solid fa-right-from-bracket"></i> Sair</a></li>
                         </ul>
                     </div>
                 </div>
             </div>
-        <a href="/carrinho" class="cart-link" title="Carrinho">
-            <i class="fas fa-shopping-bag"></i>
-            <span class="cart-count">3</span>
-        </a>
+            
+            <a href="/carrinho" class="cart-link" title="Carrinho">
+                <i class="fas fa-shopping-bag"></i>
+                {% if qtd_carrinho > 0 %}
+                    <span class="cart-count">{{ qtd_carrinho }}</span>
+                {% endif %}
+            </a>
+        </div>
     </div>
-</div>
 </header>
 
-    <div class="client-container container">
+<div class="client-container container">
+    
+    <aside class="client-sidebar">
+        <div class="user-summary">
+            <div class="user-avatar">
+                {% if cliente['foto_perfil'] %}
+                    <img src="/static/uploads/perfil/{{ cliente['foto_perfil'] }}" alt="Foto">
+                {% else %}
+                    <img src="/static/imagens/sem_foto_perfil.png" onerror="this.src='https://via.placeholder.com/150'" alt="Sem Foto">
+                {% endif %}
+            </div>
+            <h3>Olá, {{ cliente['nome'].split()[0] }}</h3>
+            <p>{{ cliente['email'] }}</p>
+        </div>
         
-        <aside class="client-sidebar">
-            <div class="user-summary">
-                <div class="user-avatar">
-                    {% if cliente['foto_perfil'] %}
-    <img src="/static/uploads/perfil/{{ cliente['foto_perfil'] }}" alt="Foto">
-{% else %}
-    <img src="/static/imagens/sem_foto_perfil.png" onerror="this.src='https://via.placeholder.com/150'" alt="Sem Foto">
-{% endif %}
+        <nav class="account-menu">
+            <a href="/area_cliente/area-cliente.html"><i class="fa-solid fa-house"></i> Visão Geral</a>
+            <a href="/area_cliente/meus-pedidos.html"><i class="fa-solid fa-box"></i> Meus Pedidos</a>
+            <a href="/area_cliente/favoritos.html"><i class="fa-regular fa-heart"></i> Favoritos</a>
+            <a href="/area_cliente/enderecos.html"><i class="fa-solid fa-location-dot"></i> Endereços</a>
+            <a href="/area_cliente/cartoes.html" class="active"><i class="fa-regular fa-credit-card"></i> Cartões Salvos</a>
+            <a href="/area_cliente/meus-dados.html"><i class="fa-solid fa-user-gear"></i> Meus Dados</a>
+            <a href="/logout" class="logout"><i class="fa-solid fa-right-from-bracket"></i> Sair</a>
+        </nav>
+    </aside>
+
+    <main class="client-content">
+        
+        <div class="section-header">
+            <h2>Minha Carteira</h2>
+            <button class="btn-track" onclick="document.getElementById('modal-cartao').style.display='flex'">
+                <i class="fa-solid fa-plus"></i> Novo Cartão
+            </button>
+        </div>
+
+        <p style="margin-bottom: 30px; color: #666; font-size: 0.9rem;">
+            <i class="fa-solid fa-lock" style="color: #A36361;"></i> Seus dados são criptografados e armazenados com segurança.
+        </p>
+
+        <div class="cards-grid">
+
+            {% if not cartoes %}
+                <div style="grid-column: 1/-1; text-align: center; padding: 40px; color: #999;">
+                    <i class="fa-regular fa-credit-card" style="font-size: 3rem; color: #ddd; margin-bottom: 10px;"></i>
+                    <p>Nenhum cartão salvo. Adicione um para agilizar suas compras.</p>
                 </div>
-                <h3>Olá, Ana Clara</h3>
-                <p>ana@email.com</p>
-            </div>
-            
-            <nav class="account-menu">
-    <a href="/area_cliente/area-cliente.html" class="{{ 'active' if request.path == '/area_cliente/area-cliente.html' else '' }}">
-        <i class="fa-solid fa-house"></i> Visão Geral
-    </a>
-    
-    <a href="/area_cliente/meus-pedidos.html" class="{{ 'active' if request.path == '/area_cliente/meus-pedidos.html' else '' }}">
-        <i class="fa-solid fa-box"></i> Meus Pedidos
-    </a>
-    
-    <a href="/area_cliente/favoritos.html" class="{{ 'active' if request.path == '/area_cliente/favoritos.html' else '' }}">
-        <i class="fa-regular fa-heart"></i> Favoritos
-    </a>
-    
-    <a href="/area_cliente/enderecos.html" class="{{ 'active' if request.path == '/area_cliente/enderecos.html' else '' }}">
-        <i class="fa-solid fa-location-dot"></i> Endereços
-    </a>
-    
-    <a href="/area_cliente/cartoes.html" class="{{ 'active' if request.path == '/area_cliente/cartoes.html' else '' }}">
-        <i class="fa-regular fa-credit-card"></i> Cartões Salvos
-    </a>
-    
-    <a href="/area_cliente/meus-dados.html" class="{{ 'active' if request.path == '/area_cliente/meus-dados.html' else '' }}">
-        <i class="fa-solid fa-user-gear"></i> Meus Dados
-    </a>
-    
-    <a href="/logout" class="logout">
-        <i class="fa-solid fa-right-from-bracket"></i> Sair
-    </a>
-</nav>
-        </aside>
+            {% else %}
 
-        <main class="client-content">
-            
-            <div class="section-header">
-                <h2>Minha Carteira</h2>
-                <button class="btn-track" onclick="abrirModalCartao()"><i class="fa-solid fa-plus"></i> Novo Cartão</button>
-            </div>
-
-            <p style="margin-bottom: 30px; color: #666; font-size: 0.9rem;">
-                <i class="fa-solid fa-lock" style="color: var(--gold);"></i> Seus dados são criptografados e armazenados com segurança.
-            </p>
-
-            <div class="cards-grid">
-
-                <div class="credit-card-visual card-dark">
+                {% for card in cartoes %}
+                
+                <div class="credit-card-visual {{ 'card-blue' if card['bandeira'] == 'visa' else 'card-dark' }}">
                     <div class="card-bg-design"></div>
+                    
                     <div class="card-top">
                         <div class="chip">
                             <img src="https://raw.githubusercontent.com/dasShounak/freeUseImages/main/chip.png" alt="Chip">
                         </div>
                         <div class="brand-logo">
-                            <i class="fa-brands fa-cc-mastercard"></i>
+                            <i class="fa-brands fa-cc-{{ card['bandeira'] if card['bandeira'] in ['visa', 'mastercard', 'amex'] else 'visa' }}"></i>
                         </div>
                     </div>
+                    
                     <div class="card-number">
-                        **** **** **** 4589
+                        **** **** **** {{ card['numero_final'] }}
                     </div>
+                    
                     <div class="card-details">
                         <div class="holder">
                             <span>Titular</span>
-                            <strong>ANA C SILVA</strong>
+                            <strong>{{ card['nome_titular'] }}</strong>
                         </div>
                         <div class="expiry">
                             <span>Validade</span>
-                            <strong>08/28</strong>
+                            <strong>{{ card['validade'] }}</strong>
                         </div>
                     </div>
-                    <button class="btn-delete-card"><i class="fa-solid fa-trash"></i></button>
+                    
+                    <a href="/area_cliente/remover_cartao/{{ card['id_cartao'] }}" class="btn-delete-card" onclick="return confirm('Remover este cartão?')" title="Remover Cartão">
+                        <i class="fa-solid fa-trash"></i>
+                    </a>
                 </div>
+                {% endfor %}
 
-                <div class="credit-card-visual card-blue">
-                    <div class="card-bg-design"></div>
-                    <div class="card-top">
-                        <div class="chip">
-                            <img src="https://raw.githubusercontent.com/dasShounak/freeUseImages/main/chip.png" alt="Chip">
-                        </div>
-                        <div class="brand-logo">
-                            <i class="fa-brands fa-cc-visa"></i>
-                        </div>
-                    </div>
-                    <div class="card-number">
-                        **** **** **** 1024
-                    </div>
-                    <div class="card-details">
-                        <div class="holder">
-                            <span>Titular</span>
-                            <strong>ANA CLARA SILVA</strong>
-                        </div>
-                        <div class="expiry">
-                            <span>Validade</span>
-                            <strong>12/26</strong>
-                        </div>
-                    </div>
-                    <button class="btn-delete-card"><i class="fa-solid fa-trash"></i></button>
+            {% endif %}
+
+            <div class="add-card-placeholder" onclick="document.getElementById('modal-cartao').style.display='flex'">
+                <div class="circle-plus">
+                    <i class="fa-solid fa-plus"></i>
                 </div>
-
-                <div class="add-card-placeholder" onclick="abrirModalCartao()">
-                    <div class="circle-plus">
-                        <i class="fa-solid fa-plus"></i>
-                    </div>
-                    <p>Adicionar novo cartão</p>
-                </div>
-
+                <p>Adicionar novo cartão</p>
             </div>
 
-        </main>
-    </div>
+        </div>
 
-    <div id="modal-cartao" class="modal-overlay">
-        <div class="modal-content-box">
-            <div class="modal-header">
-                <h3>Adicionar Cartão</h3>
-                <button class="close-modal" onclick="fecharModalCartao()">&times;</button>
-            </div>
+    </main>
+</div>
+
+<div id="modal-cartao" class="modal-overlay" style="display: none;">
+    <div class="modal-content-box">
+        <div class="modal-header">
+            <h3>Adicionar Cartão</h3>
+            <button class="close-modal" onclick="document.getElementById('modal-cartao').style.display='none'">&times;</button>
+        </div>
+        
+        <form class="card-form" action="/area_cliente/adicionar_cartao" method="POST">
             
-            <form class="card-form" action="/cartao/salvar" method="POST">
-    <div class="input-row">
-        <label>Número do Cartão</label>
-        <div class="input-with-icon">
-            <i class="fa-regular fa-credit-card"></i>
-            <input type="text" name="numero_cartao" placeholder="0000 0000 0000 0000" maxlength="19" required>
-        </div>
-    </div>
+            <div class="input-row">
+                <label>Número do Cartão</label>
+                <div class="input-with-icon" style="position: relative;">
+                    <i class="fa-regular fa-credit-card" style="position: absolute; left: 10px; top: 12px; color: #999;"></i>
+                    <input type="text" name="numero_cartao" placeholder="0000 0000 0000 0000" maxlength="19" required style="width: 100%; padding-left: 35px; padding-top: 10px; padding-bottom: 10px; border: 1px solid #ddd; border-radius: 5px;">
+                </div>
+            </div>
 
-    <div class="input-row">
-        <label>Nome do Titular do Cartão</label>
-        <input type="text" name="nome_titular" placeholder="Como no cartão" style="text-transform: uppercase;" required>
-    </div>
+            <div class="input-row">
+                <label>Nome do Titular</label>
+                <input type="text" name="nome_titular" placeholder="Como impresso no cartão" style="text-transform: uppercase; width: 100%; padding: 10px; border: 1px solid #ddd; border-radius: 5px;" required>
+            </div>
 
-    <div class="input-row-2">
-        <div>
-            <label>Validade</label>
-            <input type="text" name="validade" placeholder="MM/AA" maxlength="5" required>
-        </div>
-        <div>
-            <label>CVV</label>
-            <input type="password" placeholder="123" maxlength="3" required>
-        </div>
-    </div>
+            <div class="input-row-2" style="display: flex; gap: 15px; margin-top: 15px;">
+                <div style="flex: 1;">
+                    <label>Validade</label>
+                    <input type="text" name="validade" placeholder="MM/AA" maxlength="5" required style="width: 100%; padding: 10px; border: 1px solid #ddd; border-radius: 5px;">
+                </div>
+                <div style="flex: 1;">
+                    <label>CVV</label>
+                    <input type="password" name="cvv" placeholder="123" maxlength="4" required style="width: 100%; padding: 10px; border: 1px solid #ddd; border-radius: 5px;">
+                </div>
+            </div>
 
-    <div class="modal-footer">
-        <button type="button" class="btn-cancel" onclick="fecharModalCartao()">Cancelar</button>
-        <button type="submit" class="btn-save">Salvar Cartão</button>
+            <div class="modal-footer" style="margin-top: 20px; display: flex; justify-content: flex-end; gap: 10px;">
+                <button type="button" class="btn-cancel" onclick="document.getElementById('modal-cartao').style.display='none'" style="padding: 10px 20px; background: #eee; border: none; border-radius: 5px; cursor: pointer;">Cancelar</button>
+                <button type="submit" class="btn-save" style="padding: 10px 20px; background: #A36361; color: white; border: none; border-radius: 5px; cursor: pointer;">Salvar Cartão</button>
+            </div>
+        </form>
     </div>
-</form>
-        </div>
-    </div>
+</div>
 
 <footer>
   <div class="footer-container">
@@ -244,81 +208,51 @@
             <span>Receba nossas novidades e promoções.</span>
       </div>
 
-      
       <form class="newsletter-form" action="/newsletter/cadastrar" method="POST">
-    <input type="text" name="nome" placeholder="Nome completo" required>
-    <input type="text" name="whatsapp" placeholder="WhatsApp" required>
-    <input type="email" name="email" placeholder="E-mail" required>
-    <button type="submit">OK</button>
-    </form>
+        <input type="text" name="nome" placeholder="Nome completo" required>
+        <input type="text" name="whatsapp" placeholder="WhatsApp" required>
+        <input type="email" name="email" placeholder="E-mail" required>
+        <button type="submit">OK</button>
+      </form>
     </div>
 
     <hr class="footer-divider">
-
     <div class="footer-middle">
-      
-    <div class="footer-col">
-        <h4>Navegação</h4>
-        <ul>
-          <li><a href="../site/index.html">Início</a></li>
-          <li><a href="/produtos">Produtos</a></li>
-          <li><a href="../site/contato.html">Contato</a></li>
-          <li><a href="../site/sobre.html">Sobre</a></li>
-        </ul>
-    </div>
-
-    <div class="footer-col">
-        <h4>Institucional</h4>
-        <ul>
-            <li><a href="../site/institucional.html#trocas">Trocas e Devoluções</a></li>
-            <li><a href="../site/institucional.html#privacidade">Política de Privacidade</a></li>
-            <li><a href="../site/institucional.html#termos">Termos de Uso</a></li>
-            <li><a href="../site/rastreio.html">Rastrear Pedido</a></li>
-        </ul>
-    </div>
-
-      <div class="footer-col">
+        <div class="footer-col">
+            <h4>Navegação</h4>
+            <ul>
+              <li><a href="/">Início</a></li>
+              <li><a href="/produtos">Produtos</a></li>
+              <li><a href="/contato">Contato</a></li>
+              <li><a href="/sobre">Sobre</a></li>
+            </ul>
+        </div>
+        <div class="footer-col">
+            <h4>Institucional</h4>
+            <ul>
+                <li><a href="institucional.html#trocas">Trocas e Devoluções</a></li>
+                <li><a href="institucional.html#privacidade">Política de Privacidade</a></li>
+                <li><a href="institucional.html#termos">Termos de Uso</a></li>
+                <li><a href="rastreio.html">Rastrear Pedido</a></li>
+            </ul>
+        </div>
+        <div class="footer-col">
             <h4>Entre em contato</h4>
             <ul class="contact-list">
-            <li><i class="fab fa-whatsapp"></i><a href="https://api.whatsapp.com/send/?phone=5561996100308&text&type=phone_number&app_absent=0"> (61) 99610-0308</a></li>
+            <li><i class="fab fa-whatsapp"></i> (61) 99610-0308</li>
             <li><i class="far fa-envelope"></i> lumeessence.contato@gmail.com</li>
-            <li><i class="fas fa-map-marker-alt"></i> Brasília - DF</li>
-            <li><i class="fab fa-instagram"></i><a href="https://www.instagram.com/lumeessence.oficial?igsh=dTBkZ2h1Zno4bGZl">Instagram</a></li>
             </ul>
-      </div>
+        </div>
     </div>
-
-    <hr class="footer-divider">
-
-    <div class="footer-bottom">
-      
-      <div class="payment-section">
-            <span>Formas de pagamento:</span>
-            <div class="icons">
-            <i class="fab fa-cc-visa"></i>
-            <i class="fab fa-cc-mastercard"></i>
-            <i class="fab fa-cc-amex"></i>
-            <i class="fab fa-pix"></i>
-            <i class="fas fa-barcode"></i>
-            </div>
-      </div>
-
-      <div class="security-section">
-            <span>Segurança:</span>
-            <div class="icons">
-            <i class="fas fa-lock"></i> 
-            <i class="fab fa-google"></i>
-            </div>
-      </div>
-
-    </div>
-
+    
     <div class="copyright">
       © 2025 Lume Essence - Todos os direitos reservados
     </div>
-
   </div>
 </footer>
+
+
 <script src="/static/scriptareacliente.js"></script>
+
 </body>
 </html>

@@ -525,7 +525,9 @@ footer {
     font-family: 'Montserrat', sans-serif;
     font-size: 0.9rem;
     color: #999;
+    text-decoration: none; /* Remove o sublinhado do link */
     cursor: pointer;
+     /* Mantenha o resto do seu estilo (padding, border, etc.) */
     border-radius: 20px;
     transition: all 0.3s;
 }
@@ -852,6 +854,135 @@ footer {
 /* ==========================================================================
    7. PÁGINA: ENDEREÇOS (enderecos.html)
    ========================================================================== */
+/* --- ESTILOS DO MODAL (NOVO ENDEREÇO) --- */
+
+/* Fundo escuro atrás do modal */
+.modal-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.5); /* Preto semi-transparente */
+    display: none; /* Começa escondido */
+    justify-content: center; /* Centraliza Horizontalmente */
+    align-items: center; /* Centraliza Verticalmente */
+    z-index: 2000; /* Fica na frente de tudo */
+    backdrop-filter: blur(2px); /* Desfoque suave no fundo */
+}
+
+/* A caixa branca do modal */
+.modal-content-box {
+    background: white;
+    padding: 30px;
+    width: 90%;
+    max-width: 600px; /* Largura máxima */
+    border-radius: 10px;
+    box-shadow: 0 15px 40px rgba(0,0,0,0.2);
+    position: relative;
+    animation: slideDown 0.3s ease-out; /* Animação de entrada */
+}
+
+@keyframes slideDown {
+    from { transform: translateY(-50px); opacity: 0; }
+    to { transform: translateY(0); opacity: 1; }
+}
+
+/* Cabeçalho do Modal */
+.modal-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 20px;
+    border-bottom: 1px solid #f0f0f0;
+    padding-bottom: 15px;
+}
+
+.modal-header h3 {
+    margin: 0;
+    color: #A36361;
+    font-family: 'Quicksand', sans-serif;
+}
+
+.close-modal {
+    background: none;
+    border: none;
+    font-size: 1.5rem;
+    cursor: pointer;
+    color: #999;
+    transition: 0.2s;
+}
+.close-modal:hover { color: #e74c3c; }
+
+/* Organização dos Inputs (Linhas) */
+.input-row, .input-row-2, .input-row-2-1 {
+    display: flex;
+    gap: 15px;
+    margin-bottom: 15px;
+}
+
+/* Input Full Width */
+.full-width { width: 100%; }
+
+/* Inputs dentro das linhas flexíveis */
+.input-row-2 > *, .input-row-2-1 > * {
+    flex: 1;
+}
+/* Ajuste específico: Endereço maior que número */
+.input-row-2-1 > input:first-child { flex: 3; }
+
+/* Estilo padrão dos inputs dentro do modal */
+.address-form input, .address-form select {
+    width: 100%;
+    padding: 12px;
+    border: 1px solid #ddd;
+    border-radius: 6px;
+    font-family: 'Montserrat', sans-serif;
+    font-size: 0.9rem;
+    box-sizing: border-box; /* Garante que o padding não estoure a largura */
+}
+
+/* Rodapé com botões */
+.modal-footer {
+    display: flex;
+    justify-content: flex-end;
+    gap: 10px;
+    margin-top: 20px;
+    border-top: 1px solid #f0f0f0;
+    padding-top: 15px;
+}
+
+.btn-cancel {
+    background: #f1f1f1;
+    color: #666;
+    border: none;
+    padding: 10px 20px;
+    border-radius: 5px;
+    cursor: pointer;
+    font-weight: bold;
+    transition: 0.2s;
+}
+.btn-cancel:hover { background: #e0e0e0; }
+
+.btn-save {
+    background: #A36361;
+    color: white;
+    border: none;
+    padding: 10px 20px;
+    border-radius: 5px;
+    cursor: pointer;
+    font-weight: bold;
+    transition: 0.2s;
+}
+.btn-save:hover { background: #8f5250; }
+
+/* Responsivo para celular */
+@media (max-width: 600px) {
+    .input-row-2, .input-row-2-1 {
+        flex-direction: column;
+        gap: 10px;
+    }
+}
 
 .address-grid {
     display: grid;

@@ -625,22 +625,49 @@ def area_cliente():
                            progresso=progresso)
 
 # 2. MEUS PEDIDOS (LISTA COMPLETA)
+# --- ROTA: MEUS PEDIDOS (COM FILTRO) ---
 @app.route("/area_cliente/meus-pedidos.html")
 def meus_pedidos():
     if 'id_cliente' not in session: return redirect("/login")
     
     id_cliente = session['id_cliente']
+    
+    # Captura o filtro da URL (ex: ?status=entregue)
+    filtro_status = request.args.get('status')
+
     con = get_db()
     cur = con.cursor()
     
+    # Busca dados do cliente (para o menu lateral)
     cur.execute("SELECT * FROM tb_clientes WHERE id_cliente = ?", (id_cliente,))
     dados_cliente = cur.fetchone()
 
-    cur.execute("SELECT * FROM tb_pedidos WHERE id_cliente = ? ORDER BY id_pedido DESC", (id_cliente,))
+    # Monta a Query de Pedidos
+    sql = "SELECT * FROM tb_pedidos WHERE id_cliente = ?"
+    params = [id_cliente]
+
+    # Aplica o filtro se houver
+    if filtro_status == 'aberto':
+        # Em aberto é tudo que NÃO está finalizado
+        sql += " AND status NOT IN ('Entregue', 'Cancelado')"
+    elif filtro_status == 'entregue':
+        sql += " AND status = 'Entregue'"
+    elif filtro_status == 'cancelado':
+        sql += " AND status = 'Cancelado'"
+    
+    # Ordena do mais recente para o mais antigo
+    sql += " ORDER BY id_pedido DESC"
+
+    cur.execute(sql, params)
     lista_pedidos = cur.fetchall()
     
     con.close()
-    return render_template("area_cliente/meus-pedidos.html", cliente=dados_cliente, pedidos=lista_pedidos)
+    
+    # Envia 'status_atual' para o HTML saber qual botão pintar de ativo
+    return render_template("area_cliente/meus-pedidos.html", 
+                           cliente=dados_cliente, 
+                           pedidos=lista_pedidos,
+                           status_atual=filtro_status)
 
 # 3. MEUS DADOS (EDITAR PERFIL + FOTO)
 @app.route("/area_cliente/meus-dados.html", methods=['GET', 'POST'])
@@ -694,6 +721,7 @@ def meus_dados():
     return render_template("area_cliente/meus-dados.html", cliente=dados_cliente)
 
 # 4. ENDEREÇOS (VISUALIZAR)
+# --- ROTA: MEUS ENDEREÇOS (LISTAR) ---
 @app.route("/area_cliente/enderecos.html")
 def meus_enderecos():
     if 'id_cliente' not in session: return redirect("/login")
@@ -701,11 +729,64 @@ def meus_enderecos():
     id_cliente = session['id_cliente']
     con = get_db()
     cur = con.cursor()
+    
+    # 1. Busca o endereço PRINCIPAL (da tabela de clientes)
     cur.execute("SELECT * FROM tb_clientes WHERE id_cliente = ?", (id_cliente,))
-    dados_cliente = cur.fetchone()
+    cliente = cur.fetchone()
+
+    # 2. Busca endereços ADICIONAIS (da nova tabela)
+    cur.execute("SELECT * FROM tb_enderecos WHERE id_cliente = ?", (id_cliente,))
+    enderecos_extras = cur.fetchall()
+    
     con.close()
     
-    return render_template("area_cliente/enderecos.html", cliente=dados_cliente)
+    return render_template("area_cliente/enderecos.html", 
+                           cliente=cliente, 
+                           enderecos_extras=enderecos_extras)
+
+# --- ROTA: ADICIONAR NOVO ENDEREÇO ---
+@app.route("/area_cliente/adicionar_endereco", methods=['POST'])
+def adicionar_endereco():
+    if 'id_cliente' not in session: return redirect("/login")
+    
+    id_cliente = session['id_cliente']
+    titulo = request.form['titulo']
+    cep = request.form['cep']
+    endereco = request.form['endereco']
+    numero = request.form['numero']
+    complemento = request.form['complemento']
+    bairro = request.form['bairro']
+    cidade = request.form['cidade']
+    estado = request.form['estado']
+    
+    con = get_db()
+    cur = con.cursor()
+    
+    cur.execute("""
+        INSERT INTO tb_enderecos (id_cliente, titulo, cep, endereco, numero, complemento, bairro, cidade, estado)
+        VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)
+    """, (id_cliente, titulo, cep, endereco, numero, complemento, bairro, cidade, estado))
+    
+    con.commit()
+    con.close()
+    
+    return redirect("/area_cliente/enderecos.html")
+
+# --- ROTA: REMOVER ENDEREÇO ---
+@app.route("/area_cliente/remover_endereco/<int:id_endereco>")
+def remover_endereco(id_endereco):
+    if 'id_cliente' not in session: return redirect("/login")
+    
+    con = get_db()
+    cur = con.cursor()
+    
+    # Garante que só deleta se pertencer ao cliente logado (Segurança)
+    cur.execute("DELETE FROM tb_enderecos WHERE id_endereco = ? AND id_cliente = ?", (id_endereco, session['id_cliente']))
+    
+    con.commit()
+    con.close()
+    
+    return redirect("/area_cliente/enderecos.html")
 
 # 5. FAVORITOS (PLACEHOLDER)
 @app.route("/area_cliente/favoritos.html")
@@ -722,6 +803,7 @@ def meus_favoritos():
     return render_template("area_cliente/favoritos.html", cliente=dados_cliente)
 
 # 6. CARTÕES (PLACEHOLDER)
+# --- ROTA: MEUS CARTÕES (LISTAR) ---
 @app.route("/area_cliente/cartoes.html")
 def meus_cartoes():
     if 'id_cliente' not in session: return redirect("/login")
@@ -729,12 +811,64 @@ def meus_cartoes():
     id_cliente = session['id_cliente']
     con = get_db()
     cur = con.cursor()
+    
+    # Busca dados do cliente (para sidebar)
     cur.execute("SELECT * FROM tb_clientes WHERE id_cliente = ?", (id_cliente,))
     dados_cliente = cur.fetchone()
+
+    # Busca os cartões salvos
+    cur.execute("SELECT * FROM tb_cartoes WHERE id_cliente = ?", (id_cliente,))
+    lista_cartoes = cur.fetchall()
+    
     con.close()
     
-    return render_template("area_cliente/cartoes.html", cliente=dados_cliente)
+    return render_template("area_cliente/cartoes.html", 
+                           cliente=dados_cliente, 
+                           cartoes=lista_cartoes)
 
+# --- ROTA: ADICIONAR CARTÃO ---
+@app.route("/area_cliente/adicionar_cartao", methods=['POST'])
+def adicionar_cartao():
+    if 'id_cliente' not in session: return redirect("/login")
+    
+    id_cliente = session['id_cliente']
+    nome = request.form['nome_titular']
+    numero_completo = request.form['numero_cartao']
+    validade = request.form['validade']
+    
+    # 1. Pega apenas os últimos 4 dígitos para salvar
+    numero_final = numero_completo[-4:]
+    
+    # 2. Identifica a bandeira simples (Lógica básica para visual)
+    # Se começar com 4 é Visa, 5 é Master (simplificado)
+    bandeira = 'visa' if numero_completo.startswith('4') else 'mastercard'
+    if numero_completo.startswith('3'): bandeira = 'amex'
+    
+    con = get_db()
+    cur = con.cursor()
+    
+    cur.execute("""
+        INSERT INTO tb_cartoes (id_cliente, nome_titular, numero_final, bandeira, validade)
+        VALUES (?, ?, ?, ?, ?)
+    """, (id_cliente, nome, numero_final, bandeira, validade))
+    
+    con.commit()
+    con.close()
+    
+    return redirect("/area_cliente/cartoes.html")
+
+# --- ROTA: REMOVER CARTÃO ---
+@app.route("/area_cliente/remover_cartao/<int:id_cartao>")
+def remover_cartao(id_cartao):
+    if 'id_cliente' not in session: return redirect("/login")
+    
+    con = get_db()
+    cur = con.cursor()
+    cur.execute("DELETE FROM tb_cartoes WHERE id_cartao = ? AND id_cliente = ?", (id_cartao, session['id_cliente']))
+    con.commit()
+    con.close()
+    
+    return redirect("/area_cliente/cartoes.html")
 
 # --- INJETOR DE CONTEXTO (Faz o carrinho funcionar em todas as páginas) ---
 @app.context_processor
