@@ -39,6 +39,7 @@ sql_cliente = '''CREATE TABLE "tb_clientes" (
     "estado" VARCHAR(2),
     "senha" VARCHAR(100) NOT NULL,
     "confirmar_senha" VARCHAR(100) NOT NULL,
+    "foto_perfil" TEXT,
     "data_cad" DATETIME DEFAULT CURRENT_TIMESTAMP
     )'''
 cur.execute(sql_cliente)

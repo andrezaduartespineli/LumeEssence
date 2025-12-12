@@ -19,3 +19,17 @@ function abrirModalEndereco() {
         }
 
 /* FIM JAVA PAGINA ENDEREÇOS*/
+
+function previewImagem(event) {
+        var input = event.target;
+        var reader = new FileReader();
+        
+        reader.onload = function(){
+            var img = document.getElementById('preview-img');
+            img.src = reader.result;
+        };
+        
+        if(input.files && input.files[0]){
+            reader.readAsDataURL(input.files[0]);
+        }
+    }

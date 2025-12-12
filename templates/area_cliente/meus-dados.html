@@ -7,295 +7,274 @@
     
     <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@300;400;600&family=Quicksand:wght@400;500;700&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    
+    <link rel="stylesheet" href="/static/stylesite.css">
     <link rel="stylesheet" href="/static/area-cliente.css">
 </head>
 <body>
 <header>
-          
-            <div class="container">
-                <div class="logo">
-                    <img src="/static/imagens/Logo/somenteiconesemfundo.png" alt="Lume Essence">
+    <div class="container">
+        <div class="logo">
+            <img src="/static/imagens/Logo/somenteiconesemfundo.png" alt="Lume Essence">
+        </div>
+    </div>
+
+    <div class="navbar">
+        <div class="nav-links">
+            <a href="/">Início</a>
+            <a href="/produtos">Produtos</a>
+            <a href="/sobre">Sobre</a>
+            <a href="/contato">Contato</a>
+        </div>
+
+        <div class="nav-icons-area" style="display: flex; align-items: center; gap: 20px;">
+            
+            <form action="/produtos" method="GET" class="search-box">
+                <input type="text" name="q" placeholder="Buscar..." value="{{ termo_busca if termo_busca else '' }}">
+                <button type="submit"><i class="fas fa-search"></i></button>
+            </form>
+            
+            <div class="header-icons">
+                <div class="user-menu-wrapper">
+                    <a href="/login" class="user-icon-link">
+                        <i class="fa-regular fa-user"></i>
+                    </a>
+
+                    <div class="user-dropdown">
+                        <ul>
+                            <li>
+                                <a href="/area_cliente/area-cliente.html">
+                                    <i class="fa-solid fa-user-gear"></i> Minha Conta
+                                </a>
+                            </li>
+                            <li>
+                                <a href="/area_cliente/meus-pedidos.html">
+                                    <i class="fa-solid fa-box"></i> Meus Pedidos
+                                </a>
+                            </li>
+                            <li class="separator"></li>
+                            <li>
+                                <a href="/logout" class="logout-link">
+                                    <i class="fa-solid fa-right-from-bracket"></i> Sair
+                                </a>
+                            </li>
+                        </ul>
+                    </div>
                 </div>
             </div>
 
-  <div class="navbar">
-    <div class="nav-links">
-        <a href="/">Início</a>
-        <a href="/produtos">Produtos</a>
-        <a href="/sobre">Sobre</a>
-        <a href="/contato">Contato</a>
+            <a href="/carrinho" class="cart-link" title="Carrinho">
+                <i class="fas fa-shopping-bag"></i>
+                {% if qtd_carrinho > 0 %}
+                    <span class="cart-count">{{ qtd_carrinho }}</span>
+                {% endif %}
+            </a>
+        </div>
     </div>
-
-    <div class="nav-icons-area" style="display: flex; align-items: center; gap: 20px;">
-        
-        <form action="/produtos" method="GET" class="search-box">
-    <input type="text" name="q" placeholder="Buscar..." value="{{ termo_busca if termo_busca else '' }}">
-    <button type="submit"><i class="fas fa-search"></i></button>
-</form>
-        
-<div class="header-icons">
-<div class="user-menu-wrapper">
-    <a href="/login" class="user-icon-link">
-        <i class="fa-regular fa-user"></i>
-    </a>
-
-    <div class="user-dropdown">
-        <ul>
-            <li>
-                <a href="area-cliente.html">
-                    <i class="fa-solid fa-user-gear"></i> Minha Conta
-                </a>
-            </li>
-            <li>
-                <a href="meus-pedidos.html">
-                    <i class="fa-solid fa-box"></i> Meus Pedidos
-                </a>
-            </li>
-            <li class="separator"></li>
-            <li>
-                <a href="/login" class="logout-link">
-                    <i class="fa-solid fa-right-from-bracket"></i> Sair
-                </a>
-            </li>
-        </ul>
-    </div>
-</div>
-</div>
-        <a href="/carrinho" class="cart-link" title="Carrinho">
-            <i class="fas fa-shopping-bag"></i>
-            <span class="cart-count">3</span>
-        </a>
-    </div>
-</div>
 </header>
-    <div class="client-container container">
+
+<div class="client-container container">
+    
+    <aside class="client-sidebar">
+        <div class="user-summary">
+            <div class="user-avatar">
+                {% if cliente['foto_perfil'] %}
+                    <img src="/static/uploads/perfil/{{ cliente['foto_perfil'] }}" alt="Foto do Cliente">
+                {% else %}
+                    <img src="/static/imagens/sem_foto_perfil.png" onerror="this.src='https://via.placeholder.com/150'" alt="Sem Foto">
+                {% endif %}
+            </div>
+            <h3>Olá, {{ cliente['nome'].split()[0] }}</h3>
+            <p>{{ cliente['email'] }}</p>
+        </div>
         
-        <aside class="client-sidebar">
-            <div class="user-summary">
-                <div class="user-avatar">
-                    <img src="/static/imagens/fundadora1.jpeg" alt="Foto do Cliente">
-                </div>
-                <h3>Olá, Ana Clara</h3>
-                <p>ana@email.com</p>
-            </div>
-            
-            <nav class="account-menu">
-                <a href="/area_cliente/area-cliente.html"><i class="fa-solid fa-house"></i> Visão Geral</a>
-                <a href="/area_cliente/meus-pedidos.html"><i class="fa-solid fa-box"></i> Meus Pedidos</a>
-                <a href="../area_cliente/favoritos.html"><i class="fa-regular fa-heart"></i> Favoritos</a>
-                <a href="../area_cliente/enderecos.html"><i class="fa-solid fa-location-dot"></i> Endereços</a>
-                <a href="../area_cliente/cartoes.html"><i class="fa-regular fa-credit-card"></i> Cartões Salvos</a>
-                <a href="../area_cliente/meus-dados.html" class="active"><i class="fa-solid fa-user-gear"></i> Meus Dados</a>
-                <a href="/login" class="logout"><i class="fa-solid fa-right-from-bracket"></i> Sair</a>
-            </nav>
-        </aside>
+        <nav class="account-menu">
+    <a href="/area_cliente/area-cliente.html" class="{{ 'active' if request.path == '/area_cliente/area-cliente.html' else '' }}">
+        <i class="fa-solid fa-house"></i> Visão Geral
+    </a>
+    
+    <a href="/area_cliente/meus-pedidos.html" class="{{ 'active' if request.path == '/area_cliente/meus-pedidos.html' else '' }}">
+        <i class="fa-solid fa-box"></i> Meus Pedidos
+    </a>
+    
+    <a href="/area_cliente/favoritos.html" class="{{ 'active' if request.path == '/area_cliente/favoritos.html' else '' }}">
+        <i class="fa-regular fa-heart"></i> Favoritos
+    </a>
+    
+    <a href="/area_cliente/enderecos.html" class="{{ 'active' if request.path == '/area_cliente/enderecos.html' else '' }}">
+        <i class="fa-solid fa-location-dot"></i> Endereços
+    </a>
+    
+    <a href="/area_cliente/cartoes.html" class="{{ 'active' if request.path == '/area_cliente/cartoes.html' else '' }}">
+        <i class="fa-regular fa-credit-card"></i> Cartões Salvos
+    </a>
+    
+    <a href="/area_cliente/meus-dados.html" class="{{ 'active' if request.path == '/area_cliente/meus-dados.html' else '' }}">
+        <i class="fa-solid fa-user-gear"></i> Meus Dados
+    </a>
+    
+    <a href="/logout" class="logout">
+        <i class="fa-solid fa-right-from-bracket"></i> Sair
+    </a>
+</nav>
+    </aside>
 
-        <main class="client-content">
-            
-            <div class="section-header">
-                <h2>Meus Dados Pessoais</h2>
-                <p style="color: #888; font-size: 0.9rem;">Mantenha suas informações atualizadas.</p>
-            </div>
+    <main class="client-content">
+        
+        <div class="section-header">
+            <h2>Meus Dados Pessoais</h2>
+            <p style="color: #888; font-size: 0.9rem;">Mantenha suas informações atualizadas.</p>
+        </div>
 
-            <div class="data-form-container">
+        <div class="data-form-container">
+            
+            <form class="personal-data-form" action="/area_cliente/meus-dados.html" method="POST" enctype="multipart/form-data">
                 
                 <div class="profile-header-edit">
-                    <div class="avatar-upload-circle">
-                        <img src="/static/imagens/fundadora1.jpeg" alt="Avatar">
+                    <div class="avatar-upload-circle" onclick="document.getElementById('fileInput').click();" style="cursor: pointer;">
+                        
+                        {% if cliente['foto_perfil'] %}
+                            <img src="/static/uploads/perfil/{{ cliente['foto_perfil'] }}" id="preview-img" alt="Avatar">
+                        {% else %}
+                            <img src="https://via.placeholder.com/150" id="preview-img" alt="Avatar">
+                        {% endif %}
+                        
                         <div class="overlay-edit">
                             <i class="fa-solid fa-camera"></i>
                         </div>
-                        <input type="file" hidden>
-                    </div>
-                    <div class="profile-info-text">
-                        <h3>Ana Clara Silva</h3>
-                        <p>Cliente desde 2024</p>
-                        <button class="btn-text" style="text-align: left; padding: 0;">Alterar Foto</button>
-                    </div>
-                </div>
-
-                <form class="personal-data-form">
-                    
-                    <h4 class="form-subtitle">Informações Pessoais</h4>
-                    
-                    <div class="input-row">
-                        <label>Nome Completo</label>
-                        <input type="text" value="Ana Clara Silva" required>
-                    </div>
-
-                    <div class="input-row-2">
-                        <div>
-                            <label>CPF</label>
-                            <input type="text" value="123.456.789-00" readonly style="background: #f9f9f9; cursor: not-allowed;">
-                        </div>
-                        <div>
-                            <label>Data de Nascimento</label>
-                            <input type="date" value="1995-05-20">
-                        </div>
-                    </div>
-
-                    <div class="input-row-2">
-                        <div>
-                            <label>Celular / WhatsApp</label>
-                            <input type="tel" value="(11) 99999-8888">
-                        </div>
-                        <div>
-                            <label>Gênero (Opcional)</label>
-                            <select>
-                                <option>Feminino</option>
-                                <option>Masculino</option>
-                                <option>Prefiro não informar</option>
-                                <option>Outro</option>
-                            </select>
-                        </div>
-                    </div>
-
-                    <hr class="form-divider">
-
-                    <h4 class="form-subtitle">Acesso e Segurança</h4>
-
-                    <div class="input-row">
-                        <label>E-mail de Login</label>
-                        <input type="email" value="ana@email.com" required>
-                    </div>
-
-                    <div class="input-row-2">
-                        <div>
-                            <label>Nova Senha</label>
-                            <input type="password" placeholder="Deixe em branco para manter">
-                        </div>
-                        <div>
-                            <label>Confirmar Nova Senha</label>
-                            <input type="password" placeholder="Repita a nova senha">
-                        </div>
-                    </div>
-
-                    <hr class="form-divider">
-
-                    <h4 class="form-subtitle">Comunicação</h4>
-                    
-                    <div class="preferences-check">
-                        <label class="checkbox-container">
-                            <input type="checkbox" checked>
-                            <span class="checkmark"></span>
-                            <div>
-                                <strong>Receber ofertas por E-mail</strong>
-                                <p>Seja a primeira a saber sobre lançamentos e promoções.</p>
-                            </div>
-                        </label>
                         
-                        <label class="checkbox-container">
-                            <input type="checkbox" checked>
-                            <span class="checkmark"></span>
-                            <div>
-                                <strong>Receber novidades pelo WhatsApp</strong>
-                                <p>Avisos sobre o status do seu pedido em tempo real.</p>
-                            </div>
-                        </label>
+                        <input type="file" id="fileInput" name="foto_perfil" hidden accept="image/*" onchange="previewImagem(event)">
                     </div>
-
-                    <div class="form-footer-action">
-                        <button type="submit" class="btn-save-large">Salvar Alterações</button>
+                    
+                    <div class="profile-info-text">
+                        <h3>{{ cliente['nome'] }}</h3>
+                        <p>Cliente Lume Essence</p>
+                        <button type="button" class="btn-text" style="text-align: left; padding: 0;" onclick="document.getElementById('fileInput').click();">Alterar Foto</button>
                     </div>
-
-                </form>
-
-                <div class="danger-zone">
-                    <div class="danger-text">
-                        <h4>Excluir minha conta</h4>
-                        <p>Ao excluir sua conta, todos os seus dados e histórico de pedidos serão removidos permanentemente.</p>
-                    </div>
-                    <button class="btn-delete-account">Quero excluir minha conta</button>
                 </div>
 
+                <h4 class="form-subtitle">Informações Pessoais</h4>
+                
+                <div class="input-row">
+                    <label>Nome Completo</label>
+                    <input type="text" name="nome" value="{{ cliente['nome'] }}" required>
+                </div>
+
+                <div class="input-row-2">
+                    <div>
+                        <label>CPF</label>
+                        <input type="text" value="{{ cliente['cpf'] }}" readonly style="background: #f9f9f9; cursor: not-allowed;">
+                    </div>
+                    <div>
+                        <label>Data de Nascimento</label>
+                        <input type="date" name="data_nasc" value="{{ cliente['data_nasc'] }}">
+                    </div>
+                </div>
+
+                <div class="input-row-2">
+                    <div>
+                        <label>Celular / WhatsApp</label>
+                        <input type="tel" name="tel_cel" value="{{ cliente['tel_cel'] }}">
+                    </div>
+                    <div>
+                        <label>Gênero</label>
+                        <select name="genero">
+                            <option value="Feminino" {% if cliente['genero'] == 'Feminino' %}selected{% endif %}>Feminino</option>
+                            <option value="Masculino" {% if cliente['genero'] == 'Masculino' %}selected{% endif %}>Masculino</option>
+                            <option value="Outro" {% if cliente['genero'] == 'Outro' %}selected{% endif %}>Outro</option>
+                        </select>
+                    </div>
+                </div>
+
+                <hr class="form-divider">
+
+                <h4 class="form-subtitle">Endereço Principal</h4>
+                
+                <div class="input-row-2">
+                    <div>
+                        <label>CEP</label>
+                        <input type="text" name="cep" value="{{ cliente['cep'] }}">
+                    </div>
+                    <div>
+                        <label>Cidade</label>
+                        <input type="text" name="cidade" value="{{ cliente['cidade'] }}">
+                    </div>
+                </div>
+
+                <div class="input-row">
+                    <label>Endereço</label>
+                    <input type="text" name="endereco" value="{{ cliente['endereco'] }}">
+                </div>
+
+                <div class="input-row-2">
+                    <div>
+                        <label>Número</label>
+                        <input type="text" name="n" value="{{ cliente['n'] }}">
+                    </div>
+                    <div>
+                        <label>Complemento</label>
+                        <input type="text" name="complemento" value="{{ cliente['complemento'] }}">
+                    </div>
+                </div>
+
+                <div class="input-row-2">
+                     <div>
+                        <label>Bairro</label>
+                        <input type="text" name="bairro" value="{{ cliente['bairro'] }}">
+                    </div>
+                    <div>
+                        <label>Estado</label>
+                        <input type="text" name="estado" value="{{ cliente['estado'] }}">
+                    </div>
+                </div>
+
+                <hr class="form-divider">
+
+                <h4 class="form-subtitle">Acesso e Segurança</h4>
+
+                <div class="input-row">
+                    <label>E-mail de Login</label>
+                    <input type="email" value="{{ cliente['email'] }}" readonly style="background: #f9f9f9;">
+                </div>
+
+                <hr class="form-divider">
+
+                <div class="form-footer-action">
+                    <button type="submit" class="btn-save-large">Salvar Alterações</button>
+                </div>
+
+            </form>
+
+            <div class="danger-zone">
+                <div class="danger-text">
+                    <h4>Excluir minha conta</h4>
+                    <p>Ao excluir sua conta, todos os seus dados serão removidos.</p>
+                </div>
+                <button class="btn-delete-account" type="button">Quero excluir minha conta</button>
             </div>
 
-        </main>
-    </div>
+        </div>
+
+    </main>
+</div>
+
 <footer>
   <div class="footer-container">
-    
     <div class="footer-top">
-      <div class="newsletter-text">
-            <i class="fas fa-tag"></i>
-            <span>Receba nossas novidades e promoções.</span>
-      </div>
-
-      
+      <div class="newsletter-text"><i class="fas fa-tag"></i><span>Receba nossas novidades.</span></div>
       <form class="newsletter-form" action="/newsletter/cadastrar" method="POST">
-    <input type="text" name="nome" placeholder="Nome completo" required>
-    <input type="text" name="whatsapp" placeholder="WhatsApp" required>
-    <input type="email" name="email" placeholder="E-mail" required>
-    <button type="submit">OK</button>
-    </form>
+        <input type="text" name="nome" placeholder="Nome" required>
+        <input type="text" name="whatsapp" placeholder="Zap" required>
+        <input type="email" name="email" placeholder="E-mail" required>
+        <button type="submit">OK</button>
+      </form>
     </div>
-
-    <hr class="footer-divider">
-
-    <div class="footer-middle">
-      
-    <div class="footer-col">
-        <h4>Navegação</h4>
-        <ul>
-          <li><a href="../site/index.html">Início</a></li>
-          <li><a href="/produtos">Produtos</a></li>
-          <li><a href="../site/contato.html">Contato</a></li>
-          <li><a href="../site/sobre.html">Sobre</a></li>
-        </ul>
-    </div>
-
-    <div class="footer-col">
-        <h4>Institucional</h4>
-        <ul>
-            <li><a href="../site/institucional.html#trocas">Trocas e Devoluções</a></li>
-            <li><a href="../site/institucional.html#privacidade">Política de Privacidade</a></li>
-            <li><a href="../site/institucional.html#termos">Termos de Uso</a></li>
-            <li><a href="../site/rastreio.html">Rastrear Pedido</a></li>
-        </ul>
-    </div>
-
-      <div class="footer-col">
-            <h4>Entre em contato</h4>
-            <ul class="contact-list">
-            <li><i class="fab fa-whatsapp"></i><a href="https://api.whatsapp.com/send/?phone=5561996100308&text&type=phone_number&app_absent=0"> (61) 99610-0308</a></li>
-            <li><i class="far fa-envelope"></i> lumeessence.contato@gmail.com</li>
-            <li><i class="fas fa-map-marker-alt"></i> Brasília - DF</li>
-            <li><i class="fab fa-instagram"></i><a href="https://www.instagram.com/lumeessence.oficial?igsh=dTBkZ2h1Zno4bGZl">Instagram</a></li>
-            </ul>
-      </div>
-    </div>
-
-    <hr class="footer-divider">
-
-    <div class="footer-bottom">
-      
-      <div class="payment-section">
-            <span>Formas de pagamento:</span>
-            <div class="icons">
-            <i class="fab fa-cc-visa"></i>
-            <i class="fab fa-cc-mastercard"></i>
-            <i class="fab fa-cc-amex"></i>
-            <i class="fab fa-pix"></i>
-            <i class="fas fa-barcode"></i>
-            </div>
-      </div>
-
-      <div class="security-section">
-            <span>Segurança:</span>
-            <div class="icons">
-            <i class="fas fa-lock"></i> 
-            <i class="fab fa-google"></i>
-            </div>
-      </div>
-
-    </div>
-
-    <div class="copyright">
-      © 2025 Lume Essence - Todos os direitos reservados
-    </div>
-
+    <div class="copyright">© 2025 Lume Essence</div>
   </div>
 </footer>
+
 <script src="/static/scriptareacliente.js"></script>
+
+
 </body>
 </html>

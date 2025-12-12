@@ -40,27 +40,27 @@
     </a>
 
     <div class="user-dropdown">
-        <ul>
-            <li>
-                <a href="area-cliente.html">
-                    <i class="fa-solid fa-user-gear"></i> Minha Conta
-                </a>
-            </li>
-            <li>
-                <a href="meus-pedidos.html">
-                    <i class="fa-solid fa-box"></i> Meus Pedidos
-                </a>
-            </li>
-            <li class="separator"></li>
-            <li>
-                <a href="/login" class="logout-link">
-                    <i class="fa-solid fa-right-from-bracket"></i> Sair
-                </a>
-            </li>
-        </ul>
-    </div>
-</div>
-</div>
+                        <ul>
+                            <li>
+                                <a href="/area_cliente/area-cliente.html">
+                                    <i class="fa-solid fa-user-gear"></i> Minha Conta
+                                </a>
+                            </li>
+                            <li>
+                                <a href="/area_cliente/meus-pedidos.html">
+                                    <i class="fa-solid fa-box"></i> Meus Pedidos
+                                </a>
+                            </li>
+                            <li class="separator"></li>
+                            <li>
+                                <a href="/logout" class="logout-link">
+                                    <i class="fa-solid fa-right-from-bracket"></i> Sair
+                                </a>
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
         <a href="/carrinho" class="cart-link" title="Carrinho">
             <i class="fas fa-shopping-bag"></i>
             <span class="cart-count">3</span>
@@ -73,21 +73,45 @@
         <aside class="client-sidebar">
             <div class="user-summary">
                 <div class="user-avatar">
-                    <img src="/static/imagens/fundadora1.jpeg" alt="Foto do Cliente">
+                    {% if cliente['foto_perfil'] %}
+    <img src="/static/uploads/perfil/{{ cliente['foto_perfil'] }}" alt="Foto">
+{% else %}
+    <img src="/static/imagens/sem_foto_perfil.png" onerror="this.src='https://via.placeholder.com/150'" alt="Sem Foto">
+{% endif %}
                 </div>
                 <h3>Olá, Ana Clara</h3>
                 <p>ana@email.com</p>
             </div>
             
             <nav class="account-menu">
-                <a href="/area_cliente/area-cliente.html"><i class="fa-solid fa-house"></i> Visão Geral</a>
-                <a href="/area_cliente/meus-pedidos.html"><i class="fa-solid fa-box"></i> Meus Pedidos</a>
-                <a href="../area_cliente/favoritos.html"><i class="fa-regular fa-heart"></i> Favoritos</a>
-                <a href="../area_cliente/enderecos.html" class="active"><i class="fa-solid fa-location-dot"></i> Endereços</a>
-                <a href="../area_cliente/cartoes.html"><i class="fa-regular fa-credit-card"></i> Cartões Salvos</a>
-                <a href="../area_cliente/meus-dados.html"><i class="fa-solid fa-user-gear"></i> Meus Dados</a>
-                <a href="/login" class="logout"><i class="fa-solid fa-right-from-bracket"></i> Sair</a>
-            </nav>
+    <a href="/area_cliente/area-cliente.html" class="{{ 'active' if request.path == '/area_cliente/area-cliente.html' else '' }}">
+        <i class="fa-solid fa-house"></i> Visão Geral
+    </a>
+    
+    <a href="/area_cliente/meus-pedidos.html" class="{{ 'active' if request.path == '/area_cliente/meus-pedidos.html' else '' }}">
+        <i class="fa-solid fa-box"></i> Meus Pedidos
+    </a>
+    
+    <a href="/area_cliente/favoritos.html" class="{{ 'active' if request.path == '/area_cliente/favoritos.html' else '' }}">
+        <i class="fa-regular fa-heart"></i> Favoritos
+    </a>
+    
+    <a href="/area_cliente/enderecos.html" class="{{ 'active' if request.path == '/area_cliente/enderecos.html' else '' }}">
+        <i class="fa-solid fa-location-dot"></i> Endereços
+    </a>
+    
+    <a href="/area_cliente/cartoes.html" class="{{ 'active' if request.path == '/area_cliente/cartoes.html' else '' }}">
+        <i class="fa-regular fa-credit-card"></i> Cartões Salvos
+    </a>
+    
+    <a href="/area_cliente/meus-dados.html" class="{{ 'active' if request.path == '/area_cliente/meus-dados.html' else '' }}">
+        <i class="fa-solid fa-user-gear"></i> Meus Dados
+    </a>
+    
+    <a href="/logout" class="logout">
+        <i class="fa-solid fa-right-from-bracket"></i> Sair
+    </a>
+</nav>
         </aside>
 
         <main class="client-content">

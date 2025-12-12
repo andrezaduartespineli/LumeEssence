@@ -5,9 +5,21 @@ import uuid
 import math
 from datetime import datetime
 from werkzeug.security import generate_password_hash, check_password_hash
+import os
+from werkzeug.utils import secure_filename
+
 
 app = Flask(__name__)
 app.secret_key = 'chave_secreta_lume_essence'  # Necessário para o carrinho e login
+
+# Coloque isso logo após criar o 'app = Flask(__name__)'
+import os
+from werkzeug.utils import secure_filename
+
+BASE_DIR = os.path.abspath(os.path.dirname(__file__))
+UPLOAD_FOLDER_PERFIL = os.path.join(BASE_DIR, 'static', 'uploads', 'perfil')
+app.config['UPLOAD_FOLDER_PERFIL'] = UPLOAD_FOLDER_PERFIL
+os.makedirs(UPLOAD_FOLDER_PERFIL, exist_ok=True)
 
 # --- Configuração do Banco de Dados ---
 def get_db():
@@ -549,53 +561,180 @@ def finalizar_pedido():
         con.close()
         
 # --- Área do Cliente ---
-# --- ROTA DA ÁREA DO CLIENTE ---
+# ==========================================
+# ROTAS DA ÁREA DO CLIENTE (CORRIGIDAS)
+# ==========================================
+
+# 1. VISÃO GERAL (DASHBOARD)
 @app.route("/area_cliente/area-cliente.html")
 def area_cliente():
-    # 1. Segurança: Verifica se está logado
-    if 'id_cliente' not in session:
-        return redirect("/login")
+    if 'id_cliente' not in session: return redirect("/login")
     
     id_cliente = session['id_cliente']
-    
     con = get_db()
     cur = con.cursor()
     
-    # 2. Busca todos os dados do cliente
+    # Busca dados do Cliente
     cur.execute("SELECT * FROM tb_clientes WHERE id_cliente = ?", (id_cliente,))
     dados_cliente = cur.fetchone()
     
-    con.close()
-    
-    # 3. Envia para o HTML
-    return render_template("area_cliente/area-cliente.html", cliente=dados_cliente)
+    # Proteção: Se cliente não existir (banco apagado), faz logout
+    if not dados_cliente:
+        session.clear()
+        con.close()
+        return redirect("/login")
 
+    # Busca Histórico (5 últimos)
+    cur.execute("SELECT * FROM tb_pedidos WHERE id_cliente = ? ORDER BY id_pedido DESC LIMIT 5", (id_cliente,))
+    lista_pedidos = cur.fetchall()
+
+    # Estatística: Em Trânsito
+    cur.execute("SELECT COUNT(*) FROM tb_pedidos WHERE id_cliente = ? AND status = 'Enviado'", (id_cliente,))
+    qtd_em_transito = cur.fetchone()[0]
+
+    # Último Pedido (Destaque)
+    ultimo_pedido = None
+    item_destaque = None
+    progresso = 0
+    
+    if lista_pedidos:
+        ultimo_pedido = lista_pedidos[0]
+        cur.execute("""
+            SELECT p.nome_produto, p.img_produto, ip.quantidade, ip.preco_unitario
+            FROM tb_itensPedido ip
+            JOIN tb_produtos p ON ip.id_produto = p.id_produto
+            WHERE ip.id_pedido = ? LIMIT 1
+        """, (ultimo_pedido['id_pedido'],))
+        item_destaque = cur.fetchone()
+
+        status = ultimo_pedido['status']
+        if status == 'Cancelado': progresso = 0
+        elif status == 'Pendente': progresso = 1
+        elif status == 'Aprovado': progresso = 2
+        elif status == 'Separado': progresso = 3
+        elif status == 'Enviado':  progresso = 4
+        elif status == 'Entregue': progresso = 5
+
+    con.close()
+    return render_template("area_cliente/area-cliente.html", 
+                           cliente=dados_cliente, 
+                           pedidos=lista_pedidos,
+                           ultimo_pedido=ultimo_pedido,
+                           item_destaque=item_destaque,
+                           qtd_em_transito=qtd_em_transito,
+                           progresso=progresso)
+
+# 2. MEUS PEDIDOS (LISTA COMPLETA)
 @app.route("/area_cliente/meus-pedidos.html")
-def area_cliente_pedidos():
-    id_cliente = session.get('user_id', 1)
+def meus_pedidos():
+    if 'id_cliente' not in session: return redirect("/login")
+    
+    id_cliente = session['id_cliente']
     con = get_db()
     cur = con.cursor()
-    cur.execute("SELECT * FROM tb_pedidos WHERE id_cliente = ? ORDER BY data_pedido DESC", (id_cliente,))
-    pedidos = cur.fetchall()
+    
+    cur.execute("SELECT * FROM tb_clientes WHERE id_cliente = ?", (id_cliente,))
+    dados_cliente = cur.fetchone()
+
+    cur.execute("SELECT * FROM tb_pedidos WHERE id_cliente = ? ORDER BY id_pedido DESC", (id_cliente,))
+    lista_pedidos = cur.fetchall()
+    
     con.close()
-    return render_template("area_cliente/meus-pedidos.html", pedidos=pedidos)
+    return render_template("area_cliente/meus-pedidos.html", cliente=dados_cliente, pedidos=lista_pedidos)
 
-@app.route("/area_cliente/favoritos.html")
-def area_favoritos():
-    return render_template("area_cliente/favoritos.html")
+# 3. MEUS DADOS (EDITAR PERFIL + FOTO)
+@app.route("/area_cliente/meus-dados.html", methods=['GET', 'POST'])
+def meus_dados():
+    if 'id_cliente' not in session: return redirect("/login")
+    
+    id_cliente = session['id_cliente']
+    con = get_db()
+    cur = con.cursor()
 
+    if request.method == 'POST':
+        nome = request.form['nome']
+        tel_cel = request.form['tel_cel']
+        cep = request.form['cep']
+        endereco = request.form['endereco']
+        n = request.form['n']
+        complemento = request.form['complemento']
+        bairro = request.form['bairro']
+        cidade = request.form['cidade']
+        estado = request.form['estado']
+        
+        arquivo_foto = request.files.get('foto_perfil')
+        
+        if arquivo_foto and arquivo_foto.filename != '':
+            filename = secure_filename(arquivo_foto.filename)
+            nome_foto_final = f"{id_cliente}_{filename}"
+            caminho = os.path.join(app.config['UPLOAD_FOLDER_PERFIL'], nome_foto_final)
+            arquivo_foto.save(caminho)
+            
+            cur.execute("""
+                UPDATE tb_clientes SET 
+                nome=?, tel_cel=?, cep=?, endereco=?, n=?, complemento=?, bairro=?, cidade=?, estado=?, foto_perfil=?
+                WHERE id_cliente=?
+            """, (nome, tel_cel, cep, endereco, n, complemento, bairro, cidade, estado, nome_foto_final, id_cliente))
+        else:
+            cur.execute("""
+                UPDATE tb_clientes SET 
+                nome=?, tel_cel=?, cep=?, endereco=?, n=?, complemento=?, bairro=?, cidade=?, estado=?
+                WHERE id_cliente=?
+            """, (nome, tel_cel, cep, endereco, n, complemento, bairro, cidade, estado, id_cliente))
+
+        con.commit()
+        session['nome_cliente'] = nome.split()[0]
+        con.close()
+        return redirect("/area_cliente/meus-dados.html")
+
+    cur.execute("SELECT * FROM tb_clientes WHERE id_cliente = ?", (id_cliente,))
+    dados_cliente = cur.fetchone()
+    con.close()
+    
+    return render_template("area_cliente/meus-dados.html", cliente=dados_cliente)
+
+# 4. ENDEREÇOS (VISUALIZAR)
 @app.route("/area_cliente/enderecos.html")
-def area_enderecos():
-    return render_template("area_cliente/enderecos.html")
+def meus_enderecos():
+    if 'id_cliente' not in session: return redirect("/login")
+    
+    id_cliente = session['id_cliente']
+    con = get_db()
+    cur = con.cursor()
+    cur.execute("SELECT * FROM tb_clientes WHERE id_cliente = ?", (id_cliente,))
+    dados_cliente = cur.fetchone()
+    con.close()
+    
+    return render_template("area_cliente/enderecos.html", cliente=dados_cliente)
 
+# 5. FAVORITOS (PLACEHOLDER)
+@app.route("/area_cliente/favoritos.html")
+def meus_favoritos():
+    if 'id_cliente' not in session: return redirect("/login")
+    
+    id_cliente = session['id_cliente']
+    con = get_db()
+    cur = con.cursor()
+    cur.execute("SELECT * FROM tb_clientes WHERE id_cliente = ?", (id_cliente,))
+    dados_cliente = cur.fetchone()
+    con.close()
+    
+    return render_template("area_cliente/favoritos.html", cliente=dados_cliente)
+
+# 6. CARTÕES (PLACEHOLDER)
 @app.route("/area_cliente/cartoes.html")
-def area_cartoes():
-    # Opcional: Buscar cartões do banco para mostrar
-    return render_template("area_cliente/cartoes.html")
+def meus_cartoes():
+    if 'id_cliente' not in session: return redirect("/login")
+    
+    id_cliente = session['id_cliente']
+    con = get_db()
+    cur = con.cursor()
+    cur.execute("SELECT * FROM tb_clientes WHERE id_cliente = ?", (id_cliente,))
+    dados_cliente = cur.fetchone()
+    con.close()
+    
+    return render_template("area_cliente/cartoes.html", cliente=dados_cliente)
 
-@app.route("/area_cliente/meus-dados.html")
-def area_dados():
-    return render_template("area_cliente/meus-dados.html")
 
 # --- INJETOR DE CONTEXTO (Faz o carrinho funcionar em todas as páginas) ---
 @app.context_processor
