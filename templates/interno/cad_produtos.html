@@ -212,6 +212,13 @@
                                 <a href="/gerar_planilha_padrao" class="btn-action" style="text-decoration: none; color: #555;">
                                     <i class="fa-solid fa-download"></i> Baixar Modelo
                                 </a>
+
+                                <form class="search-compact" action="/produtos" method="GET">
+                                    <button type="submit" style="border: none; background: transparent; cursor: pointer; color: #ccc;">
+                                        <i class="fa-solid fa-magnifying-glass"></i>
+                                    </button>
+                                    <input type="text" name="q" placeholder="Buscar..." value="{{ request.args.get('q', '') }}">
+                                </form>
                             </div>
                 </div>
             </form>
