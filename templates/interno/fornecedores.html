@@ -148,14 +148,17 @@
         </div>
 
         <div class="supplier-actions">
-            <a href="/fornecedor/editar/{{ f['id_fornecedor'] }}" class="btn-action-outline" style="text-decoration: none; text-align: center;">
-                Editar
-            </a>
-            
-            <a href="/fornecedor/delete/{{ f['id_fornecedor'] }}" class="btn-action-solid" style="background-color: #e74c3c; text-decoration: none; text-align: center;" onclick="return confirm('Tem certeza que deseja excluir este fornecedor?')">
-                Excluir
-            </a>
-        </div>
+    <a href="/fornecedor/editar/{{ f['id_fornecedor'] }}" class="btn-action-outline" style="text-decoration: none; text-align: center;">
+        Editar
+    </a>
+    
+    <a href="/fornecedor/delete/{{ f['id_fornecedor'] }}" class="btn-action-solid" 
+       style="background-color: #e74c3c; text-decoration: none; text-align: center;" 
+       onclick="return confirm('Tem certeza que deseja excluir o fornecedor {{ f['nome_fantasia'] }}?')">
+        Excluir
+    </a>
+</div>
+
     </div>
     {% else %}
     <div style="text-align: center; padding: 40px; color: #999;">

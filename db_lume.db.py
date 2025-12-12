@@ -8,7 +8,7 @@ cur = con.cursor()
 # 1. TABELAS DO E-COMMERCE (SITE)
 # ==========================================
 
-# Tabela Newsletter (Leads) - NOVO
+# Tabela Newsletter (Leads)
 cur.execute('DROP TABLE IF EXISTS tb_newsletter')
 sql_newsletter = '''CREATE TABLE "tb_newsletter" (
     "id" INTEGER PRIMARY KEY AUTOINCREMENT,
@@ -24,25 +24,26 @@ cur.execute('DROP TABLE IF EXISTS tb_clientes')
 sql_cliente = '''CREATE TABLE "tb_clientes" (
     "id_cliente" INTEGER PRIMARY KEY AUTOINCREMENT,
     "nome" VARCHAR(100) NOT NULL,
-    "data_nasc" DATE NOT NULL,
-    "cpf" VARCHAR(14) NOT NULL,
+    "data_nasc" DATE,
+    "cpf" VARCHAR(14),
     "genero" VARCHAR(20),
-    "tel_cel" VARCHAR(20) NOT NULL,
+    "tel_cel" VARCHAR(20),
     "email" VARCHAR(100) NOT NULL,
-    "cep" VARCHAR(9) NOT NULL,
-    "endereco" VARCHAR(100) NOT NULL,
-    "n" VARCHAR(10) NOT NULL,
+    "cep" VARCHAR(9),
+    "endereco" VARCHAR(100),
+    "n" VARCHAR(10),
     "complemento" VARCHAR(50),
     "referencia" VARCHAR(100),
-    "bairro" VARCHAR(50) NOT NULL,
-    "cidade" VARCHAR(50) NOT NULL,
-    "estado" VARCHAR(2) NOT NULL,
+    "bairro" VARCHAR(50),
+    "cidade" VARCHAR(50),
+    "estado" VARCHAR(2),
     "senha" VARCHAR(100) NOT NULL,
+    "confirmar_senha" VARCHAR(100) NOT NULL,
     "data_cad" DATETIME DEFAULT CURRENT_TIMESTAMP
     )'''
 cur.execute(sql_cliente)
 
-# Tabela Cartões (Tokenização Simulada) - NOVO
+# Tabela Cartões (Tokenização Simulada)
 cur.execute('DROP TABLE IF EXISTS tb_cartoes')
 sql_cartoes = '''CREATE TABLE "tb_cartoes" (
     "id_cartao" INTEGER PRIMARY KEY AUTOINCREMENT,
@@ -52,11 +53,12 @@ sql_cartoes = '''CREATE TABLE "tb_cartoes" (
     "bandeira" VARCHAR(20) NOT NULL,
     "token_pagamento" VARCHAR(100) NOT NULL, 
     "validade" VARCHAR(5) NOT NULL,
+    "parcelas" INTEGER DEFAULT 1,
     "data_cad" DATETIME DEFAULT CURRENT_TIMESTAMP
     )'''
 cur.execute(sql_cartoes)
 
-# Tabela Pedidos - ATUALIZADO (Com Parcelas)
+# Tabela Pedidos
 cur.execute('DROP TABLE IF EXISTS tb_pedidos')
 sql_pedido = '''CREATE TABLE "tb_pedidos" (
     "id_pedido" INTEGER PRIMARY KEY AUTOINCREMENT,
@@ -88,7 +90,7 @@ sql_contato = '''CREATE TABLE "tb_contatos" (
     "id_contato" INTEGER PRIMARY KEY AUTOINCREMENT,
     "nome" VARCHAR(100) NOT NULL,
     "email" VARCHAR(100) NOT NULL,
-    "tel_cel" VARCHAR(20) NOT NULL,
+    "tel_cel" VARCHAR(20),
     "mensagem" TEXT NOT NULL,
     "data_contato" DATETIME DEFAULT CURRENT_TIMESTAMP
     )'''
@@ -99,7 +101,7 @@ cur.execute(sql_contato)
 # 2. TABELAS DO ADMIN (ERP)
 # ==========================================
 
-# Tabela Produtos (Atualizada com Categoria, Aroma, Tamanho e Ativo)
+# Tabela Produtos (Atualizada)
 cur.execute('DROP TABLE IF EXISTS tb_produtos')
 sql_produto = '''CREATE TABLE "tb_produtos" (
     "id_produto" INTEGER PRIMARY KEY AUTOINCREMENT,
@@ -117,11 +119,9 @@ sql_produto = '''CREATE TABLE "tb_produtos" (
     "ativo" BOOLEAN DEFAULT 1,
     "data_cad" DATETIME
     )'''
-    
-# Obs: "categoria" agora é VARCHAR para aceitar textos como "Velas Aromáticas" vindos do HTML
 cur.execute(sql_produto)
 
-# Tabela Funcionários
+# Tabela Funcionários (Atualizada com FOTO)
 cur.execute('DROP TABLE IF EXISTS tb_funcionarios')
 sql_funcionarios = '''CREATE TABLE "tb_funcionarios" (
     "id_funcionario" INTEGER PRIMARY KEY AUTOINCREMENT,
@@ -135,7 +135,7 @@ sql_funcionarios = '''CREATE TABLE "tb_funcionarios" (
     "email_login" VARCHAR(100) NOT NULL,
     "senha" VARCHAR(100) NOT NULL,
     "permissao" VARCHAR(20) NOT NULL,
-    "foto" VARCHAR(255),  
+    "img_funcionario" VARCHAR(255),
     "ativo" BOOLEAN DEFAULT 1,
     "data_cad" DATETIME DEFAULT CURRENT_TIMESTAMP
     )'''
@@ -151,16 +151,18 @@ sql_fornecedores = '''CREATE TABLE "tb_fornecedores" (
     "tel_cel" VARCHAR(20),
     "categoria" VARCHAR(50),
     "insc_estadual" VARCHAR(20),
-    "email" VARCHAR(100) NOT NULL,
-    "cep" VARCHAR(9) NOT NULL,
-    "endereco" VARCHAR(200) NOT NULL,
-    "cidade" VARCHAR(50) NOT NULL,
-    "estado" VARCHAR(2) NOT NULL,
+    "email" VARCHAR(100),
+    "cep" VARCHAR(9),
+    "endereco" VARCHAR(200),
+    "cidade" VARCHAR(50),
+    "estado" VARCHAR(2),
+    "nome_repre" VARCHAR(100),
+    "observacao" TEXT,
     "data_cad" DATETIME
     )'''
 cur.execute(sql_fornecedores)
 
-# Tabela Contas a Receber (Financeiro Entradas) - ATUALIZADO
+# Tabela Contas a Receber
 cur.execute('DROP TABLE IF EXISTS tb_contasReceber')
 sql_contasReceber = '''CREATE TABLE "tb_contasReceber" (
     "id_contaReceber" INTEGER PRIMARY KEY AUTOINCREMENT,
@@ -175,7 +177,7 @@ sql_contasReceber = '''CREATE TABLE "tb_contasReceber" (
     )'''
 cur.execute(sql_contasReceber)
 
-# Tabela Despesas (Financeiro Saídas) - NOVO
+# Tabela Despesas
 cur.execute('DROP TABLE IF EXISTS tb_despesas')
 sql_despesas = '''CREATE TABLE "tb_despesas" (
     "id_despesa" INTEGER PRIMARY KEY AUTOINCREMENT,
@@ -189,22 +191,7 @@ sql_despesas = '''CREATE TABLE "tb_despesas" (
     )'''
 cur.execute(sql_despesas)
 
-# Tabelas Auxiliares (Categorias) - Mantidas
-cur.execute('DROP TABLE IF EXISTS tb_categorias')
-sql_categoria = '''CREATE TABLE "tb_categorias" (
-    "id_categoria" INTEGER PRIMARY KEY AUTOINCREMENT,
-    "nome_categoria" VARCHAR(45) NOT NULL
-    )'''
-cur.execute(sql_categoria)
-
-cur.execute('DROP TABLE IF EXISTS tb_subcategorias')
-sql_subcategoria = '''CREATE TABLE "tb_subcategorias" (
-    "id_subcategoria" INTEGER PRIMARY KEY AUTOINCREMENT,
-    "nome_subcategoria" VARCHAR(45) NOT NULL
-    )'''
-cur.execute(sql_subcategoria)
-
-# Salvar e Fechar
+# Só fecha a conexão AGORA, depois de criar TUDO
 con.commit()
 con.close()
 

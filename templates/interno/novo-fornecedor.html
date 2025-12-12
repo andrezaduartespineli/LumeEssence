@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Novo Fornecedor | Lume Essence Admin</title>
+    <title>{{ 'Editar Fornecedor' if fornecedor else 'Novo Fornecedor' }} | Lume Admin</title>
     <link rel="icon" href="/static/imagens/Logo/grandelogosemfundo.png">
     <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@300;400;600&family=Quicksand:wght@400;500;700&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
@@ -26,8 +26,6 @@
                     <li><a href="funcionarios.html"><i class="fa-solid fa-users"></i> Funcionários</a></li>
                     <li><a href="financeiro.html"><i class="fa-solid fa-file-invoice-dollar"></i> Financeiro</a></li>
                     <li><a href="cliente.html"><i class="fas fa-user"></i>Clientes</a></li>
-                    <li><a href="newsletter.html"><i class="fa-solid fa-envelope-open-text"></i> Newsletter</a></li>
-                    <li><a href="mensagens.html"><i class="fa-regular fa-comment-dots"></i> Mensagens</a></li>
                     <li class="separator"></li>
                     <li><a href="configuracoes.html"><i class="fa-solid fa-gear"></i> Configurações</a></li>
                 </ul>
@@ -41,146 +39,132 @@
             
             <header class="top-bar">
                 <div class="welcome-text">
-                    <h1>Cadastrar Fornecedor</h1>
-                    <p>Adicione um novo parceiro comercial.</p>
+                    <h1>{{ 'Editar Fornecedor' if fornecedor else 'Cadastrar Fornecedor' }}</h1>
+                    <p>Gerencie seus parceiros e suprimentos.</p>
                 </div>
                 <div class="user-profile">
-    <div class="profile-dropdown-trigger" onclick="toggleProfileMenu()">
-        <img src="/static/imagens/fundadora1.jpeg" alt="Admin" class="avatar">
-    </div>
-
-    <div class="profile-dropdown-menu" id="profileMenu">
-        <ul>
-            <li>
-                <a href="configuracoes.html">
-                    <i class="fa-regular fa-user"></i> Meu Perfil
-                </a>
-            </li>
-            <li>
-                <a href="#">
-                    <i class="fa-solid fa-rotate"></i> Trocar Usuário
-                </a>
-            </li>
-            <li class="separator"></li> <li>
-                <a href="/login" class="text-danger">
-                    <i class="fa-solid fa-right-from-bracket"></i> Sair do Sistema
-                </a>
-            </li>
-        </ul>
-    </div>
-</div>
+                    <div class="profile-dropdown-trigger" onclick="toggleProfileMenu()">
+                        <img src="/static/imagens/fundadora1.jpeg" alt="Admin" class="avatar">
+                    </div>
+                    <div class="profile-dropdown-menu" id="profileMenu">
+                        <ul>
+                            <li><a href="configuracoes.html"><i class="fa-regular fa-user"></i> Meu Perfil</a></li>
+                            <li class="separator"></li> 
+                            <li><a href="/login" class="text-danger"><i class="fa-solid fa-right-from-bracket"></i> Sair</a></li>
+                        </ul>
+                    </div>
+                </div>
             </header>
 
-            <form class="supplier-form-container" action="/novo-fornecedor" method="POST">
+            <form class="product-form-container" 
+                  action="{{ '/fornecedor/atualizar' if fornecedor else '/novo-fornecedor' }}" 
+                  method="POST">
+
+                {% if fornecedor %}
+                    <input type="hidden" name="id_fornecedor" value="{{ fornecedor['id_fornecedor'] }}">
+                {% endif %}
                 
                 <div class="form-header">
-                    <h2>Ficha de Cadastro</h2>
-                    
+                    <h2>Dados da Empresa</h2>
+                    <div class="form-actions">
+                        <a href="/fornecedores" class="btn-cancel">Cancelar</a>
+                        <button type="submit" class="btn-save">{{ 'Salvar Alterações' if fornecedor else 'Cadastrar' }}</button>
+                    </div>
                 </div>
 
-                <div class="form-scrollable">
-                    
-                    <h3 class="form-section-title"><i class="fa-regular fa-building"></i> Dados Empresariais</h3>
-
-                    <input type="hidden" name="data_cad" id="data_cad_fornecedor">
-                    
-                    <div class="form-row-3">
-            <div class="input-group">
-                <label>Razão Social</label>
-                <input type="text" name="razao_social" required>
-            </div>
-            <div class="input-group">
-                <label>Nome Fantasia</label>
-                <input type="text" name="nome_fantasia" placeholder="Ex: Vidros & Decor Ltda" required>
-            </div>
-                        <div class="input-group">
-                <label>CNPJ</label>
-                <input type="text" name="cnpj" placeholder="00.000.000/0001-00" required>
-            </div>
-
-            <div class="input-group">
-                <label>Insc. Estadual</label>
-                <input type="text" name="insc_estadual" placeholder="Isento ou número">
-            </div>
-                
-                        <div class="input-group">
-                            <label>Categoria Principal</label>
-                            <select>
-                                <option name="categoria" value="">Selecione...</option>
-                                <option name="categoria" value="Matéria-Prima (Ceras/Essências)">Matéria-Prima (Ceras/Essências)</option>
-                                <option name="categoria" value="Embalagens (Vidros/Caixas)">Embalagens (Vidros/Caixas)</option>
-                                <option name="categoria" value="Gráfica e Rótulos">Gráfica e Rótulos</option>
-                                <option name="categoria" value="Logística e Transportadora">Logística e Transportadora</option>
-                                <option name="categoria" value="Outros">Outros</option>
-                            </select>
+                <div class="form-grid">
+                    <div class="left-column" style="width: 100%;">
+                        
+                        <div class="form-row-2">
+                            <div class="input-group">
+                                <label>Nome Fantasia</label>
+                                <input type="text" name="nome_fantasia" placeholder="Nome comercial"
+                                       value="{{ fornecedor['nome_fantasia'] if fornecedor else '' }}" required>
+                            </div>
+                            <div class="input-group">
+                                <label>Razão Social</label>
+                                <input type="text" name="razao_social" placeholder="Nome jurídico"
+                                       value="{{ fornecedor['razao_social'] if fornecedor else '' }}" required>
+                            </div>
                         </div>
+
+                        <div class="form-row-3">
+                            <div class="input-group">
+                                <label>CNPJ</label>
+                                <input type="text" name="cnpj" placeholder="00.000.000/0000-00"
+                                       value="{{ fornecedor['cnpj'] if fornecedor else '' }}" required>
+                            </div>
+                            <div class="input-group">
+                                <label>Inscrição Estadual</label>
+                                <input type="text" name="insc_estadual" 
+                                       value="{{ fornecedor['insc_estadual'] if fornecedor else '' }}">
+                            </div>
+                            <div class="input-group">
+                                <label>Categoria</label>
+                                <select name="categoria">
+                                    <option value="Matéria-prima" {{ 'selected' if fornecedor and fornecedor['categoria'] == 'Matéria-prima' else '' }}>Matéria-prima</option>
+                                    <option value="Embalagens" {{ 'selected' if fornecedor and fornecedor['categoria'] == 'Embalagens' else '' }}>Embalagens</option>
+                                    <option value="Logística" {{ 'selected' if fornecedor and fornecedor['categoria'] == 'Logística' else '' }}>Logística</option>
+                                    <option value="Serviços" {{ 'selected' if fornecedor and fornecedor['categoria'] == 'Serviços' else '' }}>Serviços</option>
+                                    <option value="Outros" {{ 'selected' if fornecedor and fornecedor['categoria'] == 'Outros' else '' }}>Outros</option>
+                                </select>
+                            </div>
                         </div>
+
+                        <div class="form-row-2">
+                            <div class="input-group">
+                                <label>E-mail Comercial</label>
+                                <input type="email" name="email" placeholder="contato@empresa.com"
+                                       value="{{ fornecedor['email'] if fornecedor else '' }}" required>
+                            </div>
+                            <div class="input-group">
+                                <label>Telefone / WhatsApp</label>
+                                <input type="text" name="tel_cel" placeholder="(99) 99999-9999"
+                                       value="{{ fornecedor['tel_cel'] if fornecedor else '' }}" required>
+                            </div>
+                        </div>
+
+                        <div class="input-group">
+                            <label>Endereço Completo</label>
+                            <input type="text" name="endereco" 
+                                   value="{{ fornecedor['endereco'] if fornecedor else '' }}">
+                        </div>
+
+                        <div class="form-row-3">
+                            <div class="input-group">
+                                <label>Cidade</label>
+                                <input type="text" name="cidade" 
+                                       value="{{ fornecedor['cidade'] if fornecedor else '' }}">
+                            </div>
+                            <div class="input-group">
+                                <label>Estado</label>
+                                <input type="text" name="estado" maxlength="2" placeholder="UF"
+                                       value="{{ fornecedor['estado'] if fornecedor else '' }}">
+                            </div>
+                            <div class="input-group">
+                                <label>CEP</label>
+                                <input type="text" name="cep" placeholder="00000-000"
+                                       value="{{ fornecedor['cep'] if fornecedor else '' }}">
+                            </div>
+                        </div>
+                        
+                        <div class="input-group">
+                            <label>Representante Legal</label>
+                            <input type="text" name="nome_repre" placeholder="Nome do contato principal"
+                                   value="{{ fornecedor['nome_repre'] if fornecedor else '' }}">
+                        </div>
+
+                        <div class="input-group">
+                            <label>Observações</label>
+                            <textarea name="observacao" rows="3" placeholder="Detalhes adicionais...">{{ fornecedor['observacao'] if fornecedor else '' }}</textarea>
+                        </div>
+
                     </div>
-
-                    <h3 class="form-section-title"><i class="fa-regular fa-address-card"></i>Contato e Representante</h3>
-                    
-                    <div class="form-row-3">
-                        <div class="input-group">
-                            <label>Nome do Representante</label>
-                            <input type="text" name="nome_repre" placeholder="Ex: Maria Silva">
-                        </div>
-                        <div class="input-group">
-                <label>Telefone / WhatsApp</label>
-                <input type="tel" name="tel_cel" placeholder="(00) 00000-0000" required>
-            </div>
-            <div class="input-group">
-                <label>E-mail Comercial</label>
-                <input type="email" name="email" placeholder="contato@fornecedor.com" required>
-            </div>
-        </div>
-
-                    <h3 class="form-section-title"><i class="fa-solid fa-map-location-dot"></i> Localização</h3>
-
-         <div class="form-row-2"> 
-            <div class="input-group">
-                <label>CEP</label>
-                <input type="text" name="cep" placeholder="00000-000" required>
-            </div>
-            <div class="input-group">
-                <label>Endereço</label>
-                <input type="text" name="endereco" placeholder="Rua, Número, Bairro" required>
-            </div>
-            
-            <div class="form-row-2">
-                <div class="input-group">
-                    <label>Cidade</label>
-                    <input type="text" name="cidade" required>
                 </div>
-                                    
-                <div class="input-group">
-                    <label>Estado</label>
-                    <select name="estado">
-                        <option name="estado" value="SP">SP</option>
-                        <option name="estado" value="RJ">RJ</option>
-                        <option name="estado" value="MG">MG</option>
-                        <option name="estado" value="Outros">Outros</option>
-                    </select>                
-                </div>
-            </div>
-        </div>
-
-                    <h3 class="form-section-title"><i class="fa-regular fa-note-sticky"></i> Notas Internas</h3>
-                    
-                    <div class="input-group">
-                        <label>Observações sobre Prazo e Pagamento</label>
-                        <textarea rows="4" name="observacao" placeholder="Ex: Entrega em 5 dias úteis. Aceita boleto 30 dias."></textarea>
-                    </div>
-                
-<br>
-                <div class="form-actions">
-                        <a href="fornecedores.html" class="btn-cancel">Cancelar</a>
-                        <button type="submit" class="btn-save">Salvar Fornecedor</button>
-                    </div>
-
             </form>
 
         </main>
     </div>
-<script src="/static/scriptinterno.js"></script>
+    <script src="/static/scriptinterno.js"></script>
 </body>
 </html>

@@ -93,7 +93,7 @@ def listar_produtos():
         
     # Filtro por Categoria (Se foi clicado um botão)
     if filtro_cat and filtro_cat != 'Todos':
-        condicoes.append("categoria_id = ?")
+        condicoes.append("categoria = ?")
         parametros.append(filtro_cat)
     
     # 4. Monta o SQL Final
@@ -127,8 +127,11 @@ def produto_novo():
     preco_venda = request.form.get("preco_venda")
     qtd_estoque = request.form.get("qtd_estoque")
     fornecedor = request.form.get("fornecedor")
-    categoria_id = request.form.get("categoria_id")
-    subcategoria_id = request.form.get("subcategoria_id")
+    categoria = request.form.get("categoria")
+    aroma = request.form.get("aroma")
+    variacao = request.form.get("variacao")
+    img_produto = request.form.get("img_produto")
+    ativo = request.form.get("ativo")
     data_cad = request.form.get("data_cad") or datetime.now().strftime("%Y-%m-%d")
     
     # Tratamento da Imagem
@@ -145,9 +148,9 @@ def produto_novo():
     try:
         cur.execute("""
             INSERT INTO tb_produtos (nome_produto, sku, descricao, preco_custo, preco_venda, 
-            qtd_estoque, fornecedor, categoria_id, subcategoria_id, img_produto, data_cad)
-            VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
-        """, (nome, sku, descricao, preco_custo, preco_venda, qtd_estoque, fornecedor, categoria_id, subcategoria_id, nome_imagem, data_cad))
+            qtd_estoque, fornecedor, categoria, aroma, variacao, img_produto, data_cad)
+            VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
+        """, (nome, sku, descricao, preco_custo, preco_venda, qtd_estoque, fornecedor, categoria, aroma, variacao, nome_imagem, data_cad))
         con.commit()
     except Exception as e:
         print(f"Erro ao salvar produto: {e}")
@@ -181,6 +184,7 @@ def editar_produto(id_produto):
     return render_template("interno/cad_produtos.html", produto=produto)
 
 # --- Rota para SALVAR A EDIÇÃO (Update) ---
+# --- Rota para SALVAR A EDIÇÃO (Update) ---
 @app.route("/produto/atualizar", methods=["POST"])
 def atualizar_produto():
     id_produto = request.form["id_produto"]
@@ -193,8 +197,10 @@ def atualizar_produto():
     preco_venda = request.form.get("preco_venda")
     qtd_estoque = request.form.get("qtd_estoque")
     fornecedor = request.form.get("fornecedor")
-    categoria = request.form.get("categoria") # Se estiver usando texto direto
-    # Se estiver usando IDs de categoria, ajuste conforme seu banco
+    categoria = request.form.get("categoria")
+    # --- NOVO: Capturar Aroma e Variação ---
+    aroma = request.form.get("aroma")
+    variacao = request.form.get("variacao")
     
     con = get_db()
     cur = con.cursor()
@@ -205,21 +211,21 @@ def atualizar_produto():
         nome_imagem = file.filename
         file.save(os.path.join(app.config['UPLOAD_FOLDER'], nome_imagem))
         
-        # Atualiza COM imagem
+        # Atualiza COM imagem (Adicionei aroma e variacao no SQL)
         cur.execute("""
             UPDATE tb_produtos SET 
             nome_produto=?, sku=?, descricao=?, preco_custo=?, preco_venda=?, 
-            qtd_estoque=?, fornecedor=?, categoria=?, img_produto=?
+            qtd_estoque=?, fornecedor=?, categoria=?, aroma=?, variacao=?, img_produto=?
             WHERE id_produto=?
-        """, (nome, sku, descricao, preco_custo, preco_venda, qtd_estoque, fornecedor, categoria, nome_imagem, id_produto))
+        """, (nome, sku, descricao, preco_custo, preco_venda, qtd_estoque, fornecedor, categoria, aroma, variacao, nome_imagem, id_produto))
     else:
-        # Atualiza SEM mudar a imagem antiga
+        # Atualiza SEM mudar a imagem antiga (Adicionei aroma e variacao no SQL)
         cur.execute("""
             UPDATE tb_produtos SET 
             nome_produto=?, sku=?, descricao=?, preco_custo=?, preco_venda=?, 
-            qtd_estoque=?, fornecedor=?, categoria=?
+            qtd_estoque=?, fornecedor=?, categoria=?, aroma=?, variacao=?
             WHERE id_produto=?
-        """, (nome, sku, descricao, preco_custo, preco_venda, qtd_estoque, fornecedor, categoria, id_produto))
+        """, (nome, sku, descricao, preco_custo, preco_venda, qtd_estoque, fornecedor, categoria, aroma, variacao, id_produto))
 
     con.commit()
     con.close()
@@ -301,6 +307,70 @@ def novo_fornecedor_post():
         VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
     """, (razao_social, nome_fantasia, cnpj, tel_cel, categoria, insc_estadual, email, cep, endereco, cidade, estado, data_cad))
     con.commit()
+    con.close()
+    return redirect("/fornecedores")
+
+# --- Rota para DELETAR Fornecedor ---
+@app.route("/fornecedor/delete/<int:id_fornecedor>")
+def deletar_fornecedor(id_fornecedor):
+    con = get_db()
+    cur = con.cursor()
+    try:
+        cur.execute("DELETE FROM tb_fornecedores WHERE id_fornecedor = ?", (id_fornecedor,))
+        con.commit()
+    except Exception as e:
+        print(f"Erro ao deletar fornecedor: {e}")
+    finally:
+        con.close()
+    return redirect("/fornecedores")
+
+# --- Rota para ABRIR O FORMULÁRIO de Edição ---
+@app.route("/fornecedor/editar/<int:id_fornecedor>")
+def editar_fornecedor(id_fornecedor):
+    con = get_db()
+    cur = con.cursor()
+    cur.execute("SELECT * FROM tb_fornecedores WHERE id_fornecedor = ?", (id_fornecedor,))
+    fornecedor = cur.fetchone()
+    con.close()
+    
+    # Reutiliza o arquivo novo-fornecedor.html, mas enviando os dados para preencher
+    return render_template("interno/novo-fornecedor.html", fornecedor=fornecedor)
+
+# --- Rota para SALVAR A EDIÇÃO (Update) ---
+@app.route("/fornecedor/atualizar", methods=["POST"])
+def atualizar_fornecedor():
+    id_fornecedor = request.form["id_fornecedor"]
+    
+    # Captura todos os campos
+    razao_social = request.form.get("razao_social")
+    nome_fantasia = request.form.get("nome_fantasia")
+    cnpj = request.form.get("cnpj")
+    tel_cel = request.form.get("tel_cel")
+    categoria = request.form.get("categoria")
+    insc_estadual = request.form.get("insc_estadual")
+    email = request.form.get("email")
+    cep = request.form.get("cep")
+    endereco = request.form.get("endereco")
+    cidade = request.form.get("cidade")
+    estado = request.form.get("estado")
+    nome_repre = request.form.get("nome_repre")
+    observacao = request.form.get("observacao")
+
+    con = get_db()
+    cur = con.cursor()
+    
+    try:
+        cur.execute("""
+            UPDATE tb_fornecedores SET 
+            razao_social=?, nome_fantasia=?, cnpj=?, tel_cel=?, categoria=?, 
+            insc_estadual=?, email=?, cep=?, endereco=?, cidade=?, estado=?, 
+            nome_repre=?, observacao=?
+            WHERE id_fornecedor=?
+        """, (razao_social, nome_fantasia, cnpj, tel_cel, categoria, insc_estadual, email, cep, endereco, cidade, estado, nome_repre, observacao, id_fornecedor))
+        con.commit()
+    except Exception as e:
+        print(f"Erro ao atualizar fornecedor: {e}")
+        
     con.close()
     return redirect("/fornecedores")
 
@@ -412,36 +482,51 @@ def nova_despesa():
     return redirect("/financeiro")
 
 # --- Funcionários ---
+# --- Funcionários ---
 @app.route("/funcionarios.html")
 @app.route("/funcionarios")
 def funcionarios():
+    # Busca (opcional, se já tiver implementado)
     busca = request.args.get("q")
     con = get_db()
     cur = con.cursor()
     
+    sql = "SELECT * FROM tb_funcionarios"
     if busca:
-        termo = f"%{busca}%"
-        cur.execute("""
-            SELECT * FROM tb_funcionarios 
-            WHERE nome LIKE ? OR cargo LIKE ? OR departamento LIKE ?
-        """, (termo, termo, termo))
-    else:
-        cur.execute("SELECT * FROM tb_funcionarios")
-        
-    dados = cur.fetchall()
+        sql += f" WHERE nome LIKE '%{busca}%' OR cargo LIKE '%{busca}%'"
+    
+    # Ordena por nome
+    sql += " ORDER BY nome ASC"
+    
+    try:
+        cur.execute(sql)
+        dados = cur.fetchall()
+    except:
+        dados = []
     con.close()
     return render_template("interno/funcionarios.html", funcionarios=dados)
 
-
+# Rota para ABRIR O FORMULÁRIO (Novo ou Edição)
 @app.route("/novo-funcionario.html")
-def view_novo_funcionario():
-    return render_template("interno/novo-funcionario.html")
-
-@app.route("/funcionario/novo", methods=["POST"])
-def novo_funcionario_post():
-    print("--- Tentando cadastrar funcionário ---")
+@app.route("/funcionario/editar/<int:id_funcionario>")
+def view_funcionario_form(id_funcionario=None):
+    funcionario = None
+    if id_funcionario:
+        con = get_db()
+        cur = con.cursor()
+        cur.execute("SELECT * FROM tb_funcionarios WHERE id_funcionario = ?", (id_funcionario,))
+        funcionario = cur.fetchone()
+        con.close()
     
-    # Dados de texto
+    # Usa o mesmo HTML para novo e editar
+    return render_template("interno/novo-funcionario.html", funcionario=funcionario)
+
+# Rota para SALVAR (Cadastrar Novo ou Atualizar)
+@app.route("/funcionario/salvar", methods=["POST"])
+def salvar_funcionario():
+    # Verifica se é edição (tem ID) ou novo (não tem ID)
+    id_funcionario = request.form.get("id_funcionario")
+    
     nome = request.form.get("nome")
     cpf = request.form.get("cpf")
     data_nasc = request.form.get("data_nasc")
@@ -450,43 +535,84 @@ def novo_funcionario_post():
     cargo = request.form.get("cargo")
     departamento = request.form.get("departamento")
     email_login = request.form.get("email_login")
-    senha = request.form.get("senha")
+    # Se for edição e senha vier vazia, mantém a antiga. Se novo, usa a enviada.
+    senha = request.form.get("senha") 
     permissao = request.form.get("permissao")
-    ativo = 1 if request.form.get("ativo") else 0
-
-    # Lógica de Upload da Foto
-    nome_arquivo = "sem_foto_humano.png" # Foto padrão se não enviar nada
-    if 'foto' in request.files:
-        arquivo = request.files['foto']
-        if arquivo.filename != "":
-            # Cria um nome seguro e único para não substituir fotos de outros
-            import os
-            from werkzeug.utils import secure_filename
-            
-            nome_seguro = secure_filename(arquivo.filename)
-            # Salva na pasta uploads
-            arquivo.save(os.path.join(app.config['UPLOAD_FOLDER'], nome_seguro))
-            nome_arquivo = nome_seguro
-
+    
     con = get_db()
     cur = con.cursor()
-    
+
+    # --- Tratamento da Imagem ---
+    nome_imagem = None
+    if 'img_funcionario' in request.files:
+        file = request.files['img_funcionario']
+        if file.filename != '':
+            nome_imagem = file.filename
+            # Salva na mesma pasta de uploads dos produtos
+            file.save(os.path.join(app.config['UPLOAD_FOLDER'], nome_imagem))
+
     try:
-        # Note que adicionei a coluna 'foto' no INSERT
-        cur.execute("""
-            INSERT INTO tb_funcionarios (nome, cpf, data_nasc, tel_cel, email_pessoal, cargo, departamento, email_login, senha, permissao, foto, ativo)
-            VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
-        """, (nome, cpf, data_nasc, tel_cel, email_pessoal, cargo, departamento, email_login, senha, permissao, nome_arquivo, ativo))
-        
+        if id_funcionario: # --- ATUALIZAR (UPDATE) ---
+            # Lógica para só atualizar senha e imagem se foram enviadas
+            sql = """UPDATE tb_funcionarios SET nome=?, cpf=?, data_nasc=?, tel_cel=?, 
+                     email_pessoal=?, cargo=?, departamento=?, email_login=?, permissao=?"""
+            params = [nome, cpf, data_nasc, tel_cel, email_pessoal, cargo, departamento, email_login, permissao]
+
+            if senha: # Se digitou nova senha
+                sql += ", senha=?"
+                params.append(senha)
+            
+            if nome_imagem: # Se enviou nova imagem
+                sql += ", img_funcionario=?"
+                params.append(nome_imagem)
+            
+            sql += " WHERE id_funcionario=?"
+            params.append(id_funcionario)
+            cur.execute(sql, params)
+            
+        else: # --- CADASTRAR NOVO (INSERT) ---
+            # Define imagem padrão se não enviou nenhuma
+            if not nome_imagem: nome_imagem = "sem_foto_user.png" 
+            
+            cur.execute("""
+                INSERT INTO tb_funcionarios (nome, cpf, data_nasc, tel_cel, email_pessoal, cargo, 
+                departamento, email_login, senha, permissao, img_funcionario, ativo)
+                VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, 1)
+            """, (nome, cpf, data_nasc, tel_cel, email_pessoal, cargo, departamento, email_login, senha, permissao, nome_imagem))
+
         con.commit()
-        return redirect("/funcionarios")
-        
     except Exception as e:
-        con.rollback()
-        print(f"❌ ERRO: {e}")
-        return f"Erro ao salvar: {e}"
+        print(f"Erro ao salvar funcionário: {e}")
     finally:
         con.close()
+        
+    return redirect("/funcionarios")
+
+# Rota para DELETAR
+@app.route("/funcionario/delete/<int:id_funcionario>")
+def deletar_funcionario(id_funcionario):
+    con = get_db()
+    cur = con.cursor()
+    try:
+        cur.execute("DELETE FROM tb_funcionarios WHERE id_funcionario = ?", (id_funcionario,))
+        con.commit()
+    except Exception as e:
+        print(f"Erro ao deletar: {e}")
+    con.close()
+    return redirect("/funcionarios")
+
+# Rota para ALTERAR STATUS (Ativar/Inativar - "Férias")
+@app.route("/funcionario/status/<int:id_funcionario>/<int:novo_status>")
+def status_funcionario(id_funcionario, novo_status):
+    con = get_db()
+    cur = con.cursor()
+    try:
+        cur.execute("UPDATE tb_funcionarios SET ativo = ? WHERE id_funcionario = ?", (novo_status, id_funcionario))
+        con.commit()
+    except Exception as e:
+        print(f"Erro ao alterar status: {e}")
+    con.close()
+    return redirect("/funcionarios")
 
 # --- Clientes ---
 @app.route("/cliente.html")

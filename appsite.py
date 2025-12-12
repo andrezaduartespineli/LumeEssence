@@ -2,7 +2,9 @@ from flask import Flask, render_template, request, redirect, session, jsonify
 import sqlite3
 import json
 import uuid
+import math
 from datetime import datetime
+from werkzeug.security import generate_password_hash, check_password_hash
 
 app = Flask(__name__)
 app.secret_key = 'chave_secreta_lume_essence'  # Necessário para o carrinho e login
@@ -26,36 +28,162 @@ def inject_cart_count():
 @app.route("/")
 @app.route("/index.html")
 def index():
-    return render_template("site/index.html")
+    con = get_db()
+    cur = con.cursor()
+    
+    # 1. Busca os Lançamentos (3 últimos cadastrados)
+    cur.execute("SELECT * FROM tb_produtos WHERE ativo = 1 ORDER BY id_produto DESC LIMIT 3")
+    lancamentos = cur.fetchall()
+
+    # 2. Busca os Mais Vendidos (Top 8)
+    # Essa consulta soma a quantidade vendida de cada item. 
+    # Se o produto nunca foi vendido, o COALESCE garante que o total seja 0.
+    # Ordena pelo total de vendas (maior para menor).
+    cur.execute("""
+        SELECT p.*, COALESCE(SUM(ip.quantidade), 0) as total_vendas
+        FROM tb_produtos p
+        LEFT JOIN tb_itensPedido ip ON p.id_produto = ip.id_produto
+        WHERE p.ativo = 1
+        GROUP BY p.id_produto
+        ORDER BY total_vendas DESC, p.id_produto DESC
+        LIMIT 8
+    """)
+    mais_vendidos = cur.fetchall()
+    
+    con.close()
+    
+    return render_template("site/index.html", 
+                           lancamentos=lancamentos, 
+                           mais_vendidos=mais_vendidos)
 
 @app.route("/produtos")
 @app.route("/produtos.html")
 def produtos():
+    ITENS_POR_PAGINA = 15
+    
+    # Captura Parâmetros
+    pagina_atual = request.args.get('page', 1, type=int)
+    ordem_atual = request.args.get('ordem', 'padrao')
+    
+    # Filtros laterais
+    cat_filtro = request.args.get('categoria')
+    aromas_filtro = request.args.getlist('aroma') 
+    variacoes_filtro = request.args.getlist('variacao')
+    novidades_filtro = request.args.get('novidades') 
+    
+    # --- NOVO: Captura o texto da busca ---
+    termo_busca = request.args.get('q') 
+    
     con = get_db()
     cur = con.cursor()
-    # Busca produtos ativos
-    cur.execute("SELECT * FROM tb_produtos")
+    
+    # Query Base
+    sql_base = "SELECT * FROM tb_produtos WHERE ativo = 1"
+    sql_count = "SELECT COUNT(*) FROM tb_produtos WHERE ativo = 1"
+    
+    filtros_sql = []
+    parametros = []
+    
+    # 1. Filtro de Busca (Texto)
+    if termo_busca:
+        # Procura no Nome OU na Descrição (o % serve para buscar em qualquer parte do texto)
+        filtros_sql.append("(nome_produto LIKE ? OR descricao LIKE ?)")
+        parametros.append(f'%{termo_busca}%')
+        parametros.append(f'%{termo_busca}%')
+
+    # 2. Outros Filtros
+    if novidades_filtro == 'true':
+        filtros_sql.append("data_cad >= date('now', '-45 days')")
+
+    if cat_filtro:
+        filtros_sql.append("categoria = ?")
+        parametros.append(cat_filtro)
+        
+    if aromas_filtro:
+        placeholders = ','.join(['?'] * len(aromas_filtro)) 
+        filtros_sql.append(f"aroma IN ({placeholders})")
+        parametros.extend(aromas_filtro)
+
+    if variacoes_filtro:
+        placeholders = ','.join(['?'] * len(variacoes_filtro))
+        filtros_sql.append(f"variacao IN ({placeholders})")
+        parametros.extend(variacoes_filtro)
+
+    if filtros_sql:
+        clausula_where = " AND " + " AND ".join(filtros_sql)
+        sql_base += clausula_where
+        sql_count += clausula_where
+
+    # 3. Ordenação e Paginação
+    if novidades_filtro == 'true' and ordem_atual == 'padrao':
+        sql_base += " ORDER BY data_cad DESC, id_produto DESC"
+    elif ordem_atual == 'menor_preco':
+        sql_base += " ORDER BY preco_venda ASC"
+    elif ordem_atual == 'maior_preco':
+        sql_base += " ORDER BY preco_venda DESC"
+    elif ordem_atual == 'az':
+        sql_base += " ORDER BY nome_produto ASC"
+    elif ordem_atual == 'za':
+        sql_base += " ORDER BY nome_produto DESC"
+    else:
+        sql_base += " ORDER BY id_produto DESC"
+
+    # Define limite de paginação
+    if novidades_filtro == 'true':
+        limit = 6; offset = 0; total_paginas = 1 
+    else:
+        limit = 15; offset = (pagina_atual - 1) * limit
+        cur.execute(sql_count, parametros)
+        total_produtos = cur.fetchone()[0]
+        total_paginas = math.ceil(total_produtos / limit)
+    
+    sql_base += " LIMIT ? OFFSET ?"
+    parametros.append(limit)
+    parametros.append(offset)
+    
+    cur.execute(sql_base, parametros)
     lista_produtos = cur.fetchall()
     con.close()
-    return render_template("site/produtos.html", produtos=lista_produtos)
-
+    
+    return render_template("site/produtos.html", 
+                           produtos=lista_produtos, 
+                           pagina_atual=pagina_atual, 
+                           total_paginas=total_paginas,
+                           ordem_atual=ordem_atual,
+                           aromas_selecionados=aromas_filtro,
+                           variacoes_selecionadas=variacoes_filtro,
+                           cat_selecionada=cat_filtro,
+                           eh_novidade=novidades_filtro,
+                           termo_busca=termo_busca) # Devolve o texto para manter na caixinha
+    
 @app.route("/produto/<int:id_produto>")
-@app.route("/produto-detalhe.html") # Rota legado
-def produto_detalhe(id_produto=None):
-    if not id_produto:
-        # Se acessou direto pelo html antigo, redireciona ou mostra erro
-        return redirect("/produtos")
-        
+def produto_detalhe(id_produto):
     con = get_db()
     cur = con.cursor()
+    
+    # 1. Busca o produto principal
     cur.execute("SELECT * FROM tb_produtos WHERE id_produto = ?", (id_produto,))
     produto = cur.fetchone()
+    
+    if not produto:
+        con.close()
+        return "Produto não encontrado", 404
+    
+    # 2. Busca produtos relacionados (para a sugestão no final da página)
+    cur.execute("""
+        SELECT * FROM tb_produtos 
+        WHERE categoria = ? AND id_produto != ? AND ativo = 1 
+        ORDER BY RANDOM() LIMIT 4
+    """, (produto['categoria'], id_produto))
+    relacionados = cur.fetchall()
+    
     con.close()
     
-    if produto:
-        return render_template("site/produto-detalhe.html", produto=produto)
-    return "Produto não encontrado", 404
+    # Enviamos 'p' (produto abreviado) para funcionar com seu HTML
+    return render_template("site/produto-detalhe.html", p=produto, relacionados=relacionados)
 
+
+# --- Rotas de Páginas Institucionais ---
 @app.route("/sobre")
 @app.route("/sobre.html")
 def sobre():
@@ -131,9 +259,36 @@ def cadastrar_newsletter():
 
 
 # --- Autenticação e Cadastro ---
-@app.route("/login")
-@app.route("/site/login.html")
-def login_page():
+# ==========================================
+# ROTA DE LOGIN (CORRETA E COMPLETA)
+# ==========================================
+@app.route("/login", methods=['GET', 'POST'])
+@app.route("/site/login.html") # Pode manter essa rota alternativa se quiser
+def login_cliente():
+    # 1. Se já estiver logado, manda pra Área do Cliente
+    if 'id_cliente' in session:
+        return redirect("/area_cliente/area-cliente.html")
+
+    # 2. Se clicou no botão "ENTRAR" (POST)
+    if request.method == 'POST':
+        email = request.form['email']
+        senha = request.form['senha']
+        
+        con = get_db()
+        cur = con.cursor()
+        cur.execute("SELECT * FROM tb_clientes WHERE email = ?", (email,))
+        usuario = cur.fetchone()
+        con.close()
+        
+        # Verifica senha criptografada
+        if usuario and check_password_hash(usuario['senha'], senha):
+            session['id_cliente'] = usuario['id_cliente']
+            session['nome_cliente'] = usuario['nome'].split()[0] # Pega só o primeiro nome
+            return redirect("/") # Sucesso: vai pra Home
+        else:
+            return render_template("site/login.html", erro="E-mail ou senha incorretos.")
+
+    # 3. Se só acessou a página (GET)
     return render_template("site/login.html")
 
 # --- Rota para EXIBIR a tela de cadastro ---
@@ -204,63 +359,84 @@ def cadastro_cliente():
         return f"Erro ao cadastrar: {e}"
 
 # --- Carrinho de Compras ---
-@app.route("/carrinho")
-@app.route("/site/carrinho.html")
-def carrinho():
-    if 'carrinho' not in session or len(session['carrinho']) == 0:
-        return render_template("site/carrinho.html", itens=[], total=0)
-    
-    carrinho_sessao = session['carrinho']
-    itens_completos = []
-    total_geral = 0
-
-    con = get_db()
-    cur = con.cursor()
-
-    for item in carrinho_sessao:
-        cur.execute("SELECT * FROM tb_produtos WHERE id_produto = ?", (item['id'],))
-        produto = cur.fetchone()
-        
-        if produto:
-            subtotal = produto['preco_venda'] * item['qtd']
-            total_geral += subtotal
-            
-            itens_completos.append({
-                'id': produto['id_produto'],
-                'nome': produto['nome_produto'],
-                'imagem': produto['img_produto'],
-                'preco': produto['preco_venda'],
-                'qtd': item['qtd'],
-                'subtotal': subtotal
-            })
-    con.close()
-    return render_template("site/carrinho.html", itens=itens_completos, total=total_geral)
+# --- ROTAS COMPLETAS DO CARRINHO ---
 
 @app.route("/adicionar-carrinho/<int:id_produto>")
 def adicionar_carrinho(id_produto):
+    # 1. Busca os dados completos do produto no banco
+    con = get_db()
+    cur = con.cursor()
+    cur.execute("SELECT * FROM tb_produtos WHERE id_produto = ?", (id_produto,))
+    produto_db = cur.fetchone()
+    con.close()
+    
+    if not produto_db:
+        return "Produto não encontrado", 404
+
+    # 2. Prepara os dados para salvar na sessão
+    preco = float(produto_db['preco_venda'])
+    
+    # Cria a estrutura do item
+    novo_item = {
+        'id': produto_db['id_produto'],
+        'nome': produto_db['nome_produto'],
+        'preco': preco,
+        'imagem': produto_db['img_produto'],
+        'sku': produto_db['sku'],
+        'qtd': 1,
+        'subtotal': preco
+    }
+
+    # 3. Gerencia a Sessão
     if 'carrinho' not in session:
         session['carrinho'] = []
 
-    encontrado = False
-    for item in session['carrinho']:
+    carrinho_atual = session['carrinho']
+    encontrou = False
+
+    # Se já existe, só aumenta a quantidade
+    for item in carrinho_atual:
         if item['id'] == id_produto:
             item['qtd'] += 1
-            encontrado = True
+            item['subtotal'] = item['qtd'] * item['preco']
+            encontrou = True
             break
-    
-    if not encontrado:
-        session['carrinho'].append({'id': id_produto, 'qtd': 1})
-    
+
+    if not encontrou:
+        carrinho_atual.append(novo_item)
+
+    session['carrinho'] = carrinho_atual
     session.modified = True
+    
     return redirect("/carrinho")
+
+@app.route("/carrinho")
+@app.route("/carrinho.html")
+def ver_carrinho():
+    carrinho = session.get('carrinho', [])
+    
+    # Recalcula totais para garantir
+    total_geral = 0
+    for item in carrinho:
+        item['subtotal'] = item['qtd'] * item['preco']
+        total_geral += item['subtotal']
+        
+    return render_template("site/carrinho.html", carrinho=carrinho, total_geral=total_geral)
 
 @app.route("/remover-carrinho/<int:id_produto>")
 def remover_carrinho(id_produto):
     if 'carrinho' in session:
+        # Recria a lista removendo o item selecionado
         session['carrinho'] = [item for item in session['carrinho'] if item['id'] != id_produto]
         session.modified = True
     return redirect("/carrinho")
 
+@app.route("/limpar-carrinho")
+def limpar_carrinho():
+    session.pop('carrinho', None)
+    return redirect("/carrinho")
+
+# Rota Extra: Botões de + e - no carrinho (Opcional, mas útil)
 @app.route("/alterar-qtd/<int:id_produto>/<acao>")
 def alterar_qtd(id_produto, acao):
     if 'carrinho' in session:
@@ -270,15 +446,28 @@ def alterar_qtd(id_produto, acao):
                     item['qtd'] += 1
                 elif acao == 'menos' and item['qtd'] > 1:
                     item['qtd'] -= 1
+                item['subtotal'] = item['qtd'] * item['preco']
                 break
         session.modified = True
     return redirect("/carrinho")
 
 # --- Checkout e Pedidos ---
+# --- ROTA DE CHECKOUT ---
 @app.route("/checkout")
 def checkout():
-    # if 'user_id' not in session: return redirect("/login")
-    return render_template("site/checkout.html")
+    # 1. Segurança: Se não tem carrinho, manda voltar para produtos
+    if 'carrinho' not in session or not session['carrinho']:
+        return redirect("/produtos")
+    
+    carrinho = session['carrinho']
+    
+    # 2. Calcula o Total Geral
+    total_geral = sum(item['subtotal'] for item in carrinho)
+    
+    # 3. Renderiza a tela passando os dados
+    return render_template("site/checkout.html", 
+                           carrinho=carrinho, 
+                           total_geral=total_geral)
 
 @app.route("/finalizar_pedido", methods=["POST"])
 def finalizar_pedido():
@@ -374,6 +563,24 @@ def area_cartoes():
 @app.route("/area_cliente/meus-dados.html")
 def area_dados():
     return render_template("area_cliente/meus-dados.html")
+
+# --- INJETOR DE CONTEXTO (Faz o carrinho funcionar em todas as páginas) ---
+@app.context_processor
+def inject_carrinho_global():
+    # Pega o carrinho da sessão
+    carrinho_atual = session.get('carrinho', [])
+    
+    # Conta quantos itens tem no total (Soma as quantidades)
+    # Ex: Se comprou 2 velas e 1 spray, mostra "3"
+    total_itens = sum(item['qtd'] for item in carrinho_atual)
+    
+    # Disponibiliza a variável 'qtd_carrinho' para todos os HTMLs
+    return dict(qtd_carrinho=total_itens)
+
+@app.context_processor
+def inject_usuario():
+    # Envia 'user_nome' se estiver logado, senão envia None
+    return dict(user_nome=session.get('nome_cliente'))
 
 # Inicialização
 if __name__ == "__main__":

@@ -88,29 +88,43 @@
             <section class="team-grid">
     
     {% for func in funcionarios %}
-    <div class="team-card">
+    <div class="team-card" style="{{ 'opacity: 0.6;' if func['ativo'] == 0 else '' }}">
+        
         <div class="card-options">
-            <i class="fa-solid fa-ellipsis-vertical" style="cursor: pointer;" title="Opções"></i>
+            <i class="fa-solid fa-ellipsis-vertical"></i>
+            <div class="dropdown-menu">
+                {% if func['ativo'] == 1 %}
+                    <a href="/funcionario/status/{{ func['id_funcionario'] }}/0">
+                        <i class="fa-solid fa-pause"></i> Inativar (Férias)
+                    </a>
+                {% else %}
+                    <a href="/funcionario/status/{{ func['id_funcionario'] }}/1">
+                        <i class="fa-solid fa-play"></i> Reativar
+                    </a>
+                {% endif %}
+                <a href="/funcionario/delete/{{ func['id_funcionario'] }}" class="danger"
+                   onclick="return confirm('Tem certeza que deseja excluir?');">
+                    <i class="fa-solid fa-trash"></i> Excluir
+                </a>
+            </div>
         </div>
         
         <div class="profile-img">
-    {% if func['foto'] and func['foto'] != 'sem_foto_humano.png' %}
-        <img src="../../static/uploads/{{ func['foto'] }}" style="width: 100%; height: 100%; object-fit: cover; border-radius: 50%;">
-    {% else %}
-        <div class="initials bg-blue">
-            {{ func['nome'][:2].upper() }}
+            {% if func['img_funcionario'] and func['img_funcionario'] != 'sem_foto_user.png' %}
+                <img src="/static/uploads/{{ func['img_funcionario'] }}" alt="{{ func['nome'] }}">
+            {% else %}
+                <div class="initials bg-blue">
+                    {{ func['nome'][:2].upper() }}
+                </div>
+            {% endif %}
         </div>
-    {% endif %}
-</div>
 
         <h3>{{ func['nome'] }}</h3>
         <span class="role">{{ func['cargo'] }}</span>
         
         <div class="info-list">
-            <p style="font-size: 0.8rem; margin-bottom: 5px;">
-                <i class="fa-solid fa-building"></i> {{ func['departamento'] }}
-            </p>
-            <p><i class="fa-regular fa-envelope"></i> {{ func['email_pessoal'] }}</p>
+            <p><i class="fa-solid fa-building"></i> {{ func['departamento'] }}</p>
+            <p><i class="fa-regular fa-envelope"></i> {{ func['email_login'] }}</p>
             <p><i class="fa-solid fa-phone"></i> {{ func['tel_cel'] }}</p>
         </div>
 
@@ -125,13 +139,15 @@
                 </span>
             {% endif %}
 
-            <button class="btn-edit">Editar</button>
+            <a href="/funcionario/editar/{{ func['id_funcionario'] }}" class="btn-edit" style="text-decoration: none; text-align: center;">
+                Editar
+            </a>
         </div>
     </div>
     {% else %}
-    <div style="grid-column: 1 / -1; text-align: center; padding: 50px; color: #999;">
+    <div style="grid-column: 1/-1; text-align: center; padding: 50px; color: #999;">
         <i class="fa-solid fa-users-slash" style="font-size: 3rem; margin-bottom: 15px;"></i>
-        <p>Nenhum colaborador encontrado na equipe.</p>
+        <p>Nenhum colaborador encontrado.</p>
     </div>
     {% endfor %}
 

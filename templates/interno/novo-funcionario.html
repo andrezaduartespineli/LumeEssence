@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Novo Colaborador | Lume Essence Admin</title>
+    <title>{{ 'Editar' if funcionario else 'Novo' }} Funcionário | Lume Admin</title>
     <link rel="icon" href="/static/imagens/Logo/grandelogosemfundo.png">
     <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@300;400;600&family=Quicksand:wght@400;500;700&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
@@ -12,7 +12,6 @@
 <body>
 
     <div class="admin-container">
-        
         <aside class="sidebar">
             <div class="sidebar-header">
                 <h2 class="brand-text">LUME <span>ADMIN</span></h2>
@@ -26,8 +25,6 @@
                     <li class="active"><a href="funcionarios.html"><i class="fa-solid fa-users"></i> Funcionários</a></li>
                     <li><a href="financeiro.html"><i class="fa-solid fa-file-invoice-dollar"></i> Financeiro</a></li>
                     <li><a href="cliente.html"><i class="fas fa-user"></i>Clientes</a></li>
-                    <li><a href="newsletter.html"><i class="fa-solid fa-envelope-open-text"></i> Newsletter</a></li>
-                    <li><a href="mensagens.html"><i class="fa-regular fa-comment-dots"></i> Mensagens</a></li>
                     <li class="separator"></li>
                     <li><a href="configuracoes.html"><i class="fa-solid fa-gear"></i> Configurações</a></li>
                 </ul>
@@ -41,192 +38,122 @@
             
             <header class="top-bar">
                 <div class="welcome-text">
-                    <h1>Cadastrar Colaborador</h1>
-                    <p>Adicione um novo membro à equipe Lume.</p>
-                </div>
-                <div class="user-profile">
-                    <div class="profile-dropdown-trigger" onclick="toggleProfileMenu()">
-                        <img src="/static/imagens/fundadora1.jpeg" alt="Admin" class="avatar">
-                    </div>
-
-                    <div class="profile-dropdown-menu" id="profileMenu">
-                        <ul>
-                            <li>
-                                <a href="configuracoes.html">
-                                    <i class="fa-regular fa-user"></i> Meu Perfil
-                                </a>
-                            </li>
-                            <li>
-                                <a href="#">
-                                    <i class="fa-solid fa-rotate"></i> Trocar Usuário
-                                </a>
-                            </li>
-                            <li class="separator"></li> 
-                            <li>
-                                <a href="/login" class="text-danger">
-                                    <i class="fa-solid fa-right-from-bracket"></i> Sair do Sistema
-                                </a>
-                            </li>
-                        </ul>
-                    </div>
+                    <h1>{{ 'Editar Cadastro' if funcionario else 'Novo Colaborador' }}</h1>
+                    <p>Gestão de equipe e acessos.</p>
                 </div>
             </header>
 
-            <form class="supplier-form-container" action="/funcionario/novo" method="POST"> 
+            <form class="product-form-container" action="/funcionario/salvar" method="POST" enctype="multipart/form-data">
+                
+                {% if funcionario %}
+                    <input type="hidden" name="id_funcionario" value="{{ funcionario['id_funcionario'] }}">
+                {% endif %}
+
                 <div class="form-header">
                     <h2>Dados do Colaborador</h2>
                     <div class="form-actions">
-                        <a href="funcionarios.html" class="btn-cancel">Cancelar</a>
-                        <button type="submit" class="btn-save">Salvar Registro</button>
+                        <a href="/funcionarios" class="btn-cancel">Cancelar</a>
+                        <button type="submit" class="btn-save">{{ 'Salvar Alterações' if funcionario else 'Cadastrar' }}</button>
                     </div>
                 </div>
 
                 <div class="form-grid">
-                    
                     <div class="left-column">
-                        
-                        <h3 class="form-section-title" style="margin-top: 0;"><i class="fa-regular fa-id-card"></i> Informações Pessoais</h3>
                         
                         <div class="input-group">
                             <label>Nome Completo</label>
-                            <input type="text" name="nome" placeholder="Ex: Ana Clara Silva" required>
+                            <input type="text" name="nome" placeholder="Nome Completo" value="{{ funcionario['nome'] if funcionario else '' }}" required>
                         </div>
 
                         <div class="form-row-2">
                             <div class="input-group">
                                 <label>CPF</label>
-                                <input type="text" name="cpf" placeholder="000.000.000-00">
+                                <input type="text" name="cpf" placeholder="000.000.000-00" value="{{ funcionario['cpf'] if funcionario else '' }}" required>
                             </div>
                             <div class="input-group">
                                 <label>Data de Nascimento</label>
-                                <input type="date" name="data_nasc">
+                                <input type="date" name="data_nasc" value="{{ funcionario['data_nasc'] if funcionario else '' }}">
                             </div>
                         </div>
 
                         <div class="form-row-2">
-                            <div class="input-group">
-                                <label>Telefone / WhatsApp</label>
-                                <input type="tel" name="tel_cel" placeholder="(11) 99999-9999">
+                             <div class="input-group">
+                                <label>Celular</label>
+                                <input type="text" name="tel_cel" placeholder="(00) 00000-0000" value="{{ funcionario['tel_cel'] if funcionario else '' }}" required>
                             </div>
                             <div class="input-group">
                                 <label>E-mail Pessoal</label>
-                                <input type="email" name="email_pessoal" placeholder="ana@email.com">
+                                <input type="email" name="email_pessoal" placeholder="ana@gmail.com" value="{{ funcionario['email_pessoal'] if funcionario else '' }}">
                             </div>
                         </div>
-
-                        <h3 class="form-section-title"><i class="fa-solid fa-map-location-dot"></i> Endereço Residencial</h3>
-
+                        
                         <div class="form-row-2">
                             <div class="input-group">
-                                <label>CEP</label>
-                                <input type="text" name="cep" placeholder="00000-000">
-                            </div>
-                            <div class="input-group">
-                                <label>Endereço (Rua/Av e Número)</label>
-                                <input type="text" name="endereco" placeholder="Rua das Flores, 123">
-                            </div>
-                        </div>
-
-                        <div class="form-row-3">
-                            <div class="input-group">
-                                <label>Bairro</label>
-                                <input type="text" name="bairro" placeholder="Centro">
-                            </div>
-                            <div class="input-group">
-                                <label>Cidade</label>
-                                <input type="text" name="cidade" placeholder="São Paulo">
-                            </div>
-                            <div class="input-group">
-                                <label>Estado</label>
-                                <select name="estado">
-                                    <option value="">UF</option>
-                                    <option value="SP">SP</option>
-                                    <option value="RJ">RJ</option>
-                                    <option value="MG">MG</option>
-                                    <option value="RS">RS</option>
-                                </select>
-                            </div>
-                        </div>
-
-                        <h3 class="form-section-title"><i class="fa-solid fa-briefcase"></i> Dados Corporativos</h3>
-
-                        <div class="form-row-2">
-                            <div class="input-group">
-                                <label>Cargo / Função</label>
-                                <input type="text" name="cargo" placeholder="Ex: Auxiliar de Produção">
+                                <label>Cargo</label>
+                                <input type="text" name="cargo" placeholder="Ex: Gerente de Vendas" value="{{ funcionario['cargo'] if funcionario else '' }}" required>
                             </div>
                             <div class="input-group">
                                 <label>Departamento</label>
                                 <select name="departamento">
-                                    <option value="Produção (Ateliê)">Produção (Ateliê)</option>
-                                    <option value="Administrativo">Administrativo</option>
-                                    <option value="Vendas / Comercial">Vendas / Comercial</option>
-                                    <option value="Logística">Logística</option>
-                                    <option value="Marketing">Marketing</option>
+                                    <option value="Vendas" {{ 'selected' if funcionario and funcionario['departamento'] == 'Vendas' else '' }}>Vendas</option>
+                                    <option value="Produção/Estoque" {{ 'selected' if funcionario and funcionario['departamento'] == 'Produção/Estoque' else '' }}>Produção/Estoque</option>
+                                    <option value="Administrativo" {{ 'selected' if funcionario and funcionario['departamento'] == 'Administrativo' else '' }}>Administrativo</option>
+                                    <option value="Marketing" {{ 'selected' if funcionario and funcionario['departamento'] == 'Marketing' else '' }}>Marketing</option>
+                                    <option value="Financeiro" {{ 'selected' if funcionario and funcionario['departamento'] == 'Financeiro' else '' }}>Financeiro</option>
+                                    <option value="Jurídico" {{ 'selected' if funcionario and funcionario['departamento'] == 'Jurídico' else '' }}>Jurídico</option>
                                 </select>
                             </div>
                         </div>
 
-                        <h3 class="form-section-title"><i class="fa-solid fa-lock"></i> Acesso ao Sistema</h3>
+                        <h3 style="margin-top: 15px; margin-bottom: 10px; font-size: 1rem; color: #666;">Acesso ao Sistema</h3>
+                        
+                        <div class="input-group">
+                            <label>E-mail de Login</label>
+                            <input type="email" name="email_login" placeholder="ana@gmail.com" value="{{ funcionario['email_login'] if funcionario else '' }}" required>
+                        </div>
 
                         <div class="form-row-2">
                             <div class="input-group">
-                                <label>E-mail de Login (Corporativo)</label>
-                                <input type="email" name="email_login" placeholder="nome@lumeessence.com.br" required>
+                                <label>Senha {{ '(Deixe vazio para manter)' if funcionario else '' }}</label>
+                                <input type="password" name="senha" placeholder="**********" value="{{ funcionario['senha'] if funcionario else '' }}"'required' if not funcionario else '' }}>
                             </div>
                             <div class="input-group">
-                                <label>Senha Provisória</label>
-                                <input type="password" name="senha" placeholder="••••••••" required>
+                                <label>Permissão</label>
+                                <select name="permissao">
+                                    <option value="Gerente" {{ 'selected' if funcionario and funcionario['permissao'] == 'Gerente' else '' }}>Gerente</option>
+                                    <option value="Administrador" {{ 'selected' if funcionario and funcionario['permissao'] == 'Administrador' else '' }}>Administrador</option>   
+                                    <option value="Estoquista" {{ 'selected' if funcionario and funcionario['permissao'] == 'Estoquista' else '' }}>Estoquista</option>
+                                    <option value="Financeiro" {{ 'selected' if funcionario and funcionario['permissao'] == 'Financeiro' else '' }}>Financeiro</option>
+                                    <option value="Jurídico" {{ 'selected' if funcionario and funcionario['permissao'] == 'Jurídico' else '' }}>Jurídico</option>
+
+                                </select>
                             </div>
                         </div>
-                        
-                        <div class="input-group">
-                            <label>Nível de Permissão</label>
-                            <select name="permissao">
-                                <option value="staff">Colaborador (Visualizar apenas)</option>
-                                <option value="editor">Editor (Gerenciar Pedidos/Produtos)</option>
-                                <option value="admin">Administrador (Acesso Total)</option>
-                            </select>
-                        </div>
-
                     </div>
 
                     <div class="right-column">
-                        
-                        <form class="supplier-form-container" action="/funcionario/novo" method="POST" enctype="multipart/form-data"> 
-    
-    <div class="right-column">
-        
-        <div class="upload-card">
-            <label>Foto de Perfil</label>
-            
-            <div class="drop-zone avatar-upload" onclick="document.getElementById('inputFoto').click()" style="position: relative; overflow: hidden; cursor: pointer;"> 
-                
-                <img id="previewImg" src="" style="width: 100%; height: 100%; object-fit: cover; display: none; position: absolute; top: 0; left: 0;">
-                
-                <div id="uploadContent">
-                    <i class="fa-regular fa-user"></i>
-                    <p>Clique para enviar</p>
+                        <div class="upload-card">
+                            <label>Foto de Perfil</label>
+                            
+                            {% if funcionario and funcionario['img_funcionario'] and funcionario['img_funcionario'] != 'sem_foto_user.png' %}
+                                <div style="margin-bottom: 15px; text-align: center;">
+                                    <img src="/static/uploads/{{ funcionario['img_funcionario'] }}" 
+                                         style="width: 100px; height: 100px; object-fit: cover; border-radius: 50%; border: 2px solid #ddd;">
+                                    <p style="font-size: 0.8rem; color: #666; margin-top: 5px;">Atual</p>
+                                </div>
+                            {% endif %}
+
+                            <div class="drop-zone">
+                                <i class="fa-solid fa-camera"></i>
+                                <p>{{ 'Alterar Foto' if funcionario else 'Adicionar Foto' }}</p>
+                                <input type="file" name="img_funcionario" accept="image/*">
+                            </div>
+                        </div>
+                    </div>
                 </div>
-
-                <input type="file" id="inputFoto" name="foto" accept="image/*" hidden onchange="mostrarPreview(this)">
-            </div>
-        </div>
-
-        <div class="toggle-group">
-            <label class="switch">
-                <input type="checkbox" name="ativo" value="1" checked>
-                <span class="slider round"></span>
-            </label>
-            <span>Cadastro Ativo</span>
-        </div>
-                                        
-    </div>
-                    
             </form>
 
         </main>
     </div>
-<script src="/static/scriptinterno.js"></script>
 </body>
 </html>

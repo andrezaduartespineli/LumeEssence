@@ -65,48 +65,74 @@ LumeEssence/
 
 
 
-## ⚡ Como Rodar o Projeto
+# ⚡ Como Rodar o Projeto
 
-# Pré-requisitos
+## Pré-requisitos
 Python 3.x instalado.
 
-# Passo a Passo
+## Passo a Passo
 Clone o repositório:
 
 git clone [https://github.com/andrezaduartespineli/LumeEssence.git](https://github.com/andrezaduartespineli/LumeEssence.git)
 cd LumeEssence
 
 
-# Crie o Ambiente Virtual (Opcional, mas recomendado):
+## Crie o Ambiente Virtual (Opcional, mas recomendado):
 python -m venv .venv
 
 
-## Windows:
+### Windows:
 .venv\Scripts\activate
 
-## Linux/Mac:
+### Linux/Mac:
 source .venv/bin/activate
 
 
-# Instale as dependências:
+## Instale as dependências:
 pip install flask
 
 
-# Inicialize o Banco de Dados: Este comando criará o arquivo db_lume.db com todas as tabelas necessárias.
+## Inicialize o Banco de Dados: Este comando criará o arquivo db_lume.db com todas as tabelas necessárias.
 python db_lume.db.py
 
 
-# Execute as Aplicações: O sistema roda em duas portas simultâneas. Abra dois terminais:
+## Execute as Aplicações: O sistema roda em duas portas simultâneas. Abra dois terminais:
 
-# Terminal 1 (Loja):
+#### Terminal 1 (Loja):
 python appsite.py
 Acesse: http://127.0.0.1:5000
 
-# Terminal 2 (Admin):
+#### Terminal 2 (Admin):
 python appinterno.py
 Acesse: http://127.0.0.1:5001
 
+---
 
+# 📦 Importação em Massa de Produtos (Excel)
+
+Para agilizar o cadastro de estoque, o projeto conta com um script de automação que lê uma planilha Excel e insere os produtos diretamente no banco de dados.
+
+### Pré-requisitos
+#### Instale as bibliotecas de manipulação de dados:
+
+pip install pandas openpyxl
+
+```bash
+Como Usar
+#Crie a Planilha: Na pasta raiz do projeto, crie um arquivo Excel chamado:
+novos_produtos.xlsx.
+
+#Preencha os Dados: A primeira linha deve conter exatamente os nomes das colunas do banco. 
+
+Exemplo: nome_produto,sku,descricao,preco_custo,preco_venda,qtd_estoque,fornecedor,categoria
+Vela Lavanda,VEL-001,Vela aromática,15.00,45.00,100,Próprio,Velas Aromáticas
+
+#Execute o Script: Rode o comando abaixo no terminal:
+python importar_lote.py
+
+✅ O sistema identificará automaticamente as colunas, definirá imagens padrão e inserirá os registros.
+
+```
 
 
 ✨ Funcionalidades em Destaque

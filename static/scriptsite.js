@@ -135,24 +135,54 @@ function changeImage(element) {
    /* Fim Java da pagina de detalhes dos produto*/
 
    /* Java da pagina de Checkout */
-   
-   function selectPayment(method) {
-            // Esconde todos
-            document.getElementById('credit-content').style.display = 'none';
-            document.getElementById('pix-content').style.display = 'none';
-            
-            // Remove classe active dos botões
-            document.querySelectorAll('.tab-btn').forEach(btn => btn.classList.remove('active'));
+ 
+    // Função para trocar as abas (Cartão vs Pix)
+    function selectPayment(method) {
+        // 1. Reset visual: Esconde tudo e tira a cor dos botões
+        document.getElementById('credit-content').style.display = 'none';
+        document.getElementById('pix-content').style.display = 'none';
+        document.querySelectorAll('.tab-btn').forEach(btn => btn.classList.remove('active'));
 
-            // Mostra o selecionado
-            if (method === 'credit') {
-                document.getElementById('credit-content').style.display = 'block';
-                event.currentTarget.classList.add('active'); // Adiciona active no botão clicado
-            } else {
-                document.getElementById('pix-content').style.display = 'block';
-                event.currentTarget.classList.add('active');
-            }
+        // 2. Mostra a aba certa e avisa o Python (Input Oculto)
+        if (method === 'credit') {
+            document.getElementById('credit-content').style.display = 'block';
+            // CRÍTICO: Atualiza o valor que vai pro banco de dados
+            document.getElementById('input-pagamento').value = 'credit'; 
+            
+            // Marca o botão como ativo
+            document.querySelector("button[onclick=\"selectPayment('credit')\"]").classList.add('active');
+        } else {
+            document.getElementById('pix-content').style.display = 'block';
+            // CRÍTICO: Atualiza o valor que vai pro banco de dados
+            document.getElementById('input-pagamento').value = 'pix';
+            
+            document.querySelector("button[onclick=\"selectPayment('pix')\"]").classList.add('active');
         }
+    }
+
+    // Função que roda ao clicar em "CONFIRMAR PEDIDO"
+    function prepararEnvio() {
+        // Copia os dados do cartão para os campos ocultos (hidden inputs)
+        // Isso garante que o Python receba os dados dentro do formulário corretamente
+        if (document.getElementById('card_number')) {
+            document.getElementById('hidden-card-number').value = document.getElementById('card_number').value;
+            document.getElementById('hidden-card-holder').value = document.getElementById('card_holder').value;
+            document.getElementById('hidden-card-expiry').value = document.getElementById('card_expiry').value;
+        }
+        
+        // Pega a parcela selecionada
+        let parcelas = document.getElementById('select-parcelas').value;
+        document.getElementById('hidden-parcelas').value = parcelas;
+        
+        // Verifica se optou por salvar cartão
+        let saveCard = document.getElementById('save_card_check');
+        if (saveCard && saveCard.checked) {
+            document.getElementById('hidden-save-option').value = '1';
+        } else {
+            document.getElementById('hidden-save-option').value = '0';
+        }
+    }
+
       
   /* Fim da pagina de Checkout */    
   
@@ -347,6 +377,13 @@ function verificarEmail() {
     }
 
 /* FIM JAVA PEDIDO CHECKOUT */
+ 
 
+// Script simples para visual da quantidade (opcional)
+        function updateQty(change) {
+            let input = document.getElementById('productQty');
+            let newVal = parseInt(input.value) + change;
+            if (newVal >= 1) input.value = newVal;
+        }
 
 

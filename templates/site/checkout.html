@@ -4,7 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Finalizar Compra - Lume Essence</title>
-    <link rel="icon" href="imagens/Logo/pequenalogosemfnfo.png">
+    <link rel="icon" href="/static/imagens/Logo/pequenalogosemfnfo.png">
     
     <link href='https://fonts.googleapis.com/css?family=Quicksand' rel='stylesheet'>
     <link href="https://fonts.googleapis.com/css2?family=Montserrat:ital,wght@0,100..900;1,100..900&display=swap" rel="stylesheet">
@@ -28,122 +28,127 @@
         <main class="checkout-forms">
             
             <div class="breadcrumbs">
-            <a href="/">Início</a> > <a href="/carrinho">Carrinho</a> > <strong>Finalizar Compra</strong>
-        </div>
+                <a href="/">Início</a> > <a href="/carrinho">Carrinho</a> > <strong>Finalizar Compra</strong>
+            </div>
 
-    <div class="login-alert">
-        <i class="fas fa-user-circle"></i>
-        <span>Já é cliente? <a href="/login">Clique aqui para entrar</a> e agilizar sua compra.</span>
-    </div>
-    <br>
+            <div class="login-alert">
+                <i class="fas fa-user-circle"></i>
+                <span>Já é cliente? <a href="/login">Clique aqui para entrar</a> e agilizar sua compra.</span>
+            </div>
+            <br>
 
             <section class="checkout-step" id="step-identificacao">
-    <h3>1. Identificação</h3>
-    
-    <div class="auth-check-box">
-        <p>Para continuar, digite seu e-mail:</p>
-        
-        <div class="input-group-check">
-            <input type="email" id="email-checkout" placeholder="seu@email.com.br" required>
-            <button type="button" class="btn-continue" onclick="verificarEmail()">CONTINUAR</button>
-        </div>
-        
-        <p id="msg-loading" style="display:none; color: #d4a373; margin-top: 10px;">
-            <i class="fas fa-spinner fa-spin"></i> Verificando...
-        </p>
-    </div>
-</section>
-
-<div id="checkout-blocked-layer" style="opacity: 0.5; pointer-events: none;">
-    
-    <section class="checkout-step">
-        <h3>2. Endereço de Entrega</h3>
-        <p style="color: #666;">Faça login para selecionar seus endereços salvos.</p>
-    </section>
-
-    <section class="checkout-step">
-        <h3>3. Entrega</h3>
-        <p style="color: #666;">Aguardando identificação...</p>
-    </section>
-
-            <section class="checkout-step">
-                <h3>4. Pagamento</h3>
+                <h3>1. Identificação</h3>
                 
-                <div class="payment-tabs">
-                    <button class="tab-btn active" onclick="selectPayment('credit')"><i class="far fa-credit-card"></i> Cartão</button>
-                    <button class="tab-btn" onclick="selectPayment('pix')"><i class="brands fa-pix"></i> Pix (-5%)</button>
-                </div>
-
-                <div id="credit-content" class="payment-content active">
-    <div class="form-grid">
-        <div class="input-group full-width">
-            <label>Número do Cartão</label>
-            <input type="text" id="card_number" placeholder="0000 0000 0000 0000">
-        </div>
-        <div class="input-group full-width">
-            <label>Nome Impresso no Cartão</label>
-            <input type="text" id="card_holder" placeholder="Como no cartão" style="text-transform:uppercase;">
-        </div>
-        <div class="input-group">
-            <label>Validade</label>
-            <input type="text" id="card_expiry" placeholder="MM/AA">
-        </div>
-        <div class="input-group">
-            <label>CVV</label>
-            <input type="password" id="card_cvv" placeholder="123">
-        </div>
-        <div class="input-group full-width" style="margin-top: 15px;">
-            <label style="display: flex; align-items: center; gap: 10px; cursor: pointer; font-weight: normal;">
-                <input type="checkbox" id="save_card_check">
-                Salvar cartão para compras futuras
-            </label>
-        </div>
-    </div>
-</div>
-                        <div class="input-group full-width">
-    <label>Parcelamento</label>
-    <select id="select-parcelas">
-        <option value="1">1x de R$ 173,00 sem juros</option>
-        <option value="2">2x de R$ 86,50 sem juros</option>
-        <option value="3">3x de R$ 57,66 sem juros</option>
-    </select>
-</div>
-
-                <div id="pix-content" class="payment-content" style="display: none;">
-                    <div class="pix-box">
-                        <p>O QR Code será gerado após clicar em "Finalizar Pedido".</p>
-                        <ul class="pix-steps">
-                            <li>1. Abra o app do seu banco.</li>
-                            <li>2. Escolha pagar via Pix com QR Code ou Copia e Cola.</li>
-                            <li>3. O pagamento é aprovado na hora!</li>
-                        </ul>
-                        <div class="total-pix-highlight">
-                            Total: <strong>R$ 164,35</strong>
-                        </div>
+                <div class="auth-check-box">
+                    <p>Para continuar, digite seu e-mail:</p>
+                    
+                    <div class="input-group-check">
+                        <input type="email" id="email-checkout" placeholder="seu@email.com.br" required>
+                        <button type="button" class="btn-continue" onclick="verificarEmail()">CONTINUAR</button>
                     </div>
+                    
+                    <p id="msg-loading" style="display:none; color: #d4a373; margin-top: 10px;">
+                        <i class="fas fa-spinner fa-spin"></i> Verificando...
+                    </p>
                 </div>
-
             </section>
 
-            <form id="form-checkout" action="/finalizar_pedido" method="POST">
-    <input type="hidden" name="id_cliente" value="1">
-    <input type="hidden" name="total_pedido" id="input-total" value="173.00">
-    <input type="hidden" name="forma_pagamento" id="input-pagamento" value="credit">
-    <input type="hidden" name="lista_itens" id="input-itens">
-    
-    <input type="hidden" name="card_number_sent" id="hidden-card-number">
-    <input type="hidden" name="card_holder_sent" id="hidden-card-holder">
-    <input type="hidden" name="card_expiry_sent" id="hidden-card-expiry">
-    <input type="hidden" name="save_card_option" id="hidden-save-option">
-    
-    <input type="hidden" name="parcelas_escolhidas" id="hidden-parcelas" value="1">
+            <div id="checkout-blocked-layer" style="opacity: 0.5; pointer-events: none;">
+                
+                <section class="checkout-step">
+                    <h3>2. Endereço de Entrega</h3>
+                    <p style="color: #666;">Faça login para selecionar seus endereços salvos.</p>
+                </section>
 
-    <div class="checkout-actions">
-        <a href="/carrinho" class="btn-cancel-order">Cancelar Pedido</a>
-        <button type="submit" class="btn-finish-order" onclick="prepararEnvio()">CONFIRMAR PEDIDO</button>
-    </div>
-</form>
+                <section class="checkout-step">
+                    <h3>3. Entrega</h3>
+                    <p style="color: #666;">Aguardando identificação...</p>
+                </section>
 
+                <section class="checkout-step">
+                    <h3>4. Pagamento</h3>
+                    
+                    <div class="payment-tabs">
+                        <button class="tab-btn active" onclick="selectPayment('credit')"><i class="far fa-credit-card"></i> Cartão</button>
+                        <button class="tab-btn" onclick="selectPayment('pix')"><i class="fa-brands fa-pix"></i> Pix (-5%)</button>
+                    </div>
+
+                    <div id="credit-content" class="payment-content active">
+                        <div class="form-grid">
+                            <div class="input-group full-width">
+                                <label>Número do Cartão</label>
+                                <input type="text" id="card_number" placeholder="0000 0000 0000 0000">
+                            </div>
+                            <div class="input-group full-width">
+                                <label>Nome Impresso no Cartão</label>
+                                <input type="text" id="card_holder" placeholder="Como no cartão" style="text-transform:uppercase;">
+                            </div>
+                            <div class="input-group">
+                                <label>Validade</label>
+                                <input type="text" id="card_expiry" placeholder="MM/AA">
+                            </div>
+                            <div class="input-group">
+                                <label>CVV</label>
+                                <input type="password" id="card_cvv" placeholder="123">
+                            </div>
+                            <div class="input-group full-width" style="margin-top: 15px;">
+                                <label style="display: flex; align-items: center; gap: 10px; cursor: pointer; font-weight: normal;">
+                                    <input type="checkbox" id="save_card_check">
+                                    Salvar cartão para compras futuras
+                                </label>
+                            </div>
+                        </div>
+
+                        <div class="input-group full-width" style="margin-top: 20px;">
+                            <label>Parcelamento</label>
+                            <select id="select-parcelas">
+                                {% set total_final = total_geral + 15 %}
+                                <option value="1">1x de R$ {{ "%.2f"|format(total_final) }} sem juros</option>
+                                
+                                {% for i in range(2, 4) %}
+                                    <option value="{{ i }}">{{ i }}x de R$ {{ "%.2f"|format(total_final / i) }} sem juros</option>
+                                {% endfor %}
+                            </select>
+                        </div>
+                    </div>
+
+                    <div id="pix-content" class="payment-content" style="display: none;">
+                        <div class="pix-box">
+                            <p>O QR Code será gerado após clicar em "Finalizar Pedido".</p>
+                            <ul class="pix-steps">
+                                <li>1. Abra o app do seu banco.</li>
+                                <li>2. Escolha pagar via Pix com QR Code ou Copia e Cola.</li>
+                                <li>3. O pagamento é aprovado na hora!</li>
+                            </ul>
+                            <div class="total-pix-highlight">
+                                Total: <strong>R$ {{ "%.2f"|format(total_final * 0.95) }}</strong>
+                            </div>
+                        </div>
+                    </div>
+
+                </section>
+
+                <form id="form-checkout" action="/finalizar_pedido" method="POST">
+                    <input type="hidden" name="id_cliente" value="1">
+                    
+                    <input type="hidden" name="total_pedido" id="input-total" value="{{ total_final }}">
+                    <input type="hidden" name="forma_pagamento" id="input-pagamento" value="credit">
+                    <input type="hidden" name="lista_itens" id="input-itens">
+                    
+                    <input type="hidden" name="card_number_sent" id="hidden-card-number">
+                    <input type="hidden" name="card_holder_sent" id="hidden-card-holder">
+                    <input type="hidden" name="card_expiry_sent" id="hidden-card-expiry">
+                    <input type="hidden" name="save_card_option" id="hidden-save-option">
+                    <input type="hidden" name="parcelas_escolhidas" id="hidden-parcelas" value="1">
+
+                    <div class="checkout-actions">
+                        <a href="/carrinho" class="btn-cancel-order">Cancelar Pedido</a>
+                        <button type="submit" class="btn-finish-order" onclick="prepararEnvio()">CONFIRMAR PEDIDO</button>
+                    </div>
+                </form>
+
+            </div>
         </main>
 
         <aside class="order-summary-sidebar">
@@ -151,23 +156,19 @@
                 <h3>Resumo do Pedido</h3>
                 
                 <div class="summary-products">
+                    {% for item in carrinho %}
                     <div class="summary-item">
-                        <img src="/static/imagens/vela.png" alt="Vela">
+                        <img src="/static/uploads/{{ item['imagem'] }}" 
+                             onerror="this.src='/static/imagens/sem_foto.png'" 
+                             alt="{{ item['nome'] }}">
+                        
                         <div class="sum-details">
-                            <p class="sum-name">Vela Lavanda Dream</p>
-                            <p class="sum-qty">Qtd: 1</p>
+                            <p class="sum-name">{{ item['nome'] }}</p>
+                            <p class="sum-qty">Qtd: {{ item['qtd'] }}</p>
                         </div>
-                        <span class="sum-price">R$ 68,00</span>
+                        <span class="sum-price">R$ {{ "%.2f"|format(item['subtotal']) }}</span>
                     </div>
-
-                    <div class="summary-item">
-                        <img src="/static/imagens/homespray.png" alt="Home Spray">
-                        <div class="sum-details">
-                            <p class="sum-name">Home Spray Bambu</p>
-                            <p class="sum-qty">Qtd: 2</p>
-                        </div>
-                        <span class="sum-price">R$ 90,00</span>
-                    </div>
+                    {% endfor %}
                 </div>
 
                 <hr class="divider">
@@ -175,15 +176,15 @@
                 <div class="summary-totals">
                     <div class="row">
                         <span>Subtotal</span>
-                        <span>R$ 158,00</span>
+                        <span>R$ {{ "%.2f"|format(total_geral) }}</span>
                     </div>
                     <div class="row">
-                        <span>Frete</span>
+                        <span>Frete (Fixo)</span>
                         <span>R$ 15,00</span>
                     </div>
                     <div class="row total">
                         <span>Total</span>
-                        <span>R$ 173,00</span>
+                        <span>R$ {{ "%.2f"|format(total_final) }}</span>
                     </div>
                 </div>
 
@@ -197,26 +198,21 @@
 
 <footer>
   <div class="footer-container">
-    
     <div class="footer-top">
       <div class="newsletter-text">
             <i class="fas fa-tag"></i>
             <span>Receba nossas novidades e promoções.</span>
       </div>
-
-    <form class="newsletter-form" action="/newsletter/cadastrar" method="POST">
-    <input type="text" name="nome" placeholder="Nome completo" required>
-    <input type="text" name="whatsapp" placeholder="WhatsApp" required>
-    <input type="email" name="email" placeholder="E-mail" required>
-    <button type="submit">OK</button>
-    </form>
+      <form class="newsletter-form" action="/newsletter/cadastrar" method="POST">
+        <input type="text" name="nome" placeholder="Nome completo" required>
+        <input type="text" name="whatsapp" placeholder="WhatsApp" required>
+        <input type="email" name="email" placeholder="E-mail" required>
+        <button type="submit">OK</button>
+      </form>
     </div>
-
     <hr class="footer-divider">
-
     <div class="footer-middle">
-      
-    <div class="footer-col">
+      <div class="footer-col">
         <h4>Navegação</h4>
         <ul>
           <li><a href="/">Início</a></li>
@@ -224,9 +220,8 @@
           <li><a href="/contato">Contato</a></li>
           <li><a href="/sobre">Sobre</a></li>
         </ul>
-    </div>
-
-    <div class="footer-col">
+      </div>
+      <div class="footer-col">
         <h4>Institucional</h4>
         <ul>
             <li><a href="institucional.html#trocas">Trocas e Devoluções</a></li>
@@ -234,8 +229,7 @@
             <li><a href="institucional.html#termos">Termos de Uso</a></li>
             <li><a href="rastreio.html">Rastrear Pedido</a></li>
         </ul>
-    </div>
-
+      </div>
       <div class="footer-col">
             <h4>Entre em contato</h4>
             <ul class="contact-list">
@@ -246,11 +240,8 @@
             </ul>
       </div>
     </div>
-
     <hr class="footer-divider">
-
     <div class="footer-bottom">
-      
       <div class="payment-section">
             <span>Formas de pagamento:</span>
             <div class="icons">
@@ -261,7 +252,6 @@
             <i class="fas fa-barcode"></i>
             </div>
       </div>
-
       <div class="security-section">
             <span>Segurança:</span>
             <div class="icons">
@@ -269,9 +259,7 @@
             <i class="fab fa-google"></i>
             </div>
       </div>
-
     </div>
-
     <div class="copyright">
       © 2025 Lume Essence - Todos os direitos reservados
     </div>

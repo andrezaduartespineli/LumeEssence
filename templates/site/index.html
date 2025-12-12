@@ -29,44 +29,42 @@
 
     <div class="nav-icons-area" style="display: flex; align-items: center; gap: 20px;">
         
-        <div class="search-box">
-            <input type="text" placeholder="Buscar...">
-            <button type="submit"><i class="fas fa-search"></i></button>
-        </div>
+       <form action="/produtos" method="GET" class="search-box">
+    <input type="text" name="q" placeholder="Buscar..." value="{{ termo_busca if termo_busca else '' }}">
+    <button type="submit"><i class="fas fa-search"></i></button>
+</form>
 
         <div class="header-icons">
 <div class="user-menu-wrapper">
-    <a href="/login" class="user-icon-link">
+    <a href="{{ '/area_cliente/area-cliente.html' if user_nome else '/login' }}" class="user-icon-link" style="text-decoration: none;">
         <i class="fa-regular fa-user"></i>
+        {% if user_nome %}
+            <span style="font-size: 0.9rem; margin-left: 5px; font-weight: bold;">{{ user_nome }}</span>
+        {% endif %}
     </a>
 
     <div class="user-dropdown">
         <ul>
-            <li>
-                <a href="/area_cliente/area-cliente.html">
-                    <i class="fa-solid fa-user-gear"></i> Minha Conta
-                </a>
-            </li>
-            <li>
-                <a href="/area_cliente/meus-pedidos.html">
-                    <i class="fa-solid fa-box"></i> Meus Pedidos
-                </a>
-            </li>
-            <li class="separator"></li>
-            <li>
-                <a href="/login" class="logout-link">
-                    <i class="fa-solid fa-right-from-bracket"></i> Sair
-                </a>
-            </li>
+            {% if user_nome %}
+                <li><a href="/area_cliente/area-cliente.html"><i class="fa-solid fa-user-gear"></i> Minha Conta</a></li>
+                <li><a href="/area_cliente/meus-pedidos.html"><i class="fa-solid fa-box"></i> Meus Pedidos</a></li>
+                <li class="separator"></li>
+                <li><a href="/logout" class="logout-link"><i class="fa-solid fa-right-from-bracket"></i> Sair</a></li>
+            {% else %}
+                <li><a href="/login"><i class="fa-solid fa-right-to-bracket"></i> Entrar / Cadastrar</a></li>
+            {% endif %}
         </ul>
     </div>
 </div>
 </div>
 
         <a href="/carrinho" class="cart-link" title="Carrinho">
-            <i class="fas fa-shopping-bag"></i>
-            <span class="cart-count">3</span>
-        </a>
+    <i class="fas fa-shopping-bag"></i>
+    
+    {% if qtd_carrinho > 0 %}
+        <span class="cart-count">{{ qtd_carrinho }}</span>
+    {% endif %}
+</a>
     </div>
 </div>
 </header>
@@ -75,31 +73,36 @@
     <div class="slider-wrapper">
         
         <div class="slide active">
-            <img src="/static/imagens/banner1.jpg.png" alt="Banner Velas" onerror="this.src='imagens/vela.png'"> 
-            <div class="slide-content">
-                <h2>Essência que Ilumina</h2>
-                <p>Descubra nossa nova coleção de velas aromáticas.</p>
-                <a href="" class="btn-slide">Ver Coleção</a>
-            </div>
-        </div>
+    <img src="/static/imagens/banner1.jpg.png" alt="Banner Velas" onerror="this.src='/static/imagens/vela.png'"> 
+    <div class="slide-content">
+        <h2>Essência que Ilumina</h2>
+        <p>Descubra nossa nova coleção de velas aromáticas.</p>
+        
+        <a href="/produtos?novidades=true" class="btn-slide">Ver Coleção</a>
+        
+    </div>
+</div>
+        <div class="slide">
+    <img src="/static/imagens/banner2.jpg.png" alt="Banner Aromatizadores" onerror="this.src='/static/imagens/aromatizador.png'">
+    <div class="slide-content">
+        <h2>Aconchego para o Lar</h2>
+        <p>Aromatizadores que transformam ambientes.</p>
+        
+        <a href="/produtos?categoria=Difusores" class="btn-slide">Comprar Agora</a>
+        
+    </div>
+</div>
 
         <div class="slide">
-            <img src="/static/imagens/banner2.jpg.png" alt="Banner Aromatizadores" onerror="this.src='imagens/aromatizador.png'">
-            <div class="slide-content">
-                <h2>Aconchego para o Lar</h2>
-                <p>Aromatizadores que transformam ambientes.</p>
-                <a href="" class="btn-slide">Comprar Agora</a>
-            </div>
-        </div>
-
-        <div class="slide">
-            <img src="/static/imagens/banner3.jpg.png" alt="Banner Kits" onerror="this.src='imagens/kit.png'">
-            <div class="slide-content">
-                <h2>Kits Presenteáveis</h2>
-                <p>O presente perfeito para quem você ama.</p>
-                <a href="" class="btn-slide">Ver Kits</a>
-            </div>
-        </div>
+    <img src="/static/imagens/banner3.jpg.png" alt="Banner Kits" onerror="this.src='/static/imagens/kit.png'">
+    <div class="slide-content">
+        <h2>Kits Presenteáveis</h2>
+        <p>O presente perfeito para quem você ama.</p>
+        
+        <a href="/produtos?categoria=Kits Presente" class="btn-slide">Ver Kits</a>
+        
+    </div>
+</div>
 
     </div>
 
@@ -153,21 +156,25 @@
 
 <div class="placeholder-fade">
    <div class="galeria">
-     <a href="../site/categorias/velas.html" class="imagem-container">
-        <img src="/static/imagens/vela.png" alt="Imagem Normal1" class="img-normal">
-        <img src="/static/imagens/hovervela.png" alt="Imagem Hover" class="img-hover">
+     
+    <a href="/produtos?categoria=Velas Aromáticas" class="imagem-container">
+        <img src="/static/imagens/vela.png" alt="Velas Aromáticas" class="img-normal">
+        <img src="/static/imagens/hovervela.png" alt="Velas Aromáticas" class="img-hover">
     </a>
-    <a href="../site/categorias/aromatizador.html" class="imagem-container">
-        <img src="/static/imagens/aromatizador.png" alt="Imagem Normal2" class="img-normal">
-        <img src="/static/imagens/hoverfaromatizador.png" alt="Imagem Hover" class="img-hover">
+
+    <a href="/produtos?categoria=Difusores" class="imagem-container">
+        <img src="/static/imagens/aromatizador.png" alt="Difusores" class="img-normal">
+        <img src="/static/imagens/hoverfaromatizador.png" alt="Difusores" class="img-hover">
     </a>
-    <a href="../site/categorias/homeSpray.html" class="imagem-container">
-        <img src="/static/imagens/homespray.png" alt="Imagem Normal3" class="img-normal">
-        <img src="/static/imagens/hoverhomespray.png" alt="Imagem Hover" class="img-hover">
+
+    <a href="/produtos?categoria=Home Spray" class="imagem-container">
+        <img src="/static/imagens/homespray.png" alt="Home Spray" class="img-normal">
+        <img src="/static/imagens/hoverhomespray.png" alt="Home Spray" class="img-hover">
     </a>
-    <a href="../site/categorias/kits.html" class="imagem-container">
-        <img src="/static/imagens/kit.png" alt="Imagem Normal4" class="img-normal">
-        <img src="/static/imagens/hoverkit.png" alt="Imagem Hover" class="img-hover">
+
+    <a href="/produtos?categoria=Kits Presente" class="imagem-container">
+        <img src="/static/imagens/kit.png" alt="Kits Presente" class="img-normal">
+        <img src="/static/imagens/hoverkit.png" alt="Kits Presente" class="img-hover">
     </a>
     
   </div>
@@ -183,60 +190,48 @@
     </div>
 
     <div class="showcase-grid">
+    
+    <div class="showcase-banner-card">
+    <img src="/static/imagens/kit1.png" alt="Coleção Especial" onerror="this.src='/static/imagens/vela.png'">
+    <div class="banner-overlay">
+        <h3>Nova Coleção</h3>
+        <span>Iluminando Momentos</span>
         
-        <div class="showcase-banner-card">
-            <img src="/static/imagens/kit1.png" alt="Coleção Especial" onerror="this.src='imagens/vela.png'">
-            <div class="banner-overlay">
-                <h3>Nova Coleção</h3>
-                <span>Iluminando Momentos</span>
-                <a href="/produtos">Ver Tudo</a>
-            </div>
-        </div>
-
-        <div class="product-card-showcase">
-            <div class="p-image">
-                <img src="/static/imagens/kit.png" alt="Kit Sweet Christmas">
-                <span class="tag-destaque">Lançamento</span>
-            </div>
-            <div class="p-info">
-                <h4>Kit Lume Experience</h4>
-                <div class="p-price">
-                    <span class="price">R$ 120,00</span>
-                    <span class="pix">R$ 114,00 no Pix</span>
-                </div>
-                <button class="btn-shop-now">Comprar Agora</button>
-            </div>
-        </div>
-
-        <div class="product-card-showcase">
-            <div class="p-image">
-                <img src="/static/imagens/vela.png" alt="Vela Aromática">
-            </div>
-            <div class="p-info">
-                <h4>Vela Lavanda Dream</h4>
-                <div class="p-price">
-                    <span class="price">R$ 68,00</span>
-                    <span class="pix">R$ 64,60 no Pix</span>
-                </div>
-                <button class="btn-shop-now">Comprar Agora</button>
-            </div>
-        </div>
-
-        <div class="product-card-showcase">
-            <div class="p-image">
-                <img src="/static/imagens/limaosiciliano.png" alt="Vela Limão">
-            </div>
-            <div class="p-info">
-                <h4>Vela Limão Siciliano</h4>
-                <div class="p-price">
-                    <span class="price">R$ 68,00</span>
-                    <span class="pix">R$ 64,60 no Pix</span>
-                </div>
-                <button class="btn-shop-now">Comprar Agora</button>
-            </div>
-        </div>
-
+        <a href="/produtos?novidades=true">Ver Tudo</a>
+        
     </div>
+</div>
+
+    {% for p in lancamentos %}
+    <div class="product-card-showcase">
+        <div class="p-image">
+            <a href="/produto/{{ p['id_produto'] }}">
+                <img src="/static/uploads/{{ p['img_produto'] }}" 
+                     onerror="this.src='/static/imagens/sem_foto.png'" 
+                     alt="{{ p['nome_produto'] }}">
+            </a>
+            
+            <span class="tag-destaque">Novo</span>
+        </div>
+        
+        <div class="p-info">
+            <h4>{{ p['nome_produto'] }}</h4>
+            
+            <div class="p-price">
+                <span class="price">R$ {{ "%.2f"|format(p['preco_venda']) }}</span>
+                <span class="pix">R$ {{ "%.2f"|format(p['preco_venda'] * 0.95) }} no Pix</span>
+            </div>
+            
+            <a href="/adicionar-carrinho/{{ p['id_produto'] }}" class="btn-shop-now" style="text-decoration: none; display: block; text-align: center;">
+                Comprar Agora
+            </a>
+        </div>
+    </div>
+    {% else %}
+        <p>Em breve novidades...</p>
+    {% endfor %}
+
+</div>
 </section>
 
 
@@ -251,131 +246,47 @@
 
     <div class="carousel-wrapper">
         
-        <button class="carousel-btn prev-btn" id="prevBtn"><i class="fas fa-chevron-left"></i></button>
+        <button class="carousel-btn prev-btn" id="prevBtn">
+            <i class="fas fa-chevron-left"></i>
+        </button>
 
         <div class="carousel-track" id="productTrack">
 
+            {% for p in mais_vendidos %}
             <div class="carousel-card">
                 <div class="card-img">
-                    <img src="/static/imagens/vela.png" alt="Vela Lavanda">
+                    <a href="/produto/{{ p['id_produto'] }}">
+                        <img src="/static/uploads/{{ p['img_produto'] }}" 
+                             onerror="this.src='/static/imagens/sem_foto.png'" 
+                             alt="{{ p['nome_produto'] }}">
+                    </a>
                 </div>
+                
                 <div class="card-info">
-                    <h4>Vela Lavanda Dream</h4>
+                    <a href="/produto/{{ p['id_produto'] }}" style="text-decoration: none; color: inherit;">
+                        <h4>{{ p['nome_produto'] }}</h4>
+                    </a>
+
                     <div class="prices">
-                        <span class="price-old">R$ 68,00</span>
-                        <span class="price-pix">R$ 64,60 com Pix</span>
-                        <span class="installments">2x de R$ 34,00</span>
+                        <span class="price-old">R$ {{ "%.2f"|format(p['preco_venda']) }}</span>
+                        <span class="price-pix">R$ {{ "%.2f"|format(p['preco_venda'] * 0.95) }} com Pix</span>
+                        <span class="installments">2x de R$ {{ "%.2f"|format(p['preco_venda'] / 2) }}</span>
                     </div>
-                    <button class="btn-shop-card">COMPRAR AGORA</button>
+                    
+                    <a href="/adicionar-carrinho/{{ p['id_produto'] }}" class="btn-shop-card">
+                        COMPRAR AGORA
+                    </a>
                 </div>
             </div>
+            {% else %}
+                <p style="padding: 30px; text-align: center; width: 100%; color: #999;">Carregando destaques...</p>
+            {% endfor %}
 
-            <div class="carousel-card">
-                <div class="card-img">
-                    <img src="/static/imagens/aromatizador.png" alt="Aromatizador">
-                </div>
-                <div class="card-info">
-                    <h4>Aromatizador Bamboo</h4>
-                    <div class="prices">
-                        <span class="price-old">R$ 85,00</span>
-                        <span class="price-pix">R$ 80,75 com Pix</span>
-                        <span class="installments">2x de R$ 42,50</span>
-                    </div>
-                    <button class="btn-shop-card">COMPRAR AGORA</button>
-                </div>
-            </div>
+        </div>
 
-            <div class="carousel-card">
-                <div class="card-img">
-                    <img src="/static/imagens/kit.png" alt="Kit Presente">
-                </div>
-                <div class="card-info">
-                    <h4>Kit Lume Experience</h4>
-                    <div class="prices">
-                        <span class="price-old">R$ 245,00</span>
-                        <span class="price-pix">R$ 232,75 com Pix</span>
-                        <span class="installments">3x de R$ 81,67</span>
-                    </div>
-                    <button class="btn-shop-card">COMPRAR AGORA</button>
-                </div>
-            </div>
-
-            <div class="carousel-card">
-                <div class="card-img">
-                    <img src="/static/imagens/homespray.png" alt="Home Spray">
-                </div>
-                <div class="card-info">
-                    <h4>Home Spray Bambu</h4>
-                    <div class="prices">
-                        <span class="price-old">R$ 45,00</span>
-                        <span class="price-pix">R$ 42,75 com Pix</span>
-                        <span class="installments">1x de R$ 45,00</span>
-                    </div>
-                    <button class="btn-shop-card">COMPRAR AGORA</button>
-                </div>
-            </div>
-
-            <div class="carousel-card">
-                <div class="card-img">
-                    <img src="/static/imagens/limaosiciliano.png" alt="Vela Limão">
-                </div>
-                <div class="card-info">
-                    <h4>Vela Limão Siciliano</h4>
-                    <div class="prices">
-                        <span class="price-old">R$ 68,00</span>
-                        <span class="price-pix">R$ 64,60 com Pix</span>
-                        <span class="installments">2x de R$ 34,00</span>
-                    </div>
-                    <button class="btn-shop-card">COMPRAR AGORA</button>
-                </div>
-            </div>
-
-            <div class="carousel-card">
-                <div class="card-img">
-                    <img src="/static/imagens/morango.png" alt="Vela Morango">
-                </div>
-                <div class="card-info">
-                    <h4>Vela Sweet Strawberry</h4>
-                    <div class="prices">
-                        <span class="price-old">R$ 68,00</span>
-                        <span class="price-pix">R$ 64,60 com Pix</span>
-                        <span class="installments">2x de R$ 34,00</span>
-                    </div>
-                    <button class="btn-shop-card">COMPRAR AGORA</button>
-                </div>
-            </div>
-
-            <div class="carousel-card">
-                <div class="card-img">
-                    <img src="/static/imagens/aromabaunilha.png" alt="Difusor Baunilha">
-                </div>
-                <div class="card-info">
-                    <h4>Difusor Baunilha Real</h4>
-                    <div class="prices">
-                        <span class="price-old">R$ 74,00</span>
-                        <span class="price-pix">R$ 70,30 com Pix</span>
-                        <span class="installments">2x de R$ 37,00</span>
-                    </div>
-                    <button class="btn-shop-card">COMPRAR AGORA</button>
-                </div>
-            </div>
-
-            <div class="carousel-card">
-                <div class="card-img">
-                    <img src="/static/imagens/chabranco.png" alt="Vela Chá Branco">
-                </div>
-                <div class="card-info">
-                    <h4>Vela Chá Branco</h4>
-                    <div class="prices">
-                        <span class="price-old">R$ 68,00</span>
-                        <span class="price-pix">R$ 64,60 com Pix</span>
-                        <span class="installments">2x de R$ 34,00</span>
-                    </div>
-                    <button class="btn-shop-card">COMPRAR AGORA</button>
-                </div>
-            </div>
-
-        </div> <button class="carousel-btn next-btn" id="nextBtn"><i class="fas fa-chevron-right"></i></button>
+        <button class="carousel-btn next-btn" id="nextBtn">
+            <i class="fas fa-chevron-right"></i>
+        </button>
 
     </div>
 </section>
@@ -394,7 +305,7 @@
                 <div class="story-text-col">
                     <h3>SOBRE A LUME ESSENCE</h3>
                     <p>Nascemos do desejo de transformar casas em lares. Acreditamos que um aroma tem o poder de eternizar momentos e trazer conforto para a alma. Nossas velas são produzidas uma a uma, com cera vegetal e pavio de algodão, respeitando o tempo e a natureza.</p>
-                    <a href="/sobre" class="btn-story">SAIBA MAIS</a>
+                    <a href="/cadastro" class="btn-story">FAÇA PARTE DESSA HISTÓRIA!</a>
                 </div>
                 <div class="story-img-col">
                     <img src="/static/imagens/atelie1.jpeg" alt="Sobre a Lume">

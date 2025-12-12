@@ -31,44 +31,42 @@
 
     <div class="nav-icons-area" style="display: flex; align-items: center; gap: 20px;">
         
-        <div class="search-box">
-            <input type="text" placeholder="Buscar...">
-            <button type="submit"><i class="fas fa-search"></i></button>
-        </div>
+        <form action="/produtos" method="GET" class="search-box">
+    <input type="text" name="q" placeholder="Buscar..." value="{{ termo_busca if termo_busca else '' }}">
+    <button type="submit"><i class="fas fa-search"></i></button>
+</form>
 
         <div class="header-icons">
 <div class="user-menu-wrapper">
-    <a href="/login" class="user-icon-link">
+    <a href="{{ '/area_cliente/area-cliente.html' if user_nome else '/login' }}" class="user-icon-link" style="text-decoration: none;">
         <i class="fa-regular fa-user"></i>
+        {% if user_nome %}
+            <span style="font-size: 0.9rem; margin-left: 5px; font-weight: bold;">{{ user_nome }}</span>
+        {% endif %}
     </a>
 
     <div class="user-dropdown">
         <ul>
-            <li>
-                <a href="/area_cliente/area-cliente.html">
-                    <i class="fa-solid fa-user-gear"></i> Minha Conta
-                </a>
-            </li>
-            <li>
-                <a href="/area_cliente/meus-pedidos.html">
-                    <i class="fa-solid fa-box"></i> Meus Pedidos
-                </a>
-            </li>
-            <li class="separator"></li>
-            <li>
-                <a href="/login" class="logout-link">
-                    <i class="fa-solid fa-right-from-bracket"></i> Sair
-                </a>
-            </li>
+            {% if user_nome %}
+                <li><a href="/area_cliente/area-cliente.html"><i class="fa-solid fa-user-gear"></i> Minha Conta</a></li>
+                <li><a href="/area_cliente/meus-pedidos.html"><i class="fa-solid fa-box"></i> Meus Pedidos</a></li>
+                <li class="separator"></li>
+                <li><a href="/logout" class="logout-link"><i class="fa-solid fa-right-from-bracket"></i> Sair</a></li>
+            {% else %}
+                <li><a href="/login"><i class="fa-solid fa-right-to-bracket"></i> Entrar / Cadastrar</a></li>
+            {% endif %}
         </ul>
     </div>
 </div>
 </div>
 
         <a href="/carrinho" class="cart-link" title="Carrinho">
-            <i class="fas fa-shopping-bag"></i>
-            <span class="cart-count">3</span>
-        </a>
+    <i class="fas fa-shopping-bag"></i>
+    
+    {% if qtd_carrinho > 0 %}
+        <span class="cart-count">{{ qtd_carrinho }}</span>
+    {% endif %}
+</a>
     </div>
 </div>
    

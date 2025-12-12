@@ -4,22 +4,21 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Carrinho - Lume Essence</title>
-    <link rel="icon" href="imagens/Logo/pequenalogosemfnfo.png"> 
+    <link rel="icon" href="/static/imagens/Logo/pequenalogosemfnfo.png"> 
     <link href='https://fonts.googleapis.com/css?family=Quicksand' rel='stylesheet'>
     <link href="https://fonts.googleapis.com/css2?family=Montserrat:ital,wght@0,100..900;1,100..900&display=swap" rel="stylesheet">
-    
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-    
     <link rel="stylesheet" href="/static/stylesite.css">
 </head>
 <body>
+    
 <div class="container">
-                <div class="logo">
-                    <img src="/static/imagens/Logo/horizontalsemfundo.png" alt="Lume Essence">
-                </div>
-            </div>   
+    <div class="logo">
+        <img src="/static/imagens/Logo/horizontalsemfundo.png" alt="Lume Essence">
+    </div>
+</div>   
              
-  <div class="navbar">
+<div class="navbar">
     <div class="nav-links">
         <a href="/">Início</a>
         <a href="/produtos">Produtos</a>
@@ -28,109 +27,100 @@
     </div>
 
     <div class="nav-icons-area" style="display: flex; align-items: center; gap: 20px;">
-        
-        <div class="search-box">
-            <input type="text" placeholder="Buscar...">
-            <button type="submit"><i class="fas fa-search"></i></button>
-        </div>
+        <form action="/produtos" method="GET" class="search-box">
+    <input type="text" name="q" placeholder="Buscar..." value="{{ termo_busca if termo_busca else '' }}">
+    <button type="submit"><i class="fas fa-search"></i></button>
+</form>
 
         <div class="header-icons">
-<div class="user-menu-wrapper">
-    <a href="/login" class="user-icon-link">
+            <div class="user-menu-wrapper">
+    <a href="{{ '/area_cliente/area-cliente.html' if user_nome else '/login' }}" class="user-icon-link" style="text-decoration: none;">
         <i class="fa-regular fa-user"></i>
+        {% if user_nome %}
+            <span style="font-size: 0.9rem; margin-left: 5px; font-weight: bold;">{{ user_nome }}</span>
+        {% endif %}
     </a>
 
     <div class="user-dropdown">
         <ul>
-            <li>
-                <a href="/area_cliente/area-cliente.html">
-                    <i class="fa-solid fa-user-gear"></i> Minha Conta
-                </a>
-            </li>
-            <li>
-                <a href="/area_cliente/meus-pedidos.html">
-                    <i class="fa-solid fa-box"></i> Meus Pedidos
-                </a>
-            </li>
-            <li class="separator"></li>
-            <li>
-                <a href="/login" class="logout-link">
-                    <i class="fa-solid fa-right-from-bracket"></i> Sair
-                </a>
-            </li>
+            {% if user_nome %}
+                <li><a href="/area_cliente/area-cliente.html"><i class="fa-solid fa-user-gear"></i> Minha Conta</a></li>
+                <li><a href="/area_cliente/meus-pedidos.html"><i class="fa-solid fa-box"></i> Meus Pedidos</a></li>
+                <li class="separator"></li>
+                <li><a href="/logout" class="logout-link"><i class="fa-solid fa-right-from-bracket"></i> Sair</a></li>
+            {% else %}
+                <li><a href="/login"><i class="fa-solid fa-right-to-bracket"></i> Entrar / Cadastrar</a></li>
+            {% endif %}
         </ul>
     </div>
 </div>
-</div>
+        </div>
 
         <a href="/carrinho" class="cart-link" title="Carrinho">
             <i class="fas fa-shopping-bag"></i>
-            <span class="cart-count">3</span>
+            <span class="cart-count">{{ carrinho|length }}</span>
         </a>
     </div>
 </div>
-    <div class="titulo">
-        <h2>Seu Carrinho</h2>
-    </div>
 
-    <div class="cart-container">
-        
+
+<div class="cart-container">
+    
+    {% if carrinho %}
         <div class="cart-items">
             
             <div class="cart-header-row">
                 <div class="col-product">Produto</div>
                 <div class="col-qty">Qtd.</div>
-                <div class="col-price">Preço</div>
+                <div class="col-price">Subtotal</div>
                 <div class="col-action"></div>
             </div>
 
+            {% for item in carrinho %}
             <div class="cart-item">
                 <div class="item-info">
-                    <img src="/static/imagens/vela.png" alt="Vela Lavanda">
+                    <img src="/static/uploads/{{ item['imagem'] }}" 
+                         onerror="this.src='/static/imagens/sem_foto.png'" 
+                         alt="{{ item['nome'] }}">
+                    
                     <div class="item-details">
-                        <h4>Vela Aromática Lavanda</h4>
-                        <p>Aroma: Lavanda</p>
+                        <h4>{{ item['nome'] }}</h4>
+                        <p>Ref: {{ item['sku'] }}</p>
+                        <p style="font-size: 0.8rem; color: #888;">Unit: R$ {{ "%.2f"|format(item['preco']) }}</p>
                     </div>
                 </div>
                 
                 <div class="item-quantity">
-                    <button class="qty-btn minus"><i class="fas fa-minus"></i></button>
-                    <input type="number" value="1" min="1" readonly>
-                    <button class="qty-btn plus"><i class="fas fa-plus"></i></button>
+                    <a href="/alterar-qtd/{{ item['id'] }}/menos" class="qty-link minus">
+                        <i class="fas fa-minus"></i>
+                    </a>
+                    
+                    <input type="number" value="{{ item['qtd'] }}" min="1" readonly>
+                    
+                    <a href="/alterar-qtd/{{ item['id'] }}/mais" class="qty-link plus">
+                        <i class="fas fa-plus"></i>
+                    </a>
                 </div>
 
-                <div class="item-price" data-price="68.00">R$ 68,00</div>
+                <div class="item-price">R$ {{ "%.2f"|format(item['subtotal']) }}</div>
 
                 <div class="item-remove">
-                    <button class="btn-remove"><i class="fas fa-trash-alt"></i></button>
+                    <a href="/remover-carrinho/{{ item['id'] }}" class="btn-remove" title="Remover item">
+                        <i class="fas fa-trash-alt"></i>
+                    </a>
                 </div>
             </div>
+            {% endfor %}
 
-            <div class="cart-item">
-                <div class="item-info">
-                    <img src="/static/imagens/homespray.png" alt="Home Spray">
-                    <div class="item-details">
-                        <h4>Home Spray Bambu</h4>
-                        <p>Aroma: Bambu</p>
-                    </div>
-                </div>
+            <div style="display: flex; justify-content: space-between; align-items: center; margin-top: 20px;">
+                <a href="/produtos" class="continue-shopping">
+                    <i class="fas fa-arrow-left"></i> Continuar comprando
+                </a>
                 
-                <div class="item-quantity">
-                    <button class="qty-btn minus"><i class="fas fa-minus"></i></button>
-                    <input type="number" value="2" min="1" readonly>
-                    <button class="qty-btn plus"><i class="fas fa-plus"></i></button>
-                </div>
-
-                <div class="item-price" data-price="45.00">R$ 90,00</div>
-
-                <div class="item-remove">
-                    <button class="btn-remove"><i class="fas fa-trash-alt"></i></button>
-                </div>
+                <a href="/limpar-carrinho" style="color: #e74c3c; font-size: 0.9rem; text-decoration: none;">
+                    <i class="fa-solid fa-xmark"></i> Limpar Carrinho
+                </a>
             </div>
-
-            <a href="/produtos" class="continue-shopping">
-                <i class="fas fa-arrow-left"></i> Continuar comprando
-            </a>
 
         </div>
 
@@ -139,7 +129,7 @@
             
             <div class="summary-row">
                 <span>Subtotal</span>
-                <span id="cart-subtotal">R$ 158,00</span>
+                <span id="cart-subtotal">R$ {{ "%.2f"|format(total_geral) }}</span>
             </div>
 
             <div class="shipping-calc">
@@ -149,108 +139,109 @@
                     <button>OK</button>
                 </div>
                 <br>
-                <p class="shipping-result">Frete: <span>R$ 15,00</span></p>
-            </div>
+                </div>
 
             <hr>
 
             <div class="summary-total">
                 <span>Total</span>
-                <span id="cart-total">R$ 173,00</span>
+                <span id="cart-total">R$ {{ "%.2f"|format(total_geral) }}</span>
             </div>
 
             <div class="payment-info">
-                <p>ou <strong>R$ 164,35</strong> via Pix (5% off)</p>
+                <p>ou <strong>R$ {{ "%.2f"|format(total_geral * 0.95) }}</strong> via Pix (5% off)</p>
             </div>
 
-            <a href="checkout.html" class="btn-checkout" style="text-decoration: none; text-align: center; display: block;">Finalizar Compra</a>
+            <a href="/checkout" class="btn-checkout" style="text-decoration: none; text-align: center; display: block;">
+                Finalizar Compra
+            </a>
         </div>
 
-    </div>
+    {% else %}
+        <div style="text-align: center; width: 100%; padding: 50px;">
+            <i class="fas fa-shopping-basket" style="font-size: 4rem; color: #ccc; margin-bottom: 20px;"></i>
+            <h2>Seu carrinho está vazio</h2>
+            <p>Navegue pela loja e descubra nossos aromas.</p>
+            <br>
+            <a href="/produtos" class="btn-checkout" style="text-decoration: none; background: #333; padding: 15px 30px; display: inline-block; width: auto;">
+                Ver Produtos
+            </a>
+        </div>
+    {% endif %}
+
+</div>
 
 <footer>
-  <div class="footer-container">
-    
-    <div class="footer-top">
-      <div class="newsletter-text">
-            <i class="fas fa-tag"></i>
-            <span>Receba nossas novidades e promoções.</span>
-      </div>
-
-    <form class="newsletter-form" action="/newsletter/cadastrar" method="POST">
-    <input type="text" name="nome" placeholder="Nome completo" required>
-    <input type="text" name="whatsapp" placeholder="WhatsApp" required>
-    <input type="email" name="email" placeholder="E-mail" required>
-    <button type="submit">OK</button>
-    </form>
-    </div>
-
-    <hr class="footer-divider">
-
-    <div class="footer-middle">
-      
-    <div class="footer-col">
-        <h4>Navegação</h4>
-        <ul>
-          <li><a href="/">Início</a></li>
-          <li><a href="/produtos">Produtos</a></li>
-          <li><a href="/contato">Contato</a></li>
-          <li><a href="/sobre">Sobre</a></li>
-        </ul>
-    </div>
-
-    <div class="footer-col">
-        <h4>Institucional</h4>
-        <ul>
-            <li><a href="institucional.html#trocas">Trocas e Devoluções</a></li>
-            <li><a href="institucional.html#privacidade">Política de Privacidade</a></li>
-            <li><a href="institucional.html#termos">Termos de Uso</a></li>
-            <li><a href="rastreio.html">Rastrear Pedido</a></li>
-        </ul>
-    </div>
-
-      <div class="footer-col">
-            <h4>Entre em contato</h4>
-            <ul class="contact-list">
-            <li><i class="fab fa-whatsapp"></i><a href="https://api.whatsapp.com/send/?phone=5561996100308&text&type=phone_number&app_absent=0"> (61) 99610-0308</a></li>
-            <li><i class="far fa-envelope"></i> lumeessence.contato@gmail.com</li>
-            <li><i class="fas fa-map-marker-alt"></i> Brasília - DF</li>
-            <li><i class="fab fa-instagram"></i><a href="https://www.instagram.com/lumeessence.oficial?igsh=dTBkZ2h1Zno4bGZl">Instagram</a></li>
-            </ul>
-      </div>
-    </div>
-
-    <hr class="footer-divider">
-
-    <div class="footer-bottom">
-      
-      <div class="payment-section">
-            <span>Formas de pagamento:</span>
-            <div class="icons">
-            <i class="fab fa-cc-visa"></i>
-            <i class="fab fa-cc-mastercard"></i>
-            <i class="fab fa-cc-amex"></i>
-            <i class="fab fa-pix"></i>
-            <i class="fas fa-barcode"></i>
+    <div class="footer-container">
+        <div class="footer-top">
+            <div class="newsletter-text">
+                <i class="fas fa-tag"></i>
+                <span>Receba nossas novidades e promoções.</span>
             </div>
-      </div>
-
-      <div class="security-section">
-            <span>Segurança:</span>
-            <div class="icons">
-            <i class="fas fa-lock"></i> 
-            <i class="fab fa-google"></i>
+            <form class="newsletter-form" action="/newsletter/cadastrar" method="POST">
+                <input type="text" name="nome" placeholder="Nome completo" required>
+                <input type="text" name="whatsapp" placeholder="WhatsApp" required>
+                <input type="email" name="email" placeholder="E-mail" required>
+                <button type="submit">OK</button>
+            </form>
+        </div>
+        <hr class="footer-divider">
+        <div class="footer-middle">
+            <div class="footer-col">
+                <h4>Navegação</h4>
+                <ul>
+                    <li><a href="/">Início</a></li>
+                    <li><a href="/produtos">Produtos</a></li>
+                    <li><a href="/contato">Contato</a></li>
+                    <li><a href="/sobre">Sobre</a></li>
+                </ul>
             </div>
-      </div>
-
+            <div class="footer-col">
+                <h4>Institucional</h4>
+                <ul>
+                    <li><a href="institucional.html#trocas">Trocas e Devoluções</a></li>
+                    <li><a href="institucional.html#privacidade">Política de Privacidade</a></li>
+                    <li><a href="institucional.html#termos">Termos de Uso</a></li>
+                    <li><a href="rastreio.html">Rastrear Pedido</a></li>
+                </ul>
+            </div>
+            <div class="footer-col">
+                <h4>Entre em contato</h4>
+                <ul class="contact-list">
+                    <li><i class="fab fa-whatsapp"></i><a href="https://api.whatsapp.com/send/?phone=5561996100308&text&type=phone_number&app_absent=0"> (61) 99610-0308</a></li>
+                    <li><i class="far fa-envelope"></i> lumeessence.contato@gmail.com</li>
+                    <li><i class="fas fa-map-marker-alt"></i> Brasília - DF</li>
+                    <li><i class="fab fa-instagram"></i><a href="https://www.instagram.com/lumeessence.oficial?igsh=dTBkZ2h1Zno4bGZl">Instagram</a></li>
+                </ul>
+            </div>
+        </div>
+        <hr class="footer-divider">
+        <div class="footer-bottom">
+            <div class="payment-section">
+                <span>Formas de pagamento:</span>
+                <div class="icons">
+                    <i class="fab fa-cc-visa"></i>
+                    <i class="fab fa-cc-mastercard"></i>
+                    <i class="fab fa-cc-amex"></i>
+                    <i class="fab fa-pix"></i>
+                    <i class="fas fa-barcode"></i>
+                </div>
+            </div>
+            <div class="security-section">
+                <span>Segurança:</span>
+                <div class="icons">
+                    <i class="fas fa-lock"></i> 
+                    <i class="fab fa-google"></i>
+                </div>
+            </div>
+        </div>
+        <div class="copyright">
+            © 2025 Lume Essence - Todos os direitos reservados
+        </div>
+        <a href="../interno/login.html" class="admin-footer-link">Acesso da Equipe</a>
     </div>
-
-    <div class="copyright">
-      © 2025 Lume Essence - Todos os direitos reservados
-    </div>
-     <a href="../interno/login.html" class="admin-footer-link">Acesso da Equipe</a>
-  </div>
 </footer>
+
 <script src="/static/scriptsite.js"></script>
 </body>
 </html>
