@@ -112,11 +112,12 @@ sql_produto = '''CREATE TABLE "tb_produtos" (
     "fornecedor" VARCHAR(100),
     "categoria" VARCHAR(50), 
     "aroma" VARCHAR(50),
-    "tamanho" VARCHAR(50),
+    "variacao" VARCHAR(50),
     "img_produto" VARCHAR(255),
     "ativo" BOOLEAN DEFAULT 1,
     "data_cad" DATETIME
     )'''
+    
 # Obs: "categoria" agora é VARCHAR para aceitar textos como "Velas Aromáticas" vindos do HTML
 cur.execute(sql_produto)
 

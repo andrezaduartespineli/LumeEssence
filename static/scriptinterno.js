@@ -101,39 +101,11 @@ function toggleProfileMenu() {
 
     /* ----- JAVA DO CADASTRO DE PRODUTOS ----- */
   
-                // 1. Função de Tamanhos (Mantida)
-                function atualizarTamanhos() {
-                    const categoria = document.getElementById('categoria').value;
-                    const selectTamanho = document.getElementById('tamanho');
-                    const labelTamanho = document.getElementById('label-tamanho');
+                
+        
 
-                    selectTamanho.innerHTML = ""; // Limpa opções antigas
-
-                    if (categoria === 'velas') {
-                        labelTamanho.innerText = "Peso (Gramas)";
-                        let opcoes = ["100g", "150g", "230g", "330g"];
-                        adicionarOpcoes(selectTamanho, opcoes);
-                    } else if (categoria === 'spray' || categoria === 'difusor') {
-                        labelTamanho.innerText = "Volume (ml)";
-                        let opcoes = ["30ml", "50ml", "100ml", "150ml", "250ml","300ml", "500ml"];
-                        adicionarOpcoes(selectTamanho, opcoes);
-                    } else {
-                        labelTamanho.innerText = "Tamanho";
-                        let opcoes = ["Padrão", "Kit P", "Kit M" , "Kit G"];
-                        adicionarOpcoes(selectTamanho, opcoes);
-                    }
-                }
-
-                // Auxiliar para criar as opções
-                function adicionarOpcoes(select, arrayOpcoes) {
-                    arrayOpcoes.forEach(texto => {
-                        let option = document.createElement("option");
-                        option.text = texto;
-                        select.add(option);
-                    });
-                }
-
-                // 2. NOVA Função de Data (Método Manual Infalível)
+            // NOVA Função de Data (Método Manual Infalível)
+            
                 function preencherDataHoje() {
                     const campoData = document.getElementById('data-cadastro');
                     

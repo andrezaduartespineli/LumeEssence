@@ -77,13 +77,13 @@
                         
                         <div class="input-group">
                             <label>Nome do Produto</label>
-                            <input type="text" name="nome_produto" 
+                            <input type="text" name="nome_produto" placeholder="Nome do Produto"
                                    value="{{ produto['nome_produto'] if produto else '' }}" required>
                         </div>
 
                         <div class="input-group">
                             <label>Fornecedor</label>
-                            <input type="text" name="fornecedor" 
+                            <input type="text" name="fornecedor" placeholder="Ex: Fabricação Própria"
                                    value="{{ produto['fornecedor'] if produto else '' }}" required>
                         </div>
 
@@ -105,15 +105,37 @@
                                     <option value="Lavanda">Lavanda</option>
                                     <option value="Bamboo">Bamboo</option>
                                     <option value="Limão Siciliano">Limão Siciliano</option>
+                                    <option value="Jasmim">Jasmim</option>
+                                    <option value="Coco">Coco</option>
+                                    <option value="Morango">Morango</option>
+                                    <option value="Flor de Algodão">Flor de Algodão</option>
+                                    <option value="Capim Limão">Capim Limão</option>
+                                    <option value="Chocolate">Chocolate</option>
+                                    <option value="Chá Branco">Chá Branco</option>
+                                    <option value="Sem Aroma (Neutro)">Sem Aroma (Neutro)</option>
                                     <option value="Outro">Outro</option>
                                 </select>
                             </div>
                             <div class="input-group">
-                                <label id="label-tamanho">Peso/Tamanho</label>
-                                <select id="tamanho" name="tamanho">
+                                <label id="label-tamanho">Variação</label>
+                                <select id="variacao" name="variacao">
                                     <option value="100g">100g</option>
                                     <option value="150g">150g</option>
-                                    <option value="200ml">200ml</option>
+                                    <option value="230g">230g</option>
+                                    <option value="300g">300g</option>
+                                    <option value="330g">330g</option>
+                                    <option value="30ml">30ml</option>
+                                    <option value="50ml">50ml</option>
+                                    <option value="100ml">100ml</option>
+                                    <option value="150ml">150ml</option>
+                                    <option value="250ml">250ml</option>
+                                    <option value="300ml">300ml</option>
+                                    <option value="500ml">500ml</option>
+                                    <option value="Kit Presente Pequeno">Kit Presente Pequeno</option>
+                                    <option value="Kit Presente Médio">Kit Presente Médio</option>  
+                                    <option value="Kit Presente Grande">Kit Presente Grande</option>
+                                    <option value="Kit Presente">Kit Presente</option>
+                                    
                                 </select>
                             </div>
                         </div>
@@ -121,12 +143,12 @@
                         <div class="form-row-2">
                             <div class="input-group">
                                 <label>Código (SKU)</label>
-                                <input type="text" name="sku" 
+                                <input type="text" name="sku" placeholder="Ex: LUME-001"
                                        value="{{ produto['sku'] if produto else '' }}" required>
                             </div>
                             <div class="input-group">
                                 <label>Estoque Inicial</label>
-                                <input type="number" name="qtd_estoque" 
+                                <input type="number" name="qtd_estoque" placeholder="Quantidade em Estoque"
                                        value="{{ produto['qtd_estoque'] if produto else '' }}" required>
                             </div>
                         </div>
@@ -134,12 +156,12 @@
                         <div class="form-row-2">
                             <div class="input-group">
                                 <label>Preço de Custo (R$)</label>
-                                <input type="number" name="preco_custo" step="0.01" 
+                                <input type="number" name="preco_custo" step="0.01" placeholder="Preço de Custo"
                                        value="{{ produto['preco_custo'] if produto else '' }}" required>
                             </div>
                             <div class="input-group">
                                 <label>Preço de Venda (R$)</label>
-                                <input type="number" name="preco_venda" step="0.01" 
+                                <input type="number" name="preco_venda" step="0.01" placeholder= "Preço de Venda"
                                        value="{{ produto['preco_venda'] if produto else '' }}" required>
                             </div>
                         </div>
@@ -153,7 +175,7 @@
 
                         <div class="input-group">
                             <label>Descrição Completa</label>
-                            <textarea rows="4" name="descricao" required>{{ produto['descricao'] if produto else '' }}</textarea>
+                            <textarea rows="4" name="descricao" placeholder="" required>{{ produto['descricao'] if produto else '' }}</textarea>
                         </div>
                     </div>
 
