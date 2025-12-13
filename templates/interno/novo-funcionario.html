@@ -68,18 +68,18 @@
                         <div class="form-row-2">
                             <div class="input-group">
                                 <label>CPF</label>
-                                <input type="text" name="cpf" placeholder="000.000.000-00" value="{{ funcionario['cpf'] if funcionario else '' }}" required>
+                                <input type="text" name="cpf" class="mask-cpf" placeholder="000.000.000-00" value="{{ funcionario['cpf'] if funcionario else '' }}" required>
                             </div>
                             <div class="input-group">
                                 <label>Data de Nascimento</label>
-                                <input type="date" name="data_nasc" value="{{ funcionario['data_nasc'] if funcionario else '' }}">
+                                <input type="text" name="data_nasc" class="mask-data" value="{{ funcionario['data_nasc'] if funcionario else '' }}">
                             </div>
                         </div>
 
                         <div class="form-row-2">
                              <div class="input-group">
                                 <label>Celular</label>
-                                <input type="text" name="tel_cel" placeholder="(00) 00000-0000" value="{{ funcionario['tel_cel'] if funcionario else '' }}" required>
+                                <input type="text" name="tel_cel" class="mask-tel" placeholder="(00) 00000-0000" value="{{ funcionario['tel_cel'] if funcionario else '' }}" required>
                             </div>
                             <div class="input-group">
                                 <label>E-mail Pessoal</label>
@@ -155,5 +155,6 @@
 
         </main>
     </div>
+    <script src="/static/mascaras.js"></script>
 </body>
 </html>

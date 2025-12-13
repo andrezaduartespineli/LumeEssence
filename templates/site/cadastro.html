@@ -88,7 +88,7 @@
 
                     <div class="form-group" style="flex: 1; min-width: 150px;">
                         <label>Data de Nascimento</label>
-                        <input type="date" name="data_nasc" required>
+                        <input type="text" name="data_nasc" class="mask-data" required>
                     </div>
                 </div>
 
@@ -104,7 +104,7 @@
 
                     <div class="form-group" style="flex: 1;">
                         <label>Celular</label>
-                        <input type="tel" name="tel_cel" placeholder="(00) 90000-0000" required>
+                        <input type="tel" name="tel_cel" class="mask-tel" placeholder="(00) 90000-0000" required>
                     </div>
 
                     <div class="form-group" style="flex: 1;">
@@ -118,18 +118,18 @@
                 <div class="form-row" style="display: flex; gap: 15px;">
                     <div class="form-group" style="flex: 1;">
                         <label>CEP</label>
-                        <input type="text" name="cep" placeholder="00000-000" required>
+                        <input type="text" id="cep" name="cep" class="mask-cep" placeholder="00000-000" required>
                     </div>
                     <div class="form-group" style="flex: 3;">
                         <label>Endereço (Rua, Av...)</label>
-                        <input type="text" name="endereco" required>
+                        <input type="text" name="endereco" id="rua" required>
                     </div>
                 </div>
 
                 <div class="form-row" style="display: flex; gap: 15px;">
                     <div class="form-group" style="flex: 1;">
                         <label>Número</label>
-                        <input type="text" name="n" required>
+                        <input type="text" name="n" id="numero" required>
                     </div>
                     <div class="form-group" style="flex: 2;">
                         <label>Complemento</label>
@@ -140,15 +140,15 @@
                 <div class="form-row" style="display: flex; gap: 15px; flex-wrap: wrap;">
                     <div class="form-group" style="flex: 1;">
                         <label>Bairro</label>
-                        <input type="text" name="bairro" required>
+                        <input type="text" name="bairro" id="bairro" required>
                     </div>
                     <div class="form-group" style="flex: 1;">
                         <label>Cidade</label>
-                        <input type="text" name="cidade" required>
+                        <input type="text" name="cidade" id="cidade" required>
                     </div>
                     <div class="form-group" style="flex: 0.5; min-width: 80px;">
                         <label>Estado</label>
-                        <input type="text" name="estado" placeholder="UF" required>
+                        <input type="text" name="estado" id="uf" placeholder="UF" required>
                     </div>
                 </div>
                 
@@ -194,7 +194,7 @@
       </div>
     <form class="newsletter-form" action="/newsletter/cadastrar" method="POST">
     <input type="text" name="nome" placeholder="Nome completo" required>
-    <input type="text" name="whatsapp" placeholder="WhatsApp" required>
+    <input type="text" name="whatsapp" class="mask-tel" placeholder="WhatsApp" required>
     <input type="email" name="email" placeholder="E-mail" required>
     <button type="submit">OK</button>
     </form>
@@ -257,5 +257,7 @@
 </footer>
 
 <script src="/static/scriptsite.js"></script>
+<script src="/static/viacep.js"></script>
+<script src="/static/mascaras.js"></script>
 </body>
 </html>

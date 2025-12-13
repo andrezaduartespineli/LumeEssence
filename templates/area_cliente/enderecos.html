@@ -168,22 +168,22 @@
             </div>
             
             <div class="input-row-2">
-                <input type="text" name="cep" placeholder="CEP (00000-000)" required>
-                <input type="text" name="bairro" placeholder="Bairro" required>
+                <input type="text" name="cep" id="cep" class="mask-cep" placeholder="CEP (00000-000)" required>
+                <input type="text" name="bairro" id="bairro" placeholder="Bairro" required>
             </div>
             
             <div class="input-row-2-1">
-                <input type="text" name="endereco" placeholder="Endereço (Rua, Av.)" required>
-                <input type="text" name="numero" placeholder="Número" required>
+                <input type="text" name="endereco" id="rua" placeholder="Endereço (Rua, Av.)" required>
+                <input type="text" name="numero" id="numero" placeholder="Número" required>
             </div>
             
             <div class="input-row-2">
                 <input type="text" name="complemento" placeholder="Complemento (Opcional)">
-                <input type="text" name="cidade" placeholder="Cidade" required>
+                <input type="text" name="cidade" id="cidade" placeholder="Cidade" required>
             </div>
             
             <div class="input-row">
-                <select name="estado" style="width: 100%; padding: 10px; border: 1px solid #ddd; border-radius: 5px;" required>
+                <select name="estado" id="uf" style="width: 100%; padding: 10px; border: 1px solid #ddd; border-radius: 5px;" required>
                     <option value="" disabled selected>Selecione o Estado</option>
                     <option value="DF">Distrito Federal</option>
                     <option value="GO">Goiás</option>
@@ -213,7 +213,7 @@
 
       <form class="newsletter-form" action="/newsletter/cadastrar" method="POST">
         <input type="text" name="nome" placeholder="Nome completo" required>
-        <input type="text" name="whatsapp" placeholder="WhatsApp" required>
+        <input type="text" name="whatsapp" class="mask-tel" placeholder="WhatsApp" required>
         <input type="email" name="email" placeholder="E-mail" required>
         <button type="submit">OK</button>
       </form>
@@ -255,6 +255,8 @@
 </footer>
 
 <script src="/static/scriptareacliente.js"></script>
+<script src="/static/viacep.js"></script>
+<script src="/static/mascaras.js"></script>
 
 <script>
     function fecharModalEndereco() {

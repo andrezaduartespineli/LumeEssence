@@ -7,6 +7,9 @@ from datetime import datetime
 from werkzeug.security import generate_password_hash, check_password_hash
 import os
 from werkzeug.utils import secure_filename
+import smtplib
+from email.mime.text import MIMEText
+from email.mime.multipart import MIMEMultipart
 
 
 app = Flask(__name__)
@@ -385,6 +388,54 @@ def cadastrar_cliente_post():
 def logout():
     session.clear()
     return redirect("/login")
+
+# --- ROTA: ENVIAR E-MAIL EM MASSA ---
+@app.route("/admin/newsletter/enviar", methods=['POST'])
+def enviar_email_massa():
+    if 'id_usuario' not in session: return redirect("/admin/login") # Proteção de admin
+
+    # 1. Pega a lista de e-mails selecionados (checkboxes)
+    lista_destinatarios = request.form.getlist('emails_selecionados')
+    assunto_texto = request.form['assunto']
+    corpo_mensagem = request.form['mensagem']
+
+    if not lista_destinatarios:
+        flash("Selecione pelo menos um e-mail!", "erro")
+        return redirect("/admin/newsletter")
+
+    # 2. Configurações do seu E-mail (GMAIL Exemplo)
+    MEU_EMAIL = "seu_email@gmail.com"
+    MINHA_SENHA = "sua_senha_de_app_aqui" # Gere uma senha de app no Google
+    SERVIDOR_SMTP = "smtp.gmail.com"
+    PORTA_SMTP = 587
+
+    try:
+        # Conecta ao servidor de e-mail
+        server = smtplib.SMTP(SERVIDOR_SMTP, PORTA_SMTP)
+        server.starttls()
+        server.login(MEU_EMAIL, MINHA_SENHA)
+
+        # 3. Loop para enviar um por um
+        for dest in lista_destinatarios:
+            msg = MIMEMultipart()
+            msg['From'] = MEU_EMAIL
+            msg['To'] = dest
+            msg['Subject'] = assunto_texto
+
+            # Adiciona o texto da mensagem
+            msg.attach(MIMEText(corpo_mensagem, 'plain'))
+
+            # Envia
+            server.sendmail(MEU_EMAIL, dest, msg.as_string())
+
+        server.quit()
+        flash(f"Sucesso! E-mail enviado para {len(lista_destinatarios)} pessoas.", "sucesso")
+
+    except Exception as e:
+        print(f"Erro ao enviar e-mail: {e}")
+        flash("Erro ao enviar e-mails. Verifique as configurações no console.", "erro")
+
+    return redirect("/admin/newsletter")
 
 # --- Carrinho de Compras ---
 # --- ROTAS COMPLETAS DO CARRINHO ---

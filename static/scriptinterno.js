@@ -157,3 +157,28 @@ function toggleProfileMenu() {
        /* FIM JAVA FOTO DE FUNCIONARIO */
 
        document.getElementById('data_cad_fornecedor').value = new Date().toISOString().split('T')[0];
+
+       // Função para Selecionar/Deselecionar Todos
+        function toggleAll(source) {
+            checkboxes = document.getElementsByClassName('email-checkbox');
+            for(var i=0, n=checkboxes.length;i<n;i++) {
+                checkboxes[i].checked = source.checked;
+            }
+        }
+
+        // Verifica se alguém foi selecionado antes de abrir o modal
+        function verificarSelecao() {
+            const checkboxes = document.querySelectorAll('.email-checkbox:checked');
+            if (checkboxes.length === 0) {
+                alert("Por favor, selecione pelo menos um contato na lista.");
+            } else {
+                document.getElementById('modal-email').style.display = 'flex';
+            }
+        }
+
+        function fecharModalEmail() {
+            document.getElementById('modal-email').style.display = 'none';
+        }
+
+        ///.JAVA DO MODAL EXCLUIR CLIENTE///
+        

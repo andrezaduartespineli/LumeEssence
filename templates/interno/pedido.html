@@ -194,15 +194,41 @@
             </section>
 
             <div class="pagination">
-                <span class="page-info">Mostrando 1-5 de 48 pedidos</span>
-                <div class="page-buttons">
-                    <button disabled><i class="fa-solid fa-chevron-left"></i></button>
-                    <button class="active">1</button>
-                    <button>2</button>
-                    <button>3</button>
-                    <button><i class="fa-solid fa-chevron-right"></i></button>
-                </div>
-            </div>
+    <span class="page-info">
+        Página <strong>{{ pagina_atual }}</strong> de <strong>{{ total_paginas }}</strong> 
+        (Total: {{ total_registros }} pedidos)
+    </span>
+
+    <div class="page-buttons">
+        
+        {% if pagina_atual > 1 %}
+            <a href="/pedido.html?page={{ pagina_atual - 1 }}&q={{ termo_busca }}">
+                <button><i class="fa-solid fa-chevron-left"></i></button>
+            </a>
+        {% else %}
+            <button disabled><i class="fa-solid fa-chevron-left"></i></button>
+        {% endif %}
+
+        {% for p in range(1, total_paginas + 1) %}
+            {% if p == 1 or p == total_paginas or (p >= pagina_atual - 2 and p <= pagina_atual + 2) %}
+                <a href="/pedido.html?page={{ p }}&q={{ termo_busca }}">
+                    <button class="{{ 'active' if p == pagina_atual else '' }}">{{ p }}</button>
+                </a>
+            {% elif p == pagina_atual - 3 or p == pagina_atual + 3 %}
+                <span style="padding: 0 5px; color: #888;">...</span>
+            {% endif %}
+        {% endfor %}
+
+        {% if pagina_atual < total_paginas %}
+            <a href="/pedido.html?page={{ pagina_atual + 1 }}&q={{ termo_busca }}">
+                <button><i class="fa-solid fa-chevron-right"></i></button>
+            </a>
+        {% else %}
+            <button disabled><i class="fa-solid fa-chevron-right"></i></button>
+        {% endif %}
+        
+    </div>
+</div>
 
         </main>
     </div>

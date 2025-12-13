@@ -91,7 +91,7 @@
                         <div class="form-row-3">
                             <div class="input-group">
                                 <label>CNPJ</label>
-                                <input type="text" name="cnpj" placeholder="00.000.000/0000-00"
+                                <input type="text" name="cnpj" class="mask-cnpj" placeholder="00.000.000/0000-00"
                                        value="{{ fornecedor['cnpj'] if fornecedor else '' }}" required>
                             </div>
                             <div class="input-group">
@@ -119,31 +119,31 @@
                             </div>
                             <div class="input-group">
                                 <label>Telefone / WhatsApp</label>
-                                <input type="text" name="tel_cel" placeholder="(99) 99999-9999"
+                                <input type="text" name="tel_cel" class="mask-tel" placeholder="(99) 99999-9999"
                                        value="{{ fornecedor['tel_cel'] if fornecedor else '' }}" required>
                             </div>
                         </div>
 
                         <div class="input-group">
                             <label>Endereço Completo</label>
-                            <input type="text" name="endereco" 
+                            <input type="text" name="endereco" id="rua"
                                    value="{{ fornecedor['endereco'] if fornecedor else '' }}">
                         </div>
 
                         <div class="form-row-3">
                             <div class="input-group">
                                 <label>Cidade</label>
-                                <input type="text" name="cidade" 
+                                <input type="text" name="cidade" id="cidade"
                                        value="{{ fornecedor['cidade'] if fornecedor else '' }}">
                             </div>
                             <div class="input-group">
                                 <label>Estado</label>
-                                <input type="text" name="estado" maxlength="2" placeholder="UF"
+                                <input type="text" name="estado" id="uf" maxlength="2" placeholder="UF"
                                        value="{{ fornecedor['estado'] if fornecedor else '' }}">
                             </div>
                             <div class="input-group">
                                 <label>CEP</label>
-                                <input type="text" name="cep" placeholder="00000-000"
+                                <input type="text" name="cep" id="cep" class="mask-cep" placeholder="00000-000"
                                        value="{{ fornecedor['cep'] if fornecedor else '' }}">
                             </div>
                         </div>
@@ -166,5 +166,7 @@
         </main>
     </div>
     <script src="/static/scriptinterno.js"></script>
+    <script src="/static/viacep.js"></script>
+    <script src="/static/mascaras.js"></script>
 </body>
 </html>

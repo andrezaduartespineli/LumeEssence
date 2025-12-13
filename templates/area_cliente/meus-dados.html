@@ -167,14 +167,14 @@
                     </div>
                     <div>
                         <label>Data de Nascimento</label>
-                        <input type="date" name="data_nasc" value="{{ cliente['data_nasc'] }}">
+                        <input type="text" name="data_nasc" class="mask-data" value="{{ cliente['data_nasc'] }}">
                     </div>
                 </div>
 
                 <div class="input-row-2">
                     <div>
                         <label>Celular / WhatsApp</label>
-                        <input type="tel" name="tel_cel" value="{{ cliente['tel_cel'] }}">
+                        <input type="tel" name="tel_cel" class="mask-tel" value="{{ cliente['tel_cel'] }}">
                     </div>
                     <div>
                         <label>Gênero</label>
@@ -264,7 +264,7 @@
       <div class="newsletter-text"><i class="fas fa-tag"></i><span>Receba nossas novidades.</span></div>
       <form class="newsletter-form" action="/newsletter/cadastrar" method="POST">
         <input type="text" name="nome" placeholder="Nome" required>
-        <input type="text" name="whatsapp" placeholder="Zap" required>
+        <input type="text" name="whatsapp" class="mask-tel" placeholder="Zap" required>
         <input type="email" name="email" placeholder="E-mail" required>
         <button type="submit">OK</button>
       </form>
@@ -274,7 +274,7 @@
 </footer>
 
 <script src="/static/scriptareacliente.js"></script>
-
+<script src="/static/mascaras.js"></script>
 
 </body>
 </html>

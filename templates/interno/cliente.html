@@ -93,7 +93,7 @@
                             <th style="width: 25%;">Dados Pessoais</th>
                             <th style="width: 20%;">Contato</th>
                             <th style="width: 35%;">Endereço Completo</th> <th style="width: 10%;">Cadastro</th>
-                            <th style="text-align: right; width: 10%;">Ações</th>
+                        
                         </tr>
                     </thead>
                     <tbody>
@@ -121,25 +121,49 @@
             </div>
         </td>
         <td>{{ c['data_cad'] }}</td>
-        <td class="actions-cell">
-            <a href="#" class="btn-icon btn-edit" title="Editar"><i class="fa-solid fa-pen"></i></a>
-            <a href="/cliente/delete/{{ c['id_cliente'] }}" class="btn-icon btn-delete" title="Excluir"><i class="fa-solid fa-trash"></i></a>
-        </td>
+        
+        
     </tr>
     {% endfor %}
     </tbody>
                 </table>
                 
                 <div class="pagination">
-                <span class="page-info">Mostrando 1-5 de 48 pedidos</span>
-                <div class="page-buttons">
-                    <button disabled><i class="fa-solid fa-chevron-left"></i></button>
-                    <button class="active">1</button>
-                    <button>2</button>
-                    <button>3</button>
-                    <button><i class="fa-solid fa-chevron-right"></i></button>
-                </div>
-            </div>
+    <span class="page-info">
+        Mostrando página <strong>{{ pagina_atual }}</strong> de <strong>{{ total_paginas }}</strong> 
+        (Total: {{ total_registros }} clientes)
+    </span>
+
+    <div class="page-buttons">
+        
+        {% if pagina_atual > 1 %}
+            <a href="/cliente.html?page={{ pagina_atual - 1 }}&q={{ termo_busca }}">
+                <button><i class="fa-solid fa-chevron-left"></i></button>
+            </a>
+        {% else %}
+            <button disabled><i class="fa-solid fa-chevron-left"></i></button>
+        {% endif %}
+
+        {% for p in range(1, total_paginas + 1) %}
+            {% if p == 1 or p == total_paginas or (p >= pagina_atual - 2 and p <= pagina_atual + 2) %}
+                <a href="/cliente.html?page={{ p }}&q={{ termo_busca }}">
+                    <button class="{{ 'active' if p == pagina_atual else '' }}">{{ p }}</button>
+                </a>
+            {% elif p == pagina_atual - 3 or p == pagina_atual + 3 %}
+                <span style="padding: 0 5px;">...</span>
+            {% endif %}
+        {% endfor %}
+
+        {% if pagina_atual < total_paginas %}
+            <a href="/cliente.html?page={{ pagina_atual + 1 }}&q={{ termo_busca }}">
+                <button><i class="fa-solid fa-chevron-right"></i></button>
+            </a>
+        {% else %}
+            <button disabled><i class="fa-solid fa-chevron-right"></i></button>
+        {% endif %}
+        
+    </div>
+</div>
 
 
             </section>

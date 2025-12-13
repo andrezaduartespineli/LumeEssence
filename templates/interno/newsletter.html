@@ -72,45 +72,88 @@
 </header>
 
             <section class="table-container" style="background: white; padding: 20px; border-radius: 12px; box-shadow: 0 4px 15px rgba(0,0,0,0.03);">
-                <table style="width: 100%; border-collapse: collapse;">
-                    <thead>
-                        <tr style="border-bottom: 1px solid #eee; text-align: left;">
-                            <th style="padding: 15px; color: #888;">Data</th>
-                            <th style="padding: 15px; color: #888;">Nome</th>
-                            <th style="padding: 15px; color: #888;">WhatsApp</th>
-                            <th style="padding: 15px; color: #888;">E-mail</th>
-                            <th style="padding: 15px; color: #888;">Ação</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        {% for lead in leads %}
-                        <tr style="border-bottom: 1px solid #f9f9f9;">
-                            <td style="padding: 15px;">{{ lead['data_cad'] }}</td>
-                            <td style="padding: 15px; font-weight: bold; color: #333;">{{ lead['nome'] }}</td>
-                            <td style="padding: 15px;">
-                                <a href="https://wa.me/55{{ lead['whatsapp'] | replace('(', '') | replace(')', '') | replace('-', '') | replace(' ', '') }}" target="_blank" style="color: #25D366; text-decoration: none; font-weight: 600;">
-                                    <i class="fa-brands fa-whatsapp"></i> {{ lead['whatsapp'] }}
-                                </a>
-                            </td>
-                            <td style="padding: 15px;">{{ lead['email'] }}</td>
-                            <td style="padding: 15px;">
-                                <button style="border: 1px solid #ddd; background: white; padding: 5px 10px; border-radius: 5px; cursor: pointer;">
-                                    <i class="fa-regular fa-copy"></i> Copiar
-                                </button>
-                            </td>
-                        </tr>
-                        {% else %}
-                        <tr>
-                            <td colspan="5" style="text-align: center; padding: 30px; color: #999;">
-                                Nenhum contato cadastrado ainda.
-                            </td>
-                        </tr>
-                        {% endfor %}
-                    </tbody>
-                </table>
+                
+                <div class="admin-header">
+                    <button type="button" class="btn-save" onclick="verificarSelecao()">
+                        <i class="fa-solid fa-paper-plane"></i> Enviar E-mail em Massa
+                    </button>
+                </div>
+          
+
+                <form id="form-mass-email" action="/admin/newsletter/enviar" method="POST">
+                    
+                    <table style="width: 100%; border-collapse: collapse;">
+                        <thead>
+                            <tr style="border-bottom: 1px solid #eee; text-align: left;">
+                                <th style="padding: 15px;"><input type="checkbox" id="selectAll" onclick="toggleAll(this)"></th>
+                                <th style="padding: 15px; color: #888;">Data</th>
+                                <th style="padding: 15px; color: #888;">Nome</th>
+                                <th style="padding: 15px; color: #888;">WhatsApp</th>
+                                <th style="padding: 15px; color: #888;">E-mail</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {% for lead in leads %}
+                            <tr style="border-bottom: 1px solid #f9f9f9;">
+                                <td style="padding: 15px;">
+                                    <input type="checkbox" name="emails_selecionados" value="{{ lead['email'] }}" class="email-checkbox">
+                                </td>
+                                
+                                <td style="padding: 15px;">{{ lead['data_cad'] }}</td>
+                                <td style="padding: 15px; font-weight: bold; color: #333;">{{ lead['nome'] }}</td>
+                                
+                                <td style="padding: 15px;">
+                                    <a href="https://wa.me/55{{ lead['whatsapp'] | replace('(', '') | replace(')', '') | replace('-', '') | replace(' ', '') }}" target="_blank" style="color: #25D366; text-decoration: none; font-weight: 600;">
+                                        <i class="fa-brands fa-whatsapp"></i> {{ lead['whatsapp'] }}
+                                    </a>
+                                </td>
+                                
+                                <td style="padding: 15px;">{{ lead['email'] }}</td>
+                            </tr>
+                            {% else %}
+                            <tr>
+                                <td colspan="5" style="text-align: center; padding: 30px; color: #999;">
+                                    Nenhum contato cadastrado ainda.
+                                </td>
+                            </tr>
+                            {% endfor %}
+                        </tbody>
+                    </table>
+
+                    <div id="modal-email" class="modal-overlay" style="display: none;">
+                        <div class="modal-content-box">
+                            <div class="modal-header">
+                                <h3><i class="fa-solid fa-envelope"></i> Nova Mensagem</h3>
+                                <button type="button" class="close-modal" onclick="fecharModalEmail()" style="border:none; background:none; font-size:1.5rem; cursor:pointer;">&times;</button>
+                            </div>
+                            
+                            <div class="input-row">
+                                <label>Assunto</label>
+                                <input type="text" name="assunto" class="full-width" placeholder="Ex: Novidades da Lume Essence!" required>
+                            </div>
+
+                            <div class="input-row">
+                                <label>Mensagem</label>
+                                <textarea name="mensagem" class="full-width" rows="8" placeholder="Escreva sua mensagem aqui..." required style="font-family: sans-serif; resize: vertical;"></textarea>
+                            </div>
+                            
+                            <p style="font-size: 0.85rem; color: #666; margin-top: 10px;">
+                                <i class="fa-solid fa-circle-info"></i> O e-mail será enviado individualmente para cada selecionado.
+                            </p>
+
+                            <div class="modal-footer">
+                                <button type="button" class="btn-cancel" onclick="fecharModalEmail()">Cancelar</button>
+                                <button type="submit" class="btn-save">Confirmar Envio</button>
+                            </div>
+                        </div>
+                    </div>
+
+                </form>
             </section>
 
         </main>
     </div>
+    <script src="/static/scriptinterno.js"></script>
+    <script src="/static/mascaras.js"></script>
 </body>
 </html>

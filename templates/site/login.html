@@ -114,7 +114,7 @@
       </div>
     <form class="newsletter-form" action="/newsletter/cadastrar" method="POST">
     <input type="text" name="nome" placeholder="Nome completo" required>
-    <input type="text" name="whatsapp" placeholder="WhatsApp" required>
+    <input type="text" name="whatsapp" class="mask-tel" placeholder="WhatsApp" required>
     <input type="email" name="email" placeholder="E-mail" required>
     <button type="submit">OK</button>
     </form>
@@ -176,5 +176,6 @@
   </div>
 </footer>
 <script src="/static/scriptsite.js"></script>
+<script src="/static/mascaras.js"></script>
 </body>
 </html>
