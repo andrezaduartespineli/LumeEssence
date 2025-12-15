@@ -91,52 +91,50 @@
                             <div class="input-group">
                                 <label>Categoria</label>
                                 <select id="categoria" name="categoria" onchange="atualizarTamanhos()">
-                                    <option value="Velas Aromáticas">Velas Aromáticas</option>
-                                    <option value="Home Spray">Home Spray</option>
-                                    <option value="Difusores">Difusores</option>
-                                    <option value="Kits Presente">Kits Presente</option>
-                                </select>
+    <option value="Velas Aromáticas" {{ 'selected' if produto and produto['categoria'] == 'Velas Aromáticas' else '' }}>Velas Aromáticas</option>
+    <option value="Home Spray"       {{ 'selected' if produto and produto['categoria'] == 'Home Spray' else '' }}>Home Spray</option>
+    <option value="Difusores"        {{ 'selected' if produto and produto['categoria'] == 'Difusores' else '' }}>Difusores</option>
+    <option value="Kits Presente"    {{ 'selected' if produto and produto['categoria'] == 'Kits Presente' else '' }}>Kits Presente</option>
+</select>
                             </div>
                             <div class="input-group">
                                 <label>Aroma (Família Olfativa)</label>
                                 <select id="aroma" name="aroma">
-                                    <option value="Alecrim">Alecrim</option>
-                                    <option value="Baunilha">Baunilha</option>
-                                    <option value="Lavanda">Lavanda</option>
-                                    <option value="Bamboo">Bamboo</option>
-                                    <option value="Limão Siciliano">Limão Siciliano</option>
-                                    <option value="Jasmim">Jasmim</option>
-                                    <option value="Coco">Coco</option>
-                                    <option value="Morango">Morango</option>
-                                    <option value="Flor de Algodão">Flor de Algodão</option>
-                                    <option value="Capim Limão">Capim Limão</option>
-                                    <option value="Chocolate">Chocolate</option>
-                                    <option value="Chá Branco">Chá Branco</option>
-                                    <option value="Sem Aroma (Neutro)">Sem Aroma (Neutro)</option>
-                                    <option value="Outro">Outro</option>
-                                </select>
+    <option value="Alecrim" {{ 'selected' if produto and produto['aroma'] == 'Alecrim' else '' }}>Alecrim</option>
+    <option value="Baunilha" {{ 'selected' if produto and produto['aroma'] == 'Baunilha' else '' }}>Baunilha</option>
+    <option value="Lavanda" {{ 'selected' if produto and produto['aroma'] == 'Lavanda' else '' }}>Lavanda</option>
+    <option value="Bamboo" {{ 'selected' if produto and produto['aroma'] == 'Bamboo' else '' }}>Bamboo</option>
+    <option value="Limão Siciliano" {{ 'selected' if produto and produto['aroma'] == 'Limão Siciliano' else '' }}>Limão Siciliano</option>
+    <option value="Jasmim" {{ 'selected' if produto and produto['aroma'] == 'Jasmim' else '' }}>Jasmim</option>
+    <option value="Coco" {{ 'selected' if produto and produto['aroma'] == 'Coco' else '' }}>Coco</option>
+    <option value="Morango" {{ 'selected' if produto and produto['aroma'] == 'Morango' else '' }}>Morango</option>
+    <option value="Flor de Algodão" {{ 'selected' if produto and produto['aroma'] == 'Flor de Algodão' else '' }}>Flor de Algodão</option>
+    <option value="Capim Limão" {{ 'selected' if produto and produto['aroma'] == 'Capim Limão' else '' }}>Capim Limão</option>
+    <option value="Outro" {{ 'selected' if produto and produto['aroma'] == 'Outro' else '' }}>Outro</option>
+</select>
                             </div>
                             <div class="input-group">
                                 <label id="label-tamanho">Variação</label>
                                 <select id="variacao" name="variacao">
-                                    <option value="100g">100g</option>
-                                    <option value="150g">150g</option>
-                                    <option value="230g">230g</option>
-                                    <option value="300g">300g</option>
-                                    <option value="330g">330g</option>
-                                    <option value="30ml">30ml</option>
-                                    <option value="50ml">50ml</option>
-                                    <option value="100ml">100ml</option>
-                                    <option value="150ml">150ml</option>
-                                    <option value="250ml">250ml</option>
-                                    <option value="300ml">300ml</option>
-                                    <option value="500ml">500ml</option>
-                                    <option value="Kit Presente Pequeno">Kit Presente Pequeno</option>
-                                    <option value="Kit Presente Médio">Kit Presente Médio</option>  
-                                    <option value="Kit Presente Grande">Kit Presente Grande</option>
-                                    <option value="Kit Presente">Kit Presente</option>
-                                    
-                                </select>
+    <option value="100g" {{ 'selected' if produto and produto['variacao'] == '100g' else '' }}>100g</option>
+    <option value="150g" {{ 'selected' if produto and produto['variacao'] == '150g' else '' }}>150g</option>
+    <option value="230g" {{ 'selected' if produto and produto['variacao'] == '230g' else '' }}>230g</option>
+    <option value="300g" {{ 'selected' if produto and produto['variacao'] == '300g' else '' }}>300g</option>
+    <option value="330g" {{ 'selected' if produto and produto['variacao'] == '330g' else '' }}>330g</option>
+    
+    <option value="30ml" {{ 'selected' if produto and produto['variacao'] == '30ml' else '' }}>30ml</option>
+    <option value="50ml" {{ 'selected' if produto and produto['variacao'] == '50ml' else '' }}>50ml</option>
+    <option value="100ml" {{ 'selected' if produto and produto['variacao'] == '100ml' else '' }}>100ml</option>
+    <option value="150ml" {{ 'selected' if produto and produto['variacao'] == '150ml' else '' }}>150ml</option>
+    <option value="250ml" {{ 'selected' if produto and produto['variacao'] == '250ml' else '' }}>250ml</option>
+    <option value="300ml" {{ 'selected' if produto and produto['variacao'] == '300ml' else '' }}>300ml</option>
+    <option value="500ml" {{ 'selected' if produto and produto['variacao'] == '500ml' else '' }}>500ml</option>
+    
+    <option value="Kit Presente Pequeno" {{ 'selected' if produto and produto['variacao'] == 'Kit Presente Pequeno' else '' }}>Kit Presente Pequeno</option>
+    <option value="Kit Presente Médio" {{ 'selected' if produto and produto['variacao'] == 'Kit Presente Médio' else '' }}>Kit Presente Médio</option>
+    <option value="Kit Presente Grande" {{ 'selected' if produto and produto['variacao'] == 'Kit Presente Grande' else '' }}>Kit Presente Grande</option>
+    <option value="Kit Presente" {{ 'selected' if produto and produto['variacao'] == 'Kit Presente' else '' }}>Kit Presente</option>
+</select>
                             </div>
                         </div>
 
@@ -180,28 +178,73 @@
                     </div>
 
                     <div class="right-column">
-                        <div class="upload-card">
-                            <label>Imagem Principal</label>
-                            
-                            {% if produto and produto['img_produto'] %}
-                                <div style="margin-bottom: 15px; text-align: center;">
-                                    <img src="../../static/uploads/{{ produto['img_produto'] }}" 
-                                         onerror="this.src='../../static/imagens/sem_foto.png'"
-                                         style="width: 120px; height: 120px; object-fit: cover; border-radius: 8px; border: 1px solid #ddd;">
-                                    <p style="font-size: 0.8rem; color: #666; margin-top: 5px;">Imagem Atual</p>
-                                </div>
-                            {% endif %}
+    
+    <div class="upload-card">
+        <label>Imagem Principal</label>
+        
+        {% if produto and produto['img_produto'] %}
+            <div style="margin-bottom: 15px; text-align: center;">
+                <img src="/static/uploads/{{ produto['img_produto'] }}" 
+                     onerror="this.src='/static/imagens/sem_foto.png'"
+                     style="width: 120px; height: 120px; object-fit: cover; border-radius: 8px; border: 1px solid #ddd;">
+                <p style="font-size: 0.8rem; color: #666; margin-top: 5px;">Imagem Atual</p>
+            </div>
+        {% endif %}
 
-                            <div class="drop-zone">
-                                <i class="fa-solid fa-cloud-arrow-up"></i>
-                                <p>{{ 'Clique para substituir a foto' if produto else 'Arraste a foto aqui' }}</p>
-                                <input type="file" name="img_produto" accept="image/*">
-                            </div>
-                        </div>
+        <div class="drop-zone">
+            <i class="fa-solid fa-cloud-arrow-up"></i>
+            <p>{{ 'Clique para substituir a foto' if produto else 'Clique para adicionar foto' }}</p>
+            <input type="file" name="img_produto" accept="image/*">
+        </div>
+    </div>
+
+    {% if not produto %} <div class="upload-card" style="margin-top: 20px; border: 2px dashed #27ae60; background-color: #f9fff9;">
+        <label style="color: #27ae60; font-weight: bold; margin-bottom: 10px; display: block;">
+            <i class="fa-solid fa-file-excel"></i> Cadastro em Massa
+        </label>
+
+        <a href="/gerar_planilha_padrao" style="display: block; text-align: center; color: #555; text-decoration: none; font-size: 0.85rem; margin-bottom: 15px; border: 1px solid #ddd; padding: 8px; border-radius: 5px; background: white;">
+            <i class="fa-solid fa-download"></i> Baixar Modelo CSV
+        </a>
+
+        <hr style="border: 0; border-top: 1px solid #ccebd6; margin-bottom: 15px;">
+
+        <label style="font-size: 0.8rem; color: #666;">Selecione seu CSV:</label>
+        
+        <input type="file" name="arquivo_csv" accept=".csv" 
+               style="width: 100%; padding: 8px; font-size: 0.8rem; background: white; border: 1px solid #ddd; border-radius: 4px; margin-bottom: 10px;">
+        
+        <button type="submit" 
+                formaction="/importar_csv" 
+                formnovalidate
+                class="btn-save" 
+                style="width: 100%; background-color: #27ae60; border: none;">
+            <i class="fa-solid fa-upload"></i> Enviar Planilha
+        </button>
+    </div>
+
+    {% endif %}
+
+</div>
                     </div>
                 </div>
             </form>
-
+{% if not produto %}
+<div class="product-form-container" style="margin-top: 20px; border-top: 3px solid #27ae60;">
+    <div class="form-header">
+        <h2 style="font-size: 1.2rem; color: #27ae60;">⚡ Importar CSV (Planilha)</h2>
+    </div>
+    
+    <form action="/importar_csv" method="POST" enctype="multipart/form-data" style="display: flex; gap: 15px; align-items: center;">
+        <div class="input-group" style="flex: 1; margin: 0;">
+            <input type="file" name="arquivo_csv" accept=".csv" required style="background: white;">
+        </div>
+        <button type="submit" class="btn-save" style="background-color: #27ae60;">
+            <i class="fa-solid fa-upload"></i> Processar Arquivo
+        </button>
+    </form>
+</div>
+{% endif %}
         </main>
     </div>
     <script src="/static/scriptinterno.js"></script>

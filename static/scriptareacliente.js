@@ -1,11 +1,32 @@
 /* JAVA PAGINA CARTOES*/
 
-function abrirModalCartao() {
-            document.getElementById('modal-cartao').style.display = 'flex';
-        }
-        function fecharModalCartao() {
-            document.getElementById('modal-cartao').style.display = 'none';
-        }
+/* --- LÓGICA DO MODAL DE CARTÕES --- */
+
+// Função para abrir o modal (chamada pelo botão "+ Novo Cartão")
+function abrirModal() {
+    const modal = document.getElementById('modal-cartao');
+    if (modal) {
+        // 'flex' é importante para o CSS centralizar a caixa na tela
+        modal.style.display = 'flex'; 
+    }
+}
+
+// Função para fechar o modal (chamada pelo 'X' e pelo botão 'Cancelar')
+function fecharModal() {
+    const modal = document.getElementById('modal-cartao');
+    if (modal) {
+        modal.style.display = 'none';
+    }
+}
+
+// Lógica para fechar ao clicar FORA da caixa branca (na parte escura)
+window.addEventListener('click', function(event) {
+    const modal = document.getElementById('modal-cartao');
+    // Se o elemento clicado for EXATAMENTE o fundo escuro (modal-container), fecha.
+    if (event.target === modal) {
+        modal.style.display = 'none';
+    }
+});
 
 /* fim JAVA PAGINA CARTOES*/
 

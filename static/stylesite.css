@@ -3984,3 +3984,123 @@ html {
 }
 
 /* --- FIM Menu Suspenso do Ícone de Usuário --- */
+
+/* --- ESTILO DO MODAL (ADICIONAR CARTÃO) --- */
+
+/* Fundo escuro transparente que cobre a tela inteira */
+.modal-container {
+    display: none; /* Começa escondido */
+    position: fixed; /* Fica fixo na tela, mesmo se rolar */
+    z-index: 9999; /* Fica na frente de tudo */
+    left: 0;
+    top: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.6); /* Preto com 60% de transparência */
+    
+    /* Centraliza a caixa branca no meio da tela */
+    display: flex; 
+    align-items: center;
+    justify-content: center;
+}
+
+/* A caixa branca do formulário */
+.modal-content {
+    background-color: #fff;
+    padding: 30px;
+    border-radius: 12px;
+    width: 90%;
+    max-width: 450px; /* Largura máxima */
+    position: relative;
+    box-shadow: 0 10px 25px rgba(0,0,0,0.3);
+    animation: modalFadeIn 0.3s; /* Efeito suave ao abrir */
+}
+
+/* Animação de entrada */
+@keyframes modalFadeIn {
+    from {opacity: 0; transform: translateY(-20px);}
+    to {opacity: 1; transform: translateY(0);}
+}
+
+/* Botão de Fechar (X) */
+.close-modal {
+    position: absolute;
+    top: 15px;
+    right: 20px;
+    color: #aaa;
+    font-size: 28px;
+    font-weight: bold;
+    cursor: pointer;
+    transition: 0.2s;
+}
+
+.close-modal:hover {
+    color: #333;
+}
+
+/* Título do Modal */
+.modal-content h3 {
+    margin-top: 0;
+    margin-bottom: 20px;
+    color: #333;
+    font-family: 'Montserrat', sans-serif;
+    text-align: center;
+}
+
+/* Inputs dentro do Modal */
+.modal-content label {
+    display: block;
+    margin-bottom: 5px;
+    color: #666;
+    font-size: 0.9rem;
+}
+
+.modal-content input {
+    width: 100%;
+    padding: 12px;
+    margin-bottom: 15px;
+    border: 1px solid #ddd;
+    border-radius: 6px;
+    font-size: 1rem;
+}
+
+/* Botões do Modal */
+.modal-buttons {
+    display: flex;
+    justify-content: space-between;
+    gap: 10px;
+    margin-top: 10px;
+}
+
+.btn-save {
+    width: 100%;
+    padding: 12px;
+    background-color: #2e7d32; /* Verde */
+    color: white;
+    border: none;
+    border-radius: 6px;
+    font-size: 1rem;
+    cursor: pointer;
+    font-weight: 600;
+    transition: background 0.3s;
+}
+
+.btn-save:hover {
+    background-color: #1b5e20;
+}
+
+.btn-cancel {
+    width: 100%;
+    padding: 12px;
+    background-color: #ccc;
+    color: #333;
+    border: none;
+    border-radius: 6px;
+    font-size: 1rem;
+    cursor: pointer;
+    font-weight: 600;
+}
+
+.btn-cancel:hover {
+    background-color: #bbb;
+}

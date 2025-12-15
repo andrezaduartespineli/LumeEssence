@@ -139,10 +139,14 @@
         <td>
             <div class="customer-info">
                 <strong>{{ p['nome'] }}</strong>
-                </div>
+            </div>
         </td>
-        
-        <td class="order-summary">Ver detalhes...</td>
+
+        <td class="order-summary">
+            <a href="#" onclick="abrirDetalhes({{ p['id_pedido'] }})" style="color: #A36361; text-decoration: underline;">
+                Ver itens...
+            </a>
+        </td>
         
         <td class="order-total">R$ {{ p['valor_total'] }}</td>
         
@@ -161,6 +165,8 @@
         <td>
             {% if p['status'] == 'Pendente' %}
                 <span class="badge-status status-pending">Pendente</span>
+            {% elif p['status'] == 'Separando' %}
+                <span class="badge-status" style="background: #FFF3CD; color: #856404;">Separando</span>
             {% elif p['status'] == 'Enviado' %}
                 <span class="badge-status status-shipped">Enviado</span>
             {% elif p['status'] == 'Entregue' %}
@@ -173,13 +179,13 @@
         </td>
 
         <td>
-            <button class="btn-icon-action" title="Ver Detalhes">
+            <button class="btn-icon-action" title="Ver Detalhes" onclick="abrirDetalhes({{ p['id_pedido'] }})">
                 <i class="fa-solid fa-eye"></i>
             </button>
             
-            <a href="#" class="btn-icon-action" title="Editar Status">
+            <button class="btn-icon-action" title="Editar Status" onclick="abrirStatus({{ p['id_pedido'] }}, '{{ p['status'] }}')">
                 <i class="fa-solid fa-pen"></i>
-            </a>
+            </button>
         </td>
     </tr>
     {% else %}
@@ -193,7 +199,7 @@
                 </table>
             </section>
 
-            <div class="pagination">
+          <div class="pagination">
     <span class="page-info">
         Página <strong>{{ pagina_atual }}</strong> de <strong>{{ total_paginas }}</strong> 
         (Total: {{ total_registros }} pedidos)
@@ -201,8 +207,12 @@
 
     <div class="page-buttons">
         
+        {# --- Define variáveis para simplificar os links (trata valores vazios) --- #}
+        {% set status_link = status_atual if status_atual else '' %}
+        {% set busca_link = termo_busca if termo_busca else '' %}
+
         {% if pagina_atual > 1 %}
-            <a href="/pedido.html?page={{ pagina_atual - 1 }}&q={{ termo_busca }}">
+            <a href="/pedidos?page={{ pagina_atual - 1 }}&q={{ busca_link }}&status={{ status_link }}">
                 <button><i class="fa-solid fa-chevron-left"></i></button>
             </a>
         {% else %}
@@ -210,8 +220,9 @@
         {% endif %}
 
         {% for p in range(1, total_paginas + 1) %}
+            {# Mostra a primeira, a última, e as próximas da atual (lógica de ... ) #}
             {% if p == 1 or p == total_paginas or (p >= pagina_atual - 2 and p <= pagina_atual + 2) %}
-                <a href="/pedido.html?page={{ p }}&q={{ termo_busca }}">
+                <a href="/pedidos?page={{ p }}&q={{ busca_link }}&status={{ status_link }}">
                     <button class="{{ 'active' if p == pagina_atual else '' }}">{{ p }}</button>
                 </a>
             {% elif p == pagina_atual - 3 or p == pagina_atual + 3 %}
@@ -220,7 +231,7 @@
         {% endfor %}
 
         {% if pagina_atual < total_paginas %}
-            <a href="/pedido.html?page={{ pagina_atual + 1 }}&q={{ termo_busca }}">
+            <a href="/pedidos?page={{ pagina_atual + 1 }}&q={{ busca_link }}&status={{ status_link }}">
                 <button><i class="fa-solid fa-chevron-right"></i></button>
             </a>
         {% else %}
@@ -232,6 +243,56 @@
 
         </main>
     </div>
+
+    <div id="modal-detalhes" class="modal-container" style="display: none;">
+    <div class="modal-content" style="max-width: 600px;">
+        <div class="modal-header">
+            <h3>Detalhes do Pedido <span id="detalhe-id">#000</span></h3>
+            <span class="close-modal" onclick="fecharModal('modal-detalhes')">&times;</span>
+        </div>
+        <div class="modal-body">
+            <p><strong>Cliente:</strong> <span id="detalhe-cliente">...</span></p>
+            <p><strong>Data:</strong> <span id="detalhe-data">...</span></p>
+            <p><strong>Endereço:</strong> <span id="detalhe-endereco">...</span></p>
+            <hr>
+            <h4>Itens do Pedido:</h4>
+            <div id="lista-itens-pedido" style="max-height: 200px; overflow-y: auto; margin-bottom: 15px;">
+                </div>
+            <p style="text-align: right; font-size: 1.2em;"><strong>Total: R$ <span id="detalhe-total">0,00</span></strong></p>
+        </div>
+        <div class="modal-footer">
+            <button class="btn-cancel" onclick="fecharModal('modal-detalhes')">Fechar</button>
+        </div>
+    </div>
+</div>
+
+<div id="modal-status" class="modal-container" style="display: none;">
+    <div class="modal-content" style="max-width: 400px;">
+        <div class="modal-header">
+            <h3>Atualizar Status</h3>
+            <span class="close-modal" onclick="fecharModal('modal-status')">&times;</span>
+        </div>
+        <form action="/admin/atualizar_status_pedido" method="POST">
+            <div class="modal-body">
+                <input type="hidden" name="id_pedido" id="input-id-status">
+                
+                <label>Selecione o novo status:</label>
+                <select name="novo_status" id="select-status" class="form-control" style="width: 100%; padding: 10px; margin-top: 5px;">
+                    <option value="Pendente">Pendente</option>
+                    <option value="Separando">Separando</option>
+                    <option value="Enviado">Enviado</option>
+                    <option value="Entregue">Entregue</option>
+                    <option value="Cancelado">Cancelado</option>
+                </select>
+            </div>
+            <div class="modal-footer" style="margin-top: 20px; display: flex; justify-content: flex-end; gap: 10px;">
+                <button type="button" class="btn-cancel" onclick="fecharModal('modal-status')">Cancelar</button>
+                <button type="submit" class="btn-save" style="background-color: #2e7d32; color: white; padding: 8px 15px; border: none; border-radius: 4px; cursor: pointer;">Salvar</button>
+            </div>
+        </form>
+    </div>
+</div>
+
  <script src="/static/scriptinterno.js"></script>
 </body>
 </html>

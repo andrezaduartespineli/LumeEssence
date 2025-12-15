@@ -161,53 +161,54 @@ function changeImage(element) {
     }
 
     // Função que roda ao clicar em "CONFIRMAR PEDIDO"
-    function prepararEnvio() {
-        // Copia os dados do cartão para os campos ocultos (hidden inputs)
-        // Isso garante que o Python receba os dados dentro do formulário corretamente
-        if (document.getElementById('card_number')) {
-            document.getElementById('hidden-card-number').value = document.getElementById('card_number').value;
-            document.getElementById('hidden-card-holder').value = document.getElementById('card_holder').value;
-            document.getElementById('hidden-card-expiry').value = document.getElementById('card_expiry').value;
-        }
-        
-        // Pega a parcela selecionada
-        let parcelas = document.getElementById('select-parcelas').value;
-        document.getElementById('hidden-parcelas').value = parcelas;
-        
-        // Verifica se optou por salvar cartão
-        let saveCard = document.getElementById('save_card_check');
-        if (saveCard && saveCard.checked) {
-            document.getElementById('hidden-save-option').value = '1';
-        } else {
-            document.getElementById('hidden-save-option').value = '0';
-        }
-    }
+/* JAVA PEDIDO CHECKOUT */
 
-      
-  /* Fim da pagina de Checkout */    
-  
-  /* Java do modal de newsletter */
-document.addEventListener("DOMContentLoaded", function() {
+// --- A "SUPER FUNÇÃO" FINAL (CORRIGIDA) ---
+/* JAVA PEDIDO CHECKOUT */
+
+function prepararEnvio() {
+    console.log("--- INICIANDO PREPARAÇÃO DO ENVIO ---");
+
+    // 1. Verifica se é cartão de crédito
+    const metodo = document.getElementById('input-pagamento').value;
+    console.log("Método de pagamento:", metodo);
+
+    if (metodo === 'credit') {
+        // Tenta pegar os elementos visíveis
+        const visualNum = document.getElementById('card_number');
+        const visualName = document.getElementById('card_holder');
+        const visualDate = document.getElementById('card_expiry');
+        const checkSave = document.getElementById('save_card_check');
+
+        // Debug: Mostra se achou os campos
+        if (!visualNum || !visualName) {
+            alert("ERRO: Não encontrei os campos do cartão no HTML! Verifique os IDs.");
+            return; 
+        }
+
+        console.log("Valor Digitado no Cartão:", visualNum.value);
+        console.log("Checkbox Salvar marcado?", checkSave.checked);
+
+        // Copia para os ocultos
+        document.getElementById('hidden-card-number').value = visualNum.value;
+        document.getElementById('hidden-card-holder').value = visualName.value;
+        document.getElementById('hidden-card-expiry').value = visualDate.value;
+        
+        // Define se salva ou não
+        const salvar = checkSave.checked ? 'sim' : 'nao';
+        document.getElementById('hidden-save-option').value = salvar;
+        
+        console.log("Valor copiado para hidden-save-option:", salvar);
+    }
     
-    // 1. VERIFICAÇÃO: Só entra aqui se NÃO tiver o registro na memória da sessão
-    if (!sessionStorage.getItem('jaMostrouNewsletter')) {
-
-        const modal = document.getElementById('newsletter-modal');
-        
-        if (modal) {
-            // Remove a classe show pra garantir que começa invisível
-            modal.classList.remove('show');
-
-            // 2. TEMPORIZADOR: Espera 2 segundos antes de aparecer (dá tempo do site carregar)
-            setTimeout(() => {
-                modal.classList.add('show');
-
-                // 3. GRAVA NA MEMÓRIA: "Já mostrei pro usuário nessa aba"
-                sessionStorage.setItem('jaMostrouNewsletter', 'true');
-            }, 2000); 
-        }
+    // Pega parcelas
+    const parcelas = document.getElementById('select-parcelas');
+    if (parcelas) {
+        document.getElementById('hidden-parcelas').value = parcelas.value;
     }
-});
+    
+    console.log("--- DADOS PREPARADOS COM SUCESSO ---");
+}
 
 function fecharModalNewsletter() {
     const modal = document.getElementById('newsletter-modal');
@@ -267,48 +268,54 @@ function simularRastreio() {
 /* JAVA PEDIDO CHECKOUT */
 
     
-function verificarEmail() {
-        const emailInput = document.getElementById('email-checkout');
-        const email = emailInput.value;
-        const msgLoading = document.getElementById('msg-loading');
+/* JAVA PEDIDO CHECKOUT */
 
-        // Validação simples
-        if (!email || !email.includes('@')) {
-            alert('Por favor, digite um e-mail válido.');
-            return;
-        }
+/* JAVA PEDIDO CHECKOUT */
 
-        // Mostra carregando e bloqueia botão
-        msgLoading.style.display = 'block';
-        emailInput.disabled = true;
+function verificarEmail(event) {
+    // 1. IMPEDE O RECARREGAMENTO DA PÁGINA (Se foi chamado por um evento)
+    if (event) event.preventDefault();
 
-        // Chama o Python
-        fetch('/verificar_email', {
-            method: 'POST',
-            headers: {
-                'Content-Type': 'application/json'
-            },
-            body: JSON.stringify({ email: email })
-        })
-        .then(response => response.json())
-        .then(data => {
-            if (data.existe) {
-                // CENÁRIO A: Tem conta -> Vai para Login
-                // Passamos o email na URL para preencher automático lá
-                window.location.href = `/login.html?email=${email}&redirect=checkout`;
-            } else {
-                // CENÁRIO B: Não tem conta -> Vai para Cadastro
-                window.location.href = `/cadastro.html?email=${email}&redirect=checkout`;
-            }
-        })
-        .catch(error => {
-            console.error('Erro:', error);
-            alert('Erro ao verificar e-mail. Tente novamente.');
-            msgLoading.style.display = 'none';
-            emailInput.disabled = false;
-        });
+    const emailInput = document.getElementById('email-checkout');
+    const email = emailInput.value;
+    const msgLoading = document.getElementById('msg-loading');
+
+    // Validação simples
+    if (!email || !email.includes('@')) {
+        alert('Por favor, digite um e-mail válido.');
+        return;
     }
 
+    // Mostra carregando e bloqueia botão
+    msgLoading.style.display = 'block';
+    emailInput.disabled = true;
+
+    // Chama o Python
+    fetch('/verificar_email', {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json'
+        },
+        body: JSON.stringify({ email: email })
+    })
+    .then(response => response.json())
+    .then(data => {
+        // Redirecionamento forçado via JavaScript
+        if (data.existe) {
+            // CENÁRIO A: Tem conta -> Vai para Login
+            window.location.replace(`/login?email=${email}&redirect=checkout`);
+        } else {
+            // CENÁRIO B: Não tem conta -> Vai para Cadastro
+            window.location.replace(`/cadastro-cliente?email=${email}&redirect=checkout`);
+        }
+    })
+    .catch(error => {
+        console.error('Erro:', error);
+        alert('Erro ao verificar e-mail. Tente novamente.');
+        msgLoading.style.display = 'none';
+        emailInput.disabled = false;
+    });
+}
     // Função para alternar abas (Cartão vs Pix)
     function selectPayment(method) {
         // ... sua lógica visual de esconder/mostrar divs ...

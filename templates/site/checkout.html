@@ -23,89 +23,134 @@
         </div>
     </div>
 
-    <div class="checkout-container">
+
+<div class="checkout-container">
+    
+    <main class="checkout-forms">
         
-        <main class="checkout-forms">
+        <div class="breadcrumbs">
+            <a href="/">Início</a> > <a href="/carrinho">Carrinho</a> > <strong>Finalizar Compra</strong>
+        </div>
+
+        <div class="login-alert">
+            <i class="fas fa-user-circle"></i>
+            <span>Já é cliente? <a href="/login">Clique aqui para entrar</a> e agilizar sua compra.</span>
+        </div>
+        <br>
+
+        <form id="form-checkout" action="/finalizar_pedido" method="POST">
+
+            <input type="hidden" name="forma_pagamento" id="input-pagamento" value="credit">
+            <input type="hidden" name="parcelas_escolhidas" id="hidden-parcelas" value="1">
             
-            <div class="breadcrumbs">
-                <a href="/">Início</a> > <a href="/carrinho">Carrinho</a> > <strong>Finalizar Compra</strong>
-            </div>
-
-            <div class="login-alert">
-                <i class="fas fa-user-circle"></i>
-                <span>Já é cliente? <a href="/login">Clique aqui para entrar</a> e agilizar sua compra.</span>
-            </div>
-            <br>
-
             <section class="checkout-step" id="step-identificacao">
                 <h3>1. Identificação</h3>
-                
-                <div class="auth-check-box">
-                    <p>Para continuar, digite seu e-mail:</p>
-                    
-                    <div class="input-group-check">
-                        <input type="email" id="email-checkout" placeholder="seu@email.com.br" required>
-                        <button type="button" class="btn-continue" onclick="verificarEmail()">CONTINUAR</button>
+                {% if session['id_cliente'] %}
+                    <div style="padding: 10px; background: #e8f5e9; border-left: 4px solid #2e7d32; border-radius: 4px;">
+                        <p style="margin: 0; color: #2e7d32; font-weight: bold;">
+                            <i class="fa-solid fa-check"></i> Você está logado como: {{ cliente['nome'] }} ({{ cliente['email'] }})
+                        </p>
                     </div>
-                    
-                    <p id="msg-loading" style="display:none; color: #d4a373; margin-top: 10px;">
-                        <i class="fas fa-spinner fa-spin"></i> Verificando...
-                    </p>
-                </div>
+                {% else %}
+                    <div class="auth-check-box">
+                        <p>Para continuar, digite seu e-mail:</p>
+                        <div class="input-group-check">
+                            <input type="email" id="email-checkout" placeholder="seu@email.com.br" required>
+                            <button type="button" class="btn-continue" onclick="verificarEmail(event)">CONTINUAR</button>
+                        </div>
+                        <p id="msg-loading" style="display:none; color: #d4a373; margin-top: 10px;">
+                            <i class="fas fa-spinner fa-spin"></i> Verificando...
+                        </p>
+                    </div>
+                {% endif %}
             </section>
 
-            <div id="checkout-blocked-layer" style="opacity: 0.5; pointer-events: none;">
+            <div id="checkout-blocked-layer" style="{{ '' if session['id_cliente'] else 'opacity: 0.5; pointer-events: none;' }}">
                 
                 <section class="checkout-step">
                     <h3>2. Endereço de Entrega</h3>
-                    <p style="color: #666;">Faça login para selecionar seus endereços salvos.</p>
+                    {% if session['id_cliente'] %}
+                        <div class="address-selector">
+                            <label class="shipping-option" style="cursor: pointer; display: flex; gap: 10px; align-items: center;">
+                                <input type="radio" name="endereco_entrega" value="principal" checked>
+                                <div>
+                                    <strong>Minha Casa (Principal)</strong><br>
+                                    <span style="font-size: 0.9rem; color: #555;">
+                                        {{ cliente['endereco'] }}, {{ cliente['n'] }} - {{ cliente['bairro'] }}<br>
+                                        {{ cliente['cidade'] }}/{{ cliente['estado'] }} - CEP: {{ cliente['cep'] }}
+                                    </span>
+                                </div>
+                            </label>
+                            {% for end in enderecos %}
+                            <label class="shipping-option" style="cursor: pointer; display: flex; gap: 10px; align-items: center; margin-top: 10px;">
+                                <input type="radio" name="endereco_entrega" value="{{ end['id_endereco'] }}">
+                                <div>
+                                    <strong>{{ end['titulo'] }}</strong><br>
+                                    <span style="font-size: 0.9rem; color: #555;">
+                                        {{ end['endereco'] }}, {{ end['numero'] }} - {{ end['bairro'] }}<br>
+                                        {{ end['cidade'] }}/{{ end['estado'] }} - CEP: {{ end['cep'] }}
+                                    </span>
+                                </div>
+                            </label>
+                            {% endfor %}
+                            <a href="/area_cliente/enderecos.html" style="font-size: 0.8rem; color: #A36361; text-decoration: underline; margin-top: 10px; display: block;">Gerenciar Endereços</a>
+                        </div>
+                    {% else %}
+                        <p style="color: #666;">Aguardando identificação para carregar seus endereços...</p>
+                    {% endif %}
                 </section>
 
                 <section class="checkout-step">
                     <h3>3. Entrega</h3>
-                    <p style="color: #666;">Aguardando identificação...</p>
+                    <p style="color: #666;">Entrega Padrão (Fixo: R$ 15,00)</p>
                 </section>
 
                 <section class="checkout-step">
                     <h3>4. Pagamento</h3>
                     
                     <div class="payment-tabs">
-                        <button class="tab-btn active" onclick="selectPayment('credit')"><i class="far fa-credit-card"></i> Cartão</button>
-                        <button class="tab-btn" onclick="selectPayment('pix')"><i class="fa-brands fa-pix"></i> Pix (-5%)</button>
+                        <button type="button" class="tab-btn active" onclick="selectPayment('credit')"><i class="far fa-credit-card"></i> Cartão</button>
+                        <button type="button" class="tab-btn" onclick="selectPayment('pix')"><i class="fa-brands fa-pix"></i> Pix (-5%)</button>
                     </div>
 
-                    <div id="credit-content" class="payment-content active">
-                        <div class="form-grid">
-                            <div class="input-group full-width">
-                                <label>Número do Cartão</label>
-                                <input type="text" id="card_number" placeholder="0000 0000 0000 0000">
+                    <div id="credit-card-form" style="margin-top: 20px;">
+                        <div class="input-group full-width">
+                            <label>Número do Cartão</label>
+                            <div class="card-input-wrapper">
+                                <input type="text" id="card_number" name="card_number_input" placeholder="0000 0000 0000 0000" maxlength="19">
+                                <i class="fa-regular fa-credit-card"></i>
                             </div>
-                            <div class="input-group full-width">
-                                <label>Nome Impresso no Cartão</label>
-                                <input type="text" id="card_holder" placeholder="Como no cartão" style="text-transform:uppercase;">
-                            </div>
+                        </div>
+
+                        <div class="input-group full-width">
+                            <label>Nome do Titular (como no cartão)</label>
+                            <input type="text" id="card_holder" name="card_holder_input" placeholder="NOME COMPLETO">
+                        </div>
+
+                        <div class="row-inputs">
                             <div class="input-group">
                                 <label>Validade</label>
-                                <input type="text" id="card_expiry" placeholder="MM/AA">
+                                <input type="text" id="card_expiry" name="card_expiry_input" placeholder="MM/AA" maxlength="5">
                             </div>
+                            
                             <div class="input-group">
                                 <label>CVV</label>
-                                <input type="password" id="card_cvv" placeholder="123">
+                                <input type="text" id="card_cvc" name="card_cvc_input" placeholder="123" maxlength="4">
                             </div>
-                            <div class="input-group full-width" style="margin-top: 15px;">
-                                <label style="display: flex; align-items: center; gap: 10px; cursor: pointer; font-weight: normal;">
-                                    <input type="checkbox" id="save_card_check">
-                                    Salvar cartão para compras futuras
-                                </label>
-                            </div>
+                        </div>
+
+                        <div class="save-card-option" style="margin-top: 15px;">
+                            <label style="display: flex; align-items: center; gap: 8px; cursor: pointer;">
+                                <input type="checkbox" id="save_card_check" name="save_card_check" value="sim"> 
+                                Salvar cartão para compras futuras
+                            </label>
                         </div>
 
                         <div class="input-group full-width" style="margin-top: 20px;">
                             <label>Parcelamento</label>
-                            <select id="select-parcelas">
+                            <select id="select-parcelas" name="parcelas_escolhidas">
                                 {% set total_final = total_geral + 15 %}
                                 <option value="1">1x de R$ {{ "%.2f"|format(total_final) }} sem juros</option>
-                                
                                 {% for i in range(2, 4) %}
                                     <option value="{{ i }}">{{ i }}x de R$ {{ "%.2f"|format(total_final / i) }} sem juros</option>
                                 {% endfor %}
@@ -116,85 +161,45 @@
                     <div id="pix-content" class="payment-content" style="display: none;">
                         <div class="pix-box">
                             <p>O QR Code será gerado após clicar em "Finalizar Pedido".</p>
-                            <ul class="pix-steps">
-                                <li>1. Abra o app do seu banco.</li>
-                                <li>2. Escolha pagar via Pix com QR Code ou Copia e Cola.</li>
-                                <li>3. O pagamento é aprovado na hora!</li>
-                            </ul>
                             <div class="total-pix-highlight">
                                 Total: <strong>R$ {{ "%.2f"|format(total_final * 0.95) }}</strong>
                             </div>
                         </div>
                     </div>
-
                 </section>
 
-                <form id="form-checkout" action="/finalizar_pedido" method="POST">
-                    <input type="hidden" name="id_cliente" value="1">
-                    
-                    <input type="hidden" name="total_pedido" id="input-total" value="{{ total_final }}">
-                    <input type="hidden" name="forma_pagamento" id="input-pagamento" value="credit">
-                    <input type="hidden" name="lista_itens" id="input-itens">
-                    
-                    <input type="hidden" name="card_number_sent" id="hidden-card-number">
-                    <input type="hidden" name="card_holder_sent" id="hidden-card-holder">
-                    <input type="hidden" name="card_expiry_sent" id="hidden-card-expiry">
-                    <input type="hidden" name="save_card_option" id="hidden-save-option">
-                    <input type="hidden" name="parcelas_escolhidas" id="hidden-parcelas" value="1">
+                <div class="checkout-actions" style="margin-top: 30px;">
+                    <a href="/carrinho" class="btn-cancel-order">Cancelar Pedido</a>
+                    <button type="submit" class="btn-finish-order">CONFIRMAR PEDIDO</button>
+                </div>
 
-                    <div class="checkout-actions">
-                        <a href="/carrinho" class="btn-cancel-order">Cancelar Pedido</a>
-                        <button type="submit" class="btn-finish-order" onclick="prepararEnvio()">CONFIRMAR PEDIDO</button>
+            </div> </form> </main>
+
+    <aside class="order-summary-sidebar">
+        <div class="summary-card">
+            <h3>Resumo do Pedido</h3>
+            <div class="summary-products">
+                {% for item in carrinho %}
+                <div class="summary-item">
+                    <img src="/static/uploads/{{ item['imagem'] }}" onerror="this.src='/static/imagens/sem_foto.png'" alt="{{ item['nome'] }}">
+                    <div class="sum-details">
+                        <p class="sum-name">{{ item['nome'] }}</p>
+                        <p class="sum-qty">Qtd: {{ item['qtd'] }}</p>
                     </div>
-                </form>
-
+                    <span class="sum-price">R$ {{ "%.2f"|format(item['subtotal']) }}</span>
+                </div>
+                {% endfor %}
             </div>
-        </main>
-
-        <aside class="order-summary-sidebar">
-            <div class="summary-card">
-                <h3>Resumo do Pedido</h3>
-                
-                <div class="summary-products">
-                    {% for item in carrinho %}
-                    <div class="summary-item">
-                        <img src="/static/uploads/{{ item['imagem'] }}" 
-                             onerror="this.src='/static/imagens/sem_foto.png'" 
-                             alt="{{ item['nome'] }}">
-                        
-                        <div class="sum-details">
-                            <p class="sum-name">{{ item['nome'] }}</p>
-                            <p class="sum-qty">Qtd: {{ item['qtd'] }}</p>
-                        </div>
-                        <span class="sum-price">R$ {{ "%.2f"|format(item['subtotal']) }}</span>
-                    </div>
-                    {% endfor %}
-                </div>
-
-                <hr class="divider">
-
-                <div class="summary-totals">
-                    <div class="row">
-                        <span>Subtotal</span>
-                        <span>R$ {{ "%.2f"|format(total_geral) }}</span>
-                    </div>
-                    <div class="row">
-                        <span>Frete (Fixo)</span>
-                        <span>R$ 15,00</span>
-                    </div>
-                    <div class="row total">
-                        <span>Total</span>
-                        <span>R$ {{ "%.2f"|format(total_final) }}</span>
-                    </div>
-                </div>
-
-                <div class="security-footer">
-                    <i class="fas fa-shield-alt"></i> Compra 100% Segura
-                </div>
+            <hr class="divider">
+            <div class="summary-totals">
+                <div class="row"><span>Subtotal</span><span>R$ {{ "%.2f"|format(total_geral) }}</span></div>
+                <div class="row"><span>Frete (Fixo)</span><span>R$ 15,00</span></div>
+                <div class="row total"><span>Total</span><span>R$ {{ "%.2f"|format(total_final) }}</span></div>
             </div>
-        </aside>
+        </div>
+    </aside>
 
-    </div>
+</div>
 
 <footer>
   <div class="footer-container">

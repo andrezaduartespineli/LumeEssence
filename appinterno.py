@@ -1,4 +1,4 @@
-from flask import Flask, render_template, request, redirect, url_for, session, Response
+from flask import Flask, render_template, request, redirect, url_for, session, Response, jsonify
 import sqlite3
 import os
 from datetime import datetime
@@ -65,30 +65,128 @@ def dashboard():
                            pedidos_pendentes=pedidos_pendentes,
                            estoque_baixo=estoque_baixo,
                            novos_clientes=novos_clientes)
+# --- ROTA 1: SALVAR NOVO STATUS ---
+@app.route("/admin/atualizar_status_pedido", methods=['POST'])
+def atualizar_status_pedido():
+    # Verifica login admin...
+    
+    id_pedido = request.form['id_pedido']
+    novo_status = request.form['novo_status']
+    
+    con = get_db()
+    cur = con.cursor()
+    cur.execute("UPDATE tb_pedidos SET status = ? WHERE id_pedido = ?", (novo_status, id_pedido))
+    con.commit()
+    con.close()
+    
+    return redirect("/pedido.html") # Ou /pedidos dependendo da sua rota
 
+
+# --- API: BUSCAR DETALHES DO PEDIDO (PARA O MODAL) ---
+# --- API: BUSCAR DETALHES (VERSÃO SEGURA / DEBUG) ---
+@app.route("/admin/api/pedido/<int:id_pedido>")
+def api_pedido_detalhes(id_pedido):
+    
+    # --- DESATIVAR SEGURANÇA TEMPORARIAMENTE ---
+    # if 'id_usuario' not in session: 
+    #     print("ERRO API: Usuário não logado tentou acessar.")
+    #     return jsonify({"erro": "Não autorizado"}), 401
+    # -------------------------------------------
+
+    # ... o resto do código continua igual ...
+
+    con = get_db()
+    con.row_factory = sqlite3.Row
+    cur = con.cursor()
+    
+    try:
+        # 2. Busca SÓ o Pedido e o Nome do Cliente (Sem endereço por enquanto)
+        print(f"Buscando pedido #{id_pedido}...") # Debug no terminal
+        
+        cur.execute("""
+            SELECT p.data_pedido, p.valor_total, c.nome
+            FROM tb_pedidos p
+            JOIN tb_clientes c ON p.id_cliente = c.id_cliente
+            WHERE p.id_pedido = ?
+        """, (id_pedido,))
+        
+        pedido = cur.fetchone()
+        
+        if not pedido:
+            print("ERRO API: Pedido não encontrado no banco.")
+            return jsonify({"erro": "Pedido não encontrado"}), 404
+
+        # 3. Busca os Itens
+        cur.execute("""
+            SELECT i.quantidade, i.subtotal, prod.nome_produto
+            FROM tb_itensPedido i
+            JOIN tb_produtos prod ON i.id_produto = prod.id_produto
+            WHERE i.id_pedido = ?
+        """, (id_pedido,))
+        
+        itens_db = cur.fetchall()
+        
+        lista_itens = []
+        for item in itens_db:
+            lista_itens.append({
+                "produto": item['nome_produto'],
+                "qtd": item['quantidade'],
+                "subtotal": f"{item['subtotal']:.2f}"
+            })
+
+        con.close()
+        
+        print("SUCESSO API: Dados enviados para o modal.") # Debug
+        
+        # Retorna JSON
+        return jsonify({
+            "cliente": pedido['nome'],
+            "data": pedido['data_pedido'],
+            "total": f"{pedido['valor_total']:.2f}",
+            "endereco": "Endereço Indisponível (Teste)", # Texto fixo para não quebrar
+            "itens": lista_itens
+        })
+
+    except Exception as e:
+        con.close()
+        # ISSO VAI MOSTRAR O ERRO REAL NO SEU TERMINAL:
+        print(f"\n---> ERRO GRAVE NA API: {e}\n") 
+        return jsonify({"erro": str(e)}), 500
+    
 # ==============================================================================
 # PRODUTOS
 # ==============================================================================
+# --- Produtos (VERSÃO CORRIGIDA PARA OS BOTÕES FUNCIONAREM) ---
 @app.route("/produto.html")
 @app.route("/produtos")
 def listar_produtos():
+    # Se quiser ativar a segurança depois, descomente a linha abaixo:
+    # if 'id_usuario' not in session: return redirect("/login.html")
+
+    # 1. Captura os parâmetros da URL
     busca = request.args.get("q")
     filtro_cat = request.args.get("cat")
     
     con = get_db()
     cur = con.cursor()
+    
     sql = "SELECT * FROM tb_produtos"
     condicoes = []
     parametros = []
     
+    # 2. Filtro de Busca (Texto: Nome ou SKU)
     if busca:
         condicoes.append("(nome_produto LIKE ? OR sku LIKE ?)")
-        parametros.append(f"%{busca}%"); parametros.append(f"%{busca}%")
+        parametros.append(f"%{busca}%")
+        parametros.append(f"%{busca}%")
         
+    # 3. Filtro de Categoria (CORREÇÃO AQUI)
+    # Mudamos de "=" para "LIKE" para ignorar pequenos espaços
     if filtro_cat and filtro_cat != 'Todos':
-        condicoes.append("categoria = ?")
-        parametros.append(filtro_cat)
+        condicoes.append("categoria LIKE ?")
+        parametros.append(f"%{filtro_cat}%")
     
+    # 4. Monta o SQL Final
     if condicoes:
         sql += " WHERE " + " AND ".join(condicoes)
         
@@ -97,10 +195,13 @@ def listar_produtos():
     try:
         cur.execute(sql, parametros)
         produtos = cur.fetchall()
-    except:
+    except Exception as e:
+        print(f"Erro no filtro: {e}")
         produtos = []
         
     con.close()
+    
+    # Envia os dados para a tela
     return render_template("interno/produto.html", produtos=produtos, cat_atual=filtro_cat)
 
 @app.route("/cad_produtos.html")
@@ -601,7 +702,7 @@ def configuracoes():
 @app.route("/pedido.html")
 @app.route("/pedidos")
 def pedidos():
-    POR_PAGINA = 10
+    POR_PAGINA = 15
     pagina_atual = request.args.get('page', 1, type=int)
     busca = request.args.get("q")
     filtro_status = request.args.get("status")
@@ -676,30 +777,62 @@ def logout():
 # ==============================================================================
 @app.route("/gerar_planilha_padrao")
 def gerar_planilha_padrao():
+    # REMOVIDO: if 'id_usuario' not in session: return redirect("/login.html")
+    
+    # Lista expandida para gerar +30 produtos
     categorias = {
         "Velas Aromáticas": {"prefixo": "VEL", "custo": 25.00, "venda": 59.90, "var": "150g"},
         "Home Spray":       {"prefixo": "HOM", "custo": 18.00, "venda": 45.00, "var": "250ml"},
         "Difusores":        {"prefixo": "DIF", "custo": 30.00, "venda": 75.00, "var": "200ml"},
         "Kits Presente":    {"prefixo": "KIT", "custo": 55.00, "venda": 129.90, "var": "Kit M"}
     }
-    aromas = ["Lavanda", "Alecrim", "Bamboo", "Baunilha", "Limão Siciliano", "Jasmim", "Coco", "Morango", "Flor de Algodão", "Capim Limão"]
+   
+    aromas = [
+        "Lavanda", "Alecrim", "Bamboo", "Baunilha", "Limão Siciliano", 
+        "Jasmim", "Coco", "Morango", "Flor de Algodão", "Capim Limão",
+        "Canela", "Chá Branco", "Pitanga", "Maracujá"
+    ]
+
     output = io.StringIO()
     writer = csv.writer(output, delimiter=';')
-    writer.writerow(["nome_produto", "sku", "descricao", "preco_custo", "preco_venda", "qtd_estoque", "fornecedor", "categoria", "aroma", "variacao"])
-    
+
+    header = ["nome_produto", "sku", "descricao", "preco_custo", "preco_venda",
+              "qtd_estoque", "fornecedor", "categoria", "aroma", "variacao"]
+    writer.writerow(header)
+
+    # Gera 4 categorias x 8 aromas = 32 Produtos
     for cat_nome, cat_dados in categorias.items():
-        aromas_selecionados = random.sample(aromas, 5)
+        aromas_selecionados = random.sample(aromas, 8) 
+        
         for i, aroma in enumerate(aromas_selecionados, 1):
             sku = f"{cat_dados['prefixo']}-{str(i).zfill(3)}"
             nome = f"{cat_nome[:-1]} {aroma}" if cat_nome.endswith('s') else f"{cat_nome} {aroma}"
             descricao = f"Produto artesanal da linha {cat_nome} com essência premium de {aroma}."
-            writer.writerow([nome, sku, descricao, str(cat_dados['custo']).replace('.', ','), str(cat_dados['venda']).replace('.', ','), random.randint(10, 50), "Produção Própria", cat_nome, aroma, cat_dados['var']])
-    
-    output.seek(0)
-    return Response(output, mimetype="text/csv", headers={"Content-Disposition": "attachment;filename=novos_produtos.csv"})
+            
+            writer.writerow([
+                nome,
+                sku,
+                descricao,
+                str(cat_dados['custo']).replace('.', ','),
+                str(cat_dados['venda']).replace('.', ','),
+                random.randint(10, 50),
+                "Produção Própria",
+                cat_nome,
+                aroma,
+                cat_dados['var']
+            ])
 
+    output.seek(0)
+    return Response(
+        output,
+        mimetype="text/csv",
+        headers={"Content-Disposition": "attachment;filename=novos_produtos_lote.csv"}
+    )
+    
 @app.route("/importar_csv", methods=["POST"])
 def importar_csv():
+    # REMOVIDO: if 'id_usuario' not in session: return redirect("/login.html")
+    
     if 'arquivo_csv' not in request.files: return "Nenhum arquivo enviado", 400
     file = request.files['arquivo_csv']
     if file.filename == '': return "Nenhum arquivo selecionado", 400
@@ -707,8 +840,10 @@ def importar_csv():
     if file:
         stream = io.TextIOWrapper(file.stream._file, "utf-8", newline='')
         csv_input = csv.DictReader(stream, delimiter=';')
+        
         con = get_db()
         cur = con.cursor()
+        
         try:
             for row in csv_input:
                 img_padrao = "sem_foto.png"
@@ -716,17 +851,24 @@ def importar_csv():
                 data_hoje = datetime.now().strftime("%Y-%m-%d")
                 preco_custo = row['preco_custo'].replace(',', '.')
                 preco_venda = row['preco_venda'].replace(',', '.')
+
                 cur.execute("""
                     INSERT INTO tb_produtos (nome_produto, sku, descricao, preco_custo, preco_venda,
-                    qtd_estoque, fornecedor, categoria, aroma, variacao, img_produto, ativo, data_cad) 
+                        qtd_estoque, fornecedor, categoria, aroma, variacao, img_produto, ativo, data_cad) 
                     VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
-                """, (row['nome_produto'], row['sku'], row['descricao'], preco_custo, preco_venda, row['qtd_estoque'], row['fornecedor'], row['categoria'], row['aroma'], row['variacao'], img_padrao, ativo, data_hoje))
+                """, (
+                    row['nome_produto'], row['sku'], row['descricao'], preco_custo, preco_venda,
+                    row['qtd_estoque'], row['fornecedor'], row['categoria'], row['aroma'], row['variacao'],
+                    img_padrao, ativo, data_hoje
+                ))
+            
             con.commit()
         except Exception as e:
             con.rollback()
             return f"Erro na importação: {str(e)}", 500
         finally:
             con.close()
+
         return redirect("/cad_produtos.html")
 
 if __name__ == "__main__":

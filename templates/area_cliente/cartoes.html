@@ -157,43 +157,46 @@
 
     </main>
 </div>
-
-<div id="modal-cartao" class="modal-overlay" style="display: none;">
-    <div class="modal-content-box">
-        <div class="modal-header">
-            <h3>Adicionar Cartão</h3>
-            <button class="close-modal" onclick="document.getElementById('modal-cartao').style.display='none'">&times;</button>
+<div id="modal-cartao" class="modal-container" style="display: none;">
+    <div class="modal-content">
+        <div class="modal-header" style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px;">
+     
+            <span class="close-modal" onclick="fecharModal()" style="cursor: pointer; font-size: 24px;">&times;</span>
         </div>
         
-        <form class="card-form" action="/area_cliente/adicionar_cartao" method="POST">
+        <form class="card-form" action="/adicionar_cartao" method="POST">
             
-            <div class="input-row">
+            <div class="input-group">
                 <label>Número do Cartão</label>
                 <div class="input-with-icon" style="position: relative;">
                     <i class="fa-regular fa-credit-card" style="position: absolute; left: 10px; top: 12px; color: #999;"></i>
-                    <input type="text" name="numero_cartao" placeholder="0000 0000 0000 0000" maxlength="19" required style="width: 100%; padding-left: 35px; padding-top: 10px; padding-bottom: 10px; border: 1px solid #ddd; border-radius: 5px;">
+                    <input type="text" name="numero_cartao" placeholder="0000 0000 0000 0000" maxlength="19" required 
+                           style="width: 100%; padding-left: 35px; padding-top: 10px; padding-bottom: 10px; border: 1px solid #ddd; border-radius: 5px;">
                 </div>
             </div>
 
-            <div class="input-row">
+            <div class="input-group" style="margin-top: 15px;">
                 <label>Nome do Titular</label>
-                <input type="text" name="nome_titular" placeholder="Como impresso no cartão" style="text-transform: uppercase; width: 100%; padding: 10px; border: 1px solid #ddd; border-radius: 5px;" required>
+                <input type="text" name="nome_titular" placeholder="Como impresso no cartão" required 
+                       style="text-transform: uppercase; width: 100%; padding: 10px; border: 1px solid #ddd; border-radius: 5px;">
             </div>
 
-            <div class="input-row-2" style="display: flex; gap: 15px; margin-top: 15px;">
+            <div class="row-inputs" style="display: flex; gap: 15px; margin-top: 15px;">
                 <div style="flex: 1;">
                     <label>Validade</label>
-                    <input type="text" name="validade" placeholder="MM/AA" maxlength="5" required style="width: 100%; padding: 10px; border: 1px solid #ddd; border-radius: 5px;">
+                    <input type="text" name="validade" placeholder="MM/AA" maxlength="5" required 
+                           style="width: 100%; padding: 10px; border: 1px solid #ddd; border-radius: 5px;">
                 </div>
                 <div style="flex: 1;">
                     <label>CVV</label>
-                    <input type="password" name="cvv" placeholder="123" maxlength="4" required style="width: 100%; padding: 10px; border: 1px solid #ddd; border-radius: 5px;">
+                    <input type="text" name="cvv" placeholder="123" maxlength="4" required 
+                           style="width: 100%; padding: 10px; border: 1px solid #ddd; border-radius: 5px;">
                 </div>
             </div>
 
-            <div class="modal-footer" style="margin-top: 20px; display: flex; justify-content: flex-end; gap: 10px;">
-                <button type="button" class="btn-cancel" onclick="document.getElementById('modal-cartao').style.display='none'" style="padding: 10px 20px; background: #eee; border: none; border-radius: 5px; cursor: pointer;">Cancelar</button>
-                <button type="submit" class="btn-save" style="padding: 10px 20px; background: #A36361; color: white; border: none; border-radius: 5px; cursor: pointer;">Salvar Cartão</button>
+            <div class="modal-buttons" style="margin-top: 20px; display: flex; gap: 10px;">
+                <button type="button" class="btn-cancel" onclick=" fecharModal() ">Cancelar</button>
+                <button type="submit" class="btn-save">Salvar Cartão</button>
             </div>
         </form>
     </div>

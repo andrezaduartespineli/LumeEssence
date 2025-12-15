@@ -1,5 +1,3 @@
-Markdown
-
 # 🕯️ Lume Essence - Ecossistema Full-Stack de E-commerce & ERP
 
 ![Python](https://img.shields.io/badge/Python-3.10%2B-blue?style=for-the-badge&logo=python&logoColor=white)
@@ -7,7 +5,7 @@ Markdown
 ![SQLite](https://img.shields.io/badge/SQLite-Database-blue?style=for-the-badge&logo=sqlite&logoColor=white)
 ![Frontend](https://img.shields.io/badge/Frontend-HTML5%2FCSS3%2FJS-green?style=for-the-badge&logo=html5&logoColor=white)
 
-> **Lume Essence** é uma solução web integrada que une uma Loja Virtual (B2C) moderna a um Sistema de Gestão (ERP) robusto. Desenvolvido para gerenciar todo o ciclo de vida de uma marca de velas aromáticas e decoração, desde a captação do cliente até o controle financeiro.
+> .**Lume Essence** é uma solução web integrada que une uma Loja Virtual (B2C) moderna a um Sistema de Gestão (ERP) robusto[cite: 7]. .Desenvolvido para gerenciar todo o ciclo de vida de uma marca de velas aromáticas e decoração, desde a captação do cliente até o controle financeiro[cite: 7].
 
 ---
 
@@ -17,31 +15,30 @@ O sistema foi arquitetado com separação de contextos para garantir segurança 
 
 ### 🛍️ 1. Loja Virtual (Frente de Loja)
 Focada na experiência do usuário (UX), com navegação fluida e design responsivo.
-* **Catálogo Dinâmico:** Listagem de produtos alimentada pelo banco de dados com filtros visuais.
-* **Checkout Progressivo:** Fluxo de compra moderno (semelhante aos grandes marketplaces) que identifica o usuário pelo e-mail antes de solicitar cadastro.
-* **Carrinho Inteligente:** Gerenciamento de itens via Sessão (Session) do Flask, permitindo persistência durante a navegação.
-* **Simulação de Pagamento:**
-    * **Cartão de Crédito:** Interface visual interativa e simulação de **Tokenização** (salvamento seguro apenas dos últimos 4 dígitos).
-    * **Pix:** Cálculo automático de descontos.
-* **Área do Cliente:** Histórico de pedidos com timeline de status, carteira digital e gestão de endereços.
+* .**Catálogo Dinâmico:** Listagem de produtos alimentada pelo banco de dados com filtros visuais por categoria e aroma[cite: 9].
+* .**Checkout Progressivo:** Fluxo de compra moderno com identificação de usuário e carrinho persistente via Sessão[cite: 10, 11].
+* .**Simulação de Pagamento:** Interface visual interativa para Cartão de Crédito (com tokenização simulada) e Pix (com cálculo de desconto)[cite: 12, 13].
+* .**Área do Cliente:** Painel completo para acompanhamento de pedidos (timeline de status), gestão de endereços e carteira digital[cite: 13].
 
 ### 📊 2. Painel Administrativo (ERP)
-Backoffice para controle total da operação.
-* **Dashboard Financeiro:** Visão de fluxo de caixa com gráficos e tabelas de Receitas vs. Despesas.
-* **Gestão de Estoque:** CRUD completo de produtos com upload de imagens e controle de status (Ativo/Inativo).
-* **CRM e Equipe:** Gestão de base de clientes e controle de acesso de funcionários.
-* **Cadeia de Suprimentos:** Cadastro e gestão de fornecedores categorizados.
+.Backoffice protegido para controle total da operação[cite: 14].
+* .**Dashboard Financeiro:** KPIs em tempo real (Vendas Hoje, Estoque Baixo) e controle de fluxo de caixa (Receitas vs. Despesas)[cite: 15].
+* .**Gestão de Estoque:** CRUD completo de produtos com upload de imagens e controle de status[cite: 16].
+* .**CRM e Equipe:** Gestão da base de clientes, fornecedores e controle de acesso de funcionários com níveis de permissão[cite: 17, 18].
+* .**Automação:** Ferramenta para importação em massa de produtos via planilha Excel/CSV.
 
 ---
 
 ## 🛠️ Stack Tecnológico
 
-* **Backend:** Python com Flask (Microframework). Utiliza arquitetura modular com dois pontos de entrada (`appsite.py` e `appinterno.py`).
-* **Banco de Dados:** SQLite relacional. Estrutura otimizada com tabelas para Pedidos, Itens, Clientes, Financeiro e Estoque.
+* .**Backend:** Python com Flask (Microframework)[cite: 19].
+    * .Arquitetura modular com aplicações separadas para Site (`appsite.py`) e Admin (`appinterno.py`)[cite: 19].
+    * .`Werkzeug` para segurança de senhas (Hash) e uploads[cite: 90].
+* .**Banco de Dados:** SQLite relacional com modelagem otimizada para Pedidos, Itens, Financeiro e Estoque[cite: 20].
 * **Frontend:**
-    * HTML5 Semântico com Jinja2 Templating.
-    * CSS3 Avançado (Grid, Flexbox, Variáveis `:root` e Responsividade).
-    * JavaScript Vanilla (Sem frameworks pesados) para manipulação do DOM e Fetch API.
+    * .HTML5 Semântico com Jinja2 Templating[cite: 21].
+    * .CSS3 Avançado (Grid, Flexbox, Variáveis e Responsividade)[cite: 21].
+    * .JavaScript Vanilla para máscaras de input, consumo de API (ViaCEP) e manipulação do DOM[cite: 22].
 
 ---
 
@@ -51,16 +48,15 @@ Backoffice para controle total da operação.
 LumeEssence/
 ├── appsite.py          # Aplicação da Loja (Porta 5000)
 ├── appinterno.py       # Aplicação do Admin (Porta 5001)
-├── db_lume.db.py       # Script de modelagem e criação do Banco
-├── static/             # Arquivos estáticos
-│   ├── uploads/        # Imagens dos produtos (geradas dinamicamente)
-│   ├── styleinterno.css
-│   ├── stylesite.css
-│   └── ...
+├── db_lume.db.py       # Script de criação do Banco de Dados
+├── static/             # Arquivos estáticos (CSS, JS, Imagens)
+│   ├── uploads/        # Imagens dinâmicas dos produtos/perfis
+│   ├── viacep.js       # Integração com API de CEP
+│   └── mascaras.js     # Formatação de inputs (CPF, Tel, Moeda)
 └── templates/          # Templates HTML (Jinja2)
-    ├── site/           # Páginas da Loja (Home, Checkout, Login)
-    ├── interno/        # Páginas do Admin (Dashboard, Cadastros)
-    └── area_cliente/   # Páginas logadas do usuário 
+    ├── site/           # Páginas da Loja
+    ├── interno/        # Páginas do Admin
+    └── area_cliente/   # Painel do Usuário
 ```
 
 

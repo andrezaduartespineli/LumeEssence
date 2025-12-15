@@ -181,4 +181,72 @@ function toggleProfileMenu() {
         }
 
         ///.JAVA DO MODAL EXCLUIR CLIENTE///
+        // --- FUNÇÕES DE MODAL GENÉRICAS ---
+function fecharModal(idModal) {
+    document.getElementById(idModal).style.display = 'none';
+}
+
+// --- 1. ABRIR MODAL DE STATUS ---
+function abrirStatus(idPedido, statusAtual) {
+    // Preenche o ID no input oculto
+    document.getElementById('input-id-status').value = idPedido;
+    
+    // Seleciona o status atual no dropdown
+    document.getElementById('select-status').value = statusAtual;
+    
+    // Abre o modal
+    document.getElementById('modal-status').style.display = 'flex';
+}
+
+// --- 2. ABRIR MODAL DE DETALHES (Busca dados do Python) ---
+async function abrirDetalhes(idPedido) {
+    const modal = document.getElementById('modal-detalhes');
+    const listaDiv = document.getElementById('lista-itens-pedido');
+    
+    // Limpa dados antigos
+    listaDiv.innerHTML = '<p>Carregando itens...</p>';
+    document.getElementById('detalhe-id').innerText = '#' + idPedido;
+    modal.style.display = 'flex';
+
+    try {
+        // Chama a rota do Python para pegar os dados (Criaremos no Passo 4)
+        const response = await fetch(`/admin/api/pedido/${idPedido}`);
+        const data = await response.json();
+
+        if (data.erro) {
+            listaDiv.innerHTML = '<p style="color:red">Erro ao carregar.</p>';
+            return;
+        }
+
+        // Preenche cabeçalho
+        document.getElementById('detalhe-cliente').innerText = data.cliente;
+        document.getElementById('detalhe-data').innerText = data.data;
+        document.getElementById('detalhe-total').innerText = data.total;
+        document.getElementById('detalhe-endereco').innerText = data.endereco;
+
+        // Gera a lista de produtos (HTML dinâmico)
+        let htmlItens = '<ul style="list-style: none; padding: 0;">';
+        data.itens.forEach(item => {
+            htmlItens += `
+                <li style="border-bottom: 1px solid #eee; padding: 8px 0; display: flex; justify-content: space-between;">
+                    <span>${item.qtd}x ${item.produto}</span>
+                    <span>R$ ${item.subtotal}</span>
+                </li>
+            `;
+        });
+        htmlItens += '</ul>';
         
+        listaDiv.innerHTML = htmlItens;
+
+    } catch (error) {
+        console.error("Erro:", error);
+        listaDiv.innerHTML = '<p>Erro de conexão ao buscar detalhes.</p>';
+    }
+}
+
+// Fechar modal ao clicar fora
+window.onclick = function(event) {
+    if (event.target.classList.contains('modal-container')) {
+        event.target.style.display = "none";
+    }
+}

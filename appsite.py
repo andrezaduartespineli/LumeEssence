@@ -281,8 +281,11 @@ def cadastrar_newsletter():
 @app.route("/login", methods=['GET', 'POST'])
 @app.route("/site/login.html")
 def login_cliente():
-    # Se já estiver logado, manda pra Área do Cliente
+    # Se já estiver logado:
     if 'id_cliente' in session:
+        # Se veio com pedido de ir pro checkout, manda pra lá
+        if request.args.get('redirect') == 'checkout':
+            return redirect("/checkout")
         return redirect("/area_cliente/area-cliente.html")
 
     if request.method == 'POST':
@@ -295,11 +298,17 @@ def login_cliente():
         usuario = cur.fetchone()
         con.close()
         
-        # Verifica se o usuário existe e se a senha bate (Criptografada)
+        # Verifica se o usuário existe e se a senha bate
         if usuario and check_password_hash(usuario['senha'], senha):
             session['id_cliente'] = usuario['id_cliente']
             session['nome_cliente'] = usuario['nome'].split()[0]
-            return redirect("/") # Sucesso! Vai pra Home
+            
+            # --- CORREÇÃO AQUI: Verifica para onde ir ---
+            if request.args.get('redirect') == 'checkout':
+                return redirect("/checkout")
+            # --------------------------------------------
+            
+            return redirect("/") # Se não tiver redirect, vai pra Home
         else:
             return render_template("site/login.html", erro="E-mail ou senha incorretos.")
 
@@ -534,80 +543,133 @@ def alterar_qtd(id_produto, acao):
 # --- ROTA DE CHECKOUT ---
 @app.route("/checkout")
 def checkout():
-    # 1. Segurança: Se não tem carrinho, manda voltar para produtos
+    # 1. Segurança: Se não tem carrinho, manda voltar
     if 'carrinho' not in session or not session['carrinho']:
         return redirect("/produtos")
     
     carrinho = session['carrinho']
-    
-    # 2. Calcula o Total Geral
     total_geral = sum(item['subtotal'] for item in carrinho)
     
-    # 3. Renderiza a tela passando os dados
+    # 2. Dados do Cliente (Se estiver logado)
+    cliente = None
+    enderecos = []
+    
+    if 'id_cliente' in session:
+        con = get_db()
+        cur = con.cursor()
+        
+        # Pega dados básicos
+        cur.execute("SELECT * FROM tb_clientes WHERE id_cliente = ?", (session['id_cliente'],))
+        cliente = cur.fetchone()
+        
+        # Pega endereços extras
+        cur.execute("SELECT * FROM tb_enderecos WHERE id_cliente = ?", (session['id_cliente'],))
+        enderecos = cur.fetchall()
+        
+        con.close()
+    
+    # 3. Renderiza passando tudo
     return render_template("site/checkout.html", 
                            carrinho=carrinho, 
-                           total_geral=total_geral)
+                           total_geral=total_geral,
+                           cliente=cliente,       # Envia dados do cliente
+                           enderecos=enderecos)   # Envia lista de endereços
 
 @app.route("/finalizar_pedido", methods=["POST"])
 def finalizar_pedido():
-    id_cliente = session.get('user_id', 1) 
-    valor_total = request.form.get("total_pedido")
+
+    # 1. Verifica login e Carrinho
+    if 'id_cliente' not in session:
+        return redirect("/login")
+    
+    if 'carrinho' not in session or not session['carrinho']:
+        return redirect("/produtos")
+
+    # 2. Coleta dados reais da Sessão
+    id_cliente = session['id_cliente']
+    carrinho = session['carrinho']
+    
+    # Coleta dados do Formulário (HTML)
     forma_pagamento = request.form.get("forma_pagamento")
-    lista_itens_json = request.form.get("lista_itens")
     qtd_parcelas = request.form.get("parcelas_escolhidas", 1)
     
+    # Recalcula o total no servidor para segurança
+    valor_total = sum(item['subtotal'] for item in carrinho)
+    
+    # Aplica desconto do Pix se for o caso
+    if forma_pagamento == 'pix':
+        valor_total = valor_total * 0.95
+
     con = get_db()
     cur = con.cursor()
 
     try:
-        # 1. Salvar Cartão (Se solicitado)
+   # 3. Salvar Cartão (MÉTODO DIRETO SEM JAVASCRIPT)
         if forma_pagamento == 'credit':
-            save_option = request.form.get("save_card_option", "nao")
-            card_number = request.form.get("card_number_sent", "")
-            if save_option == 'sim' and card_number:
-                nome_titular = request.form.get("card_holder_sent")
-                validade = request.form.get("card_expiry_sent")
-                ultimos_4 = card_number.replace(" ", "")[-4:]
-                bandeira = "Visa" if card_number.startswith("4") else "Mastercard"
-                token_falso = str(uuid.uuid4())
-                try:
-                    cur.execute("INSERT INTO tb_cartoes (id_cliente, nome_titular, ultimos_4, bandeira, token_pagamento, validade) VALUES (?, ?, ?, ?, ?, ?)", 
-                                (id_cliente, nome_titular, ultimos_4, bandeira, token_falso, validade))
-                except: pass
+            # Tenta pegar diretamente dos campos digitados
+            numero_html   = request.form.get("card_number_input", "")
+            nome_html     = request.form.get("card_holder_input", "")
+            validade_html = request.form.get("card_expiry_input", "")
+            
+            # O Checkbox só envia o valor "sim" se estiver marcado. 
+            # Se não estiver marcado, retorna None.
+            save_option = request.form.get("save_card_check") 
+            
+            print(f"DEBUG: Opção Salvar = {save_option} | Número = {numero_html}")
 
-        # 2. Salvar Pedido
+            # Só salva se a opção for 'sim' e tiver número digitado
+            if save_option == 'sim' and numero_html:
+                
+                # Prepara os dados
+                ultimos_4_db = numero_html.replace(" ", "")[-4:]
+                nome_titular_db = nome_html
+                validade_db = validade_html
+                bandeira_db = "Visa" if numero_html.startswith("4") else "Mastercard"
+                token_falso = f"tok_{int(datetime.now().timestamp())}"
+                
+                try:
+                    cur.execute("""
+                        INSERT INTO tb_cartoes 
+                        (id_cliente, nome_titular, ultimos_4, bandeira, token_pagamento, validade) 
+                        VALUES (?, ?, ?, ?, ?, ?)
+                    """, (id_cliente, nome_titular_db, ultimos_4_db, bandeira_db, token_falso, validade_db))
+                    print("SUCESSO: Cartão salvo no banco!")
+                except Exception as e_card:
+                    print(f"ERRO BANCO: {e_card}")
+
+        # 4. Salvar Pedido
         data_atual = datetime.now()
         cur.execute("""
             INSERT INTO tb_pedidos (id_cliente, data_pedido, status, valor_total, data_entrega, forma_pagamento, parcelas)
             VALUES (?, ?, ?, ?, ?, ?, ?)
         """, (id_cliente, data_atual, 'Pendente', valor_total, data_atual, forma_pagamento, qtd_parcelas))
+        
         id_novo_pedido = cur.lastrowid 
 
-        # 3. Salvar Itens
-        if lista_itens_json:
-            itens = json.loads(lista_itens_json)
-            for item in itens:
-                subtotal = float(item['qtd']) * float(item['preco'])
-                cur.execute("INSERT INTO tb_itensPedido (id_pedido, id_produto, quantidade, preco_unitario, subtotal) VALUES (?, ?, ?, ?, ?)", 
-                            (id_novo_pedido, item['id_produto'], item['qtd'], item['preco'], subtotal))
+        # 5. Salvar Itens (Pegando da Sessão)
+        for item in carrinho:
+            cur.execute("INSERT INTO tb_itensPedido (id_pedido, id_produto, quantidade, preco_unitario, subtotal) VALUES (?, ?, ?, ?, ?)", 
+                        (id_novo_pedido, item['id'], item['qtd'], item['preco'], item['subtotal']))
 
-        # --- 4. NOVO: LANÇAR NO FINANCEIRO AUTOMATICAMENTE ---
-        status_fin = 'Recebido' # Assume recebido para Pix/Cartão
+        # 6. Lançar no Financeiro
+        status_fin = 'Recebido' 
         cur.execute("""
             INSERT INTO tb_contasReceber (descricao, valor, data_emissao, data_venc, categoria, status, id_pedido, id_cliente)
             VALUES (?, ?, ?, ?, ?, ?, ?, ?)
         """, (f"Venda Site #{id_novo_pedido}", valor_total, data_atual, data_atual, "Venda Online", status_fin, id_novo_pedido, id_cliente))
-        # -----------------------------------------------------
 
         con.commit()
+        
+        # Limpa o carrinho após sucesso
         session['carrinho'] = []
         session.modified = True
+        
         return redirect("/area_cliente/meus-pedidos.html")
 
     except Exception as e:
         con.rollback()
-        print(f"Erro: {e}")
-        return f"Erro: {e}"
+        print(f"Erro ao finalizar: {e}")
+        return f"Erro ao processar pedido: {e}"
     finally:
         con.close()
         
@@ -878,33 +940,52 @@ def meus_cartoes():
                            cartoes=lista_cartoes)
 
 # --- ROTA: ADICIONAR CARTÃO ---
-@app.route("/area_cliente/adicionar_cartao", methods=['POST'])
+# --- ROTA CORRIGIDA: ADICIONAR CARTÃO ---
+# Removemos o "/area_cliente" do começo para bater com o action do HTML
+@app.route("/adicionar_cartao", methods=['POST'])
 def adicionar_cartao():
     if 'id_cliente' not in session: return redirect("/login")
     
     id_cliente = session['id_cliente']
+    
+    # Pega dados do Form HTML
     nome = request.form['nome_titular']
     numero_completo = request.form['numero_cartao']
     validade = request.form['validade']
     
-    # 1. Pega apenas os últimos 4 dígitos para salvar
-    numero_final = numero_completo[-4:]
+    # 1. Pega apenas os últimos 4 dígitos
+    # (Mudamos o nome da variável para não confundir)
+    ultimos_4_db = numero_completo.replace(" ", "")[-4:]
     
-    # 2. Identifica a bandeira simples (Lógica básica para visual)
-    # Se começar com 4 é Visa, 5 é Master (simplificado)
-    bandeira = 'visa' if numero_completo.startswith('4') else 'mastercard'
-    if numero_completo.startswith('3'): bandeira = 'amex'
+    # 2. Identifica a bandeira
+    bandeira = 'Visa' if numero_completo.startswith('4') else 'Mastercard'
+    if numero_completo.startswith('3'): bandeira = 'Amex'
+    
+    # 3. Gera token (Obrigatório no seu banco)
+    from datetime import datetime
+    token_falso = f"tok_manual_{int(datetime.now().timestamp())}"
     
     con = get_db()
     cur = con.cursor()
     
-    cur.execute("""
-        INSERT INTO tb_cartoes (id_cliente, nome_titular, numero_final, bandeira, validade)
-        VALUES (?, ?, ?, ?, ?)
-    """, (id_cliente, nome, numero_final, bandeira, validade))
-    
-    con.commit()
-    con.close()
+    try:
+        # AQUI ESTAVA O ERRO DE BANCO:
+        # Trocamos 'numero_final' por 'ultimos_4' e adicionamos 'token_pagamento'
+        cur.execute("""
+            INSERT INTO tb_cartoes 
+            (id_cliente, nome_titular, ultimos_4, bandeira, validade, token_pagamento)
+            VALUES (?, ?, ?, ?, ?, ?)
+        """, (id_cliente, nome, ultimos_4_db, bandeira, validade, token_falso))
+        
+        con.commit()
+        print("✅ Cartão adicionado com sucesso!")
+        
+    except Exception as e:
+        print(f"❌ Erro ao salvar cartão: {e}")
+        con.rollback()
+        
+    finally:
+        con.close()
     
     return redirect("/area_cliente/cartoes.html")
 
@@ -920,6 +1001,67 @@ def remover_cartao(id_cartao):
     con.close()
     
     return redirect("/area_cliente/cartoes.html")
+
+@app.route("/criar_tabela_cartoes")
+def criar_tabela_cartoes():
+    con = get_db()
+    cur = con.cursor()
+    
+    cur.execute("""
+    CREATE TABLE IF NOT EXISTS tb_cartoes (
+        id_cartao INTEGER PRIMARY KEY AUTOINCREMENT,
+        id_cliente INTEGER,
+        nome_titular TEXT,
+        ultimos_4 TEXT,
+        bandeira TEXT,
+        token_pagamento TEXT,
+        validade TEXT,
+        data_cad DATETIME DEFAULT CURRENT_TIMESTAMP
+    )
+    """)
+    
+    con.commit()
+    con.close()
+    return "Tabela de cartões verificada/criada com sucesso!"
+
+@app.route("/area_cliente/pedido/<int:id_pedido>")
+def detalhes_pedido(id_pedido):
+    if 'id_cliente' not in session: return redirect("/login")
+    
+    con = get_db()
+    cur = con.cursor()
+    
+    # 1. Busca o Pedido (E garante que pertence ao cliente logado para segurança)
+    cur.execute("""
+        SELECT * FROM tb_pedidos 
+        WHERE id_pedido = ? AND id_cliente = ?
+    """, (id_pedido, session['id_cliente']))
+    pedido = cur.fetchone()
+    
+    # Se não achar o pedido (ou se for de outro cliente), volta pra lista
+    if not pedido:
+        con.close()
+        return redirect("/area_cliente/meus-pedidos.html")
+        
+    # 2. Busca os Itens desse pedido (Juntando com a tabela de produtos para pegar nome e foto)
+    cur.execute("""
+        SELECT ip.*, p.nome_produto, p.sku, p.img_produto
+        FROM tb_itensPedido ip
+        JOIN tb_produtos p ON ip.id_produto = p.id_produto
+        WHERE ip.id_pedido = ?
+    """, (id_pedido,))
+    itens = cur.fetchall()
+    
+    # 3. Busca dados do cliente para manter o menu lateral funcionando
+    cur.execute("SELECT * FROM tb_clientes WHERE id_cliente = ?", (session['id_cliente'],))
+    cliente = cur.fetchone()
+    
+    con.close()
+    
+    return render_template("area_cliente/detalhes-pedido.html", 
+                           pedido=pedido, 
+                           itens=itens, 
+                           cliente=cliente)
 
 # --- INJETOR DE CONTEXTO (Faz o carrinho funcionar em todas as páginas) ---
 @app.context_processor
