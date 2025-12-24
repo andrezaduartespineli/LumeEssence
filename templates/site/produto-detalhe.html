@@ -13,7 +13,7 @@
     <link rel="stylesheet" href="/static/stylesite.css">
 </head>
 <body>
-
+{% set lista_favs = ids_favoritos | default([]) %}
     <div class="container">
         <div class="logo">
             <img src="/static/imagens/Logo/horizontalsemfundo.png" alt="Lume Essence">
@@ -77,7 +77,13 @@
         <div class="product-main-wrapper">
             
             <div class="product-gallery-section">
+                
                 <div class="main-image-display">
+                    <a href="/favoritar/{{ p['id_produto'] }}" 
+       class="btn-fav-icon {{ 'favoritado' if p['id_produto'] in lista_favs else '' }}" 
+       title="Favoritar">
+       <i class="{{ 'fa-solid' if p['id_produto'] in lista_favs else 'fa-regular' }} fa-heart"></i>
+    </a>
                     <img src="/static/uploads/{{ p['img_produto'] }}" 
                          onerror="this.src='/static/imagens/sem_foto.png'" 
                          id="mainImage" alt="{{ p['nome_produto'] }}">
@@ -96,7 +102,7 @@
                     </span>
                     
                     <span class="installments">
-                        ou 2x de R$ {{ "%.2f"|format(p['preco_venda'] / 2) }} sem juros
+                        ou 3x de R$ {{ "%.2f"|format(p['preco_venda'] / 3) }} sem juros
                     </span>
                 </div>
 
@@ -110,7 +116,10 @@
                     </div>
 
                     {% if p['qtd_estoque'] > 0 %}
-                        <a href="/adicionar-carrinho/{{ p['id_produto'] }}" class="btn-add-cart" style="text-decoration: none; text-align: center; display: flex; justify-content: center; align-items: center;">
+                        <a href="#" 
+                           onclick="adicionarComQtd({{ p['id_produto'] }}); return false;" 
+                           class="btn-add-cart" 
+                           style="text-decoration: none; text-align: center; display: flex; justify-content: center; align-items: center;">
                             ADICIONAR AO CARRINHO
                         </a>
                     {% else %}
@@ -157,6 +166,11 @@
             <div class="products-grid">
                 {% for rel in relacionados %}
                 <div class="product-card-shop">
+                    <a href="/favoritar/{{ rel['id_produto'] }}" 
+       class="btn-fav-icon {{ 'favoritado' if rel['id_produto'] in lista_favs else '' }}" 
+       title="Favoritar">
+       <i class="{{ 'fa-solid' if rel['id_produto'] in lista_favs else 'fa-regular' }} fa-heart"></i>
+    </a>
                     <div class="product-image">
                         <img src="/static/uploads/{{ rel['img_produto'] }}" 
                              onerror="this.src='/static/imagens/sem_foto.png'" 
@@ -208,14 +222,14 @@
         </div>
     
         <div class="footer-col">
-            <h4>Institucional</h4>
-            <ul>
-                <li><a href="institucional.html#trocas">Trocas e Devoluções</a></li>
-                <li><a href="institucional.html#privacidade">Política de Privacidade</a></li>
-                <li><a href="institucional.html#termos">Termos de Uso</a></li>
-                <li><a href="rastreio.html">Rastrear Pedido</a></li>
-            </ul>
-        </div>
+    <h4>Institucional</h4>
+    <ul>
+        <li><a href="/institucional#trocas">Trocas e Devoluções</a></li>
+        <li><a href="/institucional#privacidade">Política de Privacidade</a></li>
+        <li><a href="/institucional#termos">Termos de Uso</a></li>
+        <li><a href="/rastreio">Rastrear Pedido</a></li>
+    </ul>
+</div>
     
           <div class="footer-col">
                 <h4>Entre em contato</h4>
@@ -256,7 +270,20 @@
          <a href="../interno/login.html" class="admin-footer-link">Acesso da Equipe</a>
       </div>
     </footer>
+<script>
+        function updateQty(change) {
+            var qtyInput = document.getElementById('productQty');
+            var newQty = parseInt(qtyInput.value) + change;
+            if (newQty >= 1) {
+                qtyInput.value = newQty;
+            }
+        }
 
+        function adicionarComQtd(idProduto) {
+            var qtd = document.getElementById('productQty').value;
+            window.location.href = `/adicionar-carrinho/${idProduto}?qtd=${qtd}`;
+        }
+    </script>
     <script src="/static/scriptsite.js"></script>
     <script src="/static/mascaras.js"></script>
     

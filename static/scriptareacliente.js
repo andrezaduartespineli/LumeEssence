@@ -54,3 +54,5 @@ function previewImagem(event) {
             reader.readAsDataURL(input.files[0]);
         }
     }
+
+    

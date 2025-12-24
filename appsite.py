@@ -51,9 +51,6 @@ def index():
     lancamentos = cur.fetchall()
 
     # 2. Busca os Mais Vendidos (Top 8)
-    # Essa consulta soma a quantidade vendida de cada item. 
-    # Se o produto nunca foi vendido, o COALESCE garante que o total seja 0.
-    # Ordena pelo total de vendas (maior para menor).
     cur.execute("""
         SELECT p.*, COALESCE(SUM(ip.quantidade), 0) as total_vendas
         FROM tb_produtos p
@@ -64,12 +61,36 @@ def index():
         LIMIT 8
     """)
     mais_vendidos = cur.fetchall()
+
+    # --- NOVO: BUSCA OS FAVORITOS DO CLIENTE ---
+    ids_favoritos = [] # Começa vazio para não dar erro se não estiver logado
+    
+    if 'id_cliente' in session:
+        user_id = session['id_cliente']
+        # Pega a lista de IDs que esse cliente curtiu
+        cur.execute("SELECT id_produto FROM tb_favoritos WHERE id_cliente = ?", (user_id,))
+        # Transforma o resultado do banco em uma lista simples: [1, 5, 12]
+        ids_favoritos = [item[0] for item in cur.fetchall()]
+    # -------------------------------------------
     
     con.close()
     
     return render_template("site/index.html", 
                            lancamentos=lancamentos, 
-                           mais_vendidos=mais_vendidos)
+                           mais_vendidos=mais_vendidos,
+                           ids_favoritos=ids_favoritos) # <--- O SEGREDINHO AQUI NO FINAL
+
+# --- ROTAS INSTITUCIONAIS ---
+
+@app.route("/institucional")
+@app.route("/institucional.html")
+def institucional():
+    return render_template("site/institucional.html")
+
+@app.route("/rastreio")
+@app.route("/rastreio.html")
+def rastreio():
+    return render_template("site/rastreio.html")
 
 @app.route("/produtos")
 @app.route("/produtos.html")
@@ -86,7 +107,7 @@ def produtos():
     variacoes_filtro = request.args.getlist('variacao')
     novidades_filtro = request.args.get('novidades') 
     
-    # --- NOVO: Captura o texto da busca ---
+    # Busca por texto
     termo_busca = request.args.get('q') 
     
     con = get_db()
@@ -101,7 +122,6 @@ def produtos():
     
     # 1. Filtro de Busca (Texto)
     if termo_busca:
-        # Procura no Nome OU na Descrição (o % serve para buscar em qualquer parte do texto)
         filtros_sql.append("(nome_produto LIKE ? OR descricao LIKE ?)")
         parametros.append(f'%{termo_busca}%')
         parametros.append(f'%{termo_busca}%')
@@ -129,7 +149,7 @@ def produtos():
         sql_base += clausula_where
         sql_count += clausula_where
 
-    # 3. Ordenação e Paginação
+    # 3. Ordenação
     if novidades_filtro == 'true' and ordem_atual == 'padrao':
         sql_base += " ORDER BY data_cad DESC, id_produto DESC"
     elif ordem_atual == 'menor_preco':
@@ -143,7 +163,7 @@ def produtos():
     else:
         sql_base += " ORDER BY id_produto DESC"
 
-    # Define limite de paginação
+    # 4. Paginação
     if novidades_filtro == 'true':
         limit = 6; offset = 0; total_paginas = 1 
     else:
@@ -158,8 +178,19 @@ def produtos():
     
     cur.execute(sql_base, parametros)
     lista_produtos = cur.fetchall()
+
+    # --- NOVO TRECHO: BUSCA OS FAVORITOS DO CLIENTE ---
+    # Isto estava a faltar nesta função principal!
+    ids_favoritos = []
+    if 'id_cliente' in session:
+        user_id = session['id_cliente']
+        cur.execute("SELECT id_produto FROM tb_favoritos WHERE id_cliente = ?", (user_id,))
+        ids_favoritos = [item[0] for item in cur.fetchall()]
+    # --------------------------------------------------
+
     con.close()
     
+    # 5. Retorno com ids_favoritos
     return render_template("site/produtos.html", 
                            produtos=lista_produtos, 
                            pagina_atual=pagina_atual, 
@@ -169,7 +200,8 @@ def produtos():
                            variacoes_selecionadas=variacoes_filtro,
                            cat_selecionada=cat_filtro,
                            eh_novidade=novidades_filtro,
-                           termo_busca=termo_busca) # Devolve o texto para manter na caixinha
+                           termo_busca=termo_busca,
+                           ids_favoritos=ids_favoritos) # <--- O SEGREDO
     
 @app.route("/produto/<int:id_produto>")
 def produto_detalhe(id_produto):
@@ -184,7 +216,7 @@ def produto_detalhe(id_produto):
         con.close()
         return "Produto não encontrado", 404
     
-    # 2. Busca produtos relacionados (para a sugestão no final da página)
+    # 2. Busca produtos relacionados
     cur.execute("""
         SELECT * FROM tb_produtos 
         WHERE categoria = ? AND id_produto != ? AND ativo = 1 
@@ -192,10 +224,21 @@ def produto_detalhe(id_produto):
     """, (produto['categoria'], id_produto))
     relacionados = cur.fetchall()
     
+    # --- 3. NOVO: BUSCA OS FAVORITOS ---
+    ids_favoritos = []
+    if 'id_cliente' in session:
+        user_id = session['id_cliente']
+        cur.execute("SELECT id_produto FROM tb_favoritos WHERE id_cliente = ?", (user_id,))
+        ids_favoritos = [item[0] for item in cur.fetchall()]
+    # -----------------------------------
+
     con.close()
     
-    # Enviamos 'p' (produto abreviado) para funcionar com seu HTML
-    return render_template("site/produto-detalhe.html", p=produto, relacionados=relacionados)
+    # 4. Retorna enviando ids_favoritos
+    return render_template("site/produto-detalhe.html", 
+                           p=produto, 
+                           relacionados=relacionados,
+                           ids_favoritos=ids_favoritos) # <--- IMPORTANTE
 
 
 # --- Rotas de Páginas Institucionais ---
@@ -451,7 +494,9 @@ def enviar_email_massa():
 
 @app.route("/adicionar-carrinho/<int:id_produto>")
 def adicionar_carrinho(id_produto):
-    # 1. Busca os dados completos do produto no banco
+    # 1. Pega a quantidade da URL (se não tiver, usa 1)
+    qtd_selecionada = int(request.args.get('qtd', 1))
+
     con = get_db()
     cur = con.cursor()
     cur.execute("SELECT * FROM tb_produtos WHERE id_produto = ?", (id_produto,))
@@ -461,20 +506,40 @@ def adicionar_carrinho(id_produto):
     if not produto_db:
         return "Produto não encontrado", 404
 
-    # 2. Prepara os dados para salvar na sessão
     preco = float(produto_db['preco_venda'])
     
-    # Cria a estrutura do item
+    # 2. Cria o item já com a quantidade certa
     novo_item = {
         'id': produto_db['id_produto'],
         'nome': produto_db['nome_produto'],
         'preco': preco,
         'imagem': produto_db['img_produto'],
         'sku': produto_db['sku'],
-        'qtd': 1,
-        'subtotal': preco
+        'qtd': qtd_selecionada,          # <--- USA A QTD QUE VEIO DA URL
+        'subtotal': preco * qtd_selecionada # <--- CALCULA O SUBTOTAL CERTO
     }
 
+    if 'carrinho' not in session:
+        session['carrinho'] = []
+
+    carrinho_atual = session['carrinho']
+    encontrou = False
+
+    for item in carrinho_atual:
+        if item['id'] == id_produto:
+            # Se já existe, soma a quantidade nova com a antiga
+            item['qtd'] += qtd_selecionada
+            item['subtotal'] = item['qtd'] * item['preco']
+            encontrou = True
+            break
+
+    if not encontrou:
+        carrinho_atual.append(novo_item)
+
+    session['carrinho'] = carrinho_atual
+    session.modified = True
+    
+    return redirect("/carrinho")
     # 3. Gerencia a Sessão
     if 'carrinho' not in session:
         session['carrinho'] = []
@@ -553,6 +618,7 @@ def checkout():
     # 2. Dados do Cliente (Se estiver logado)
     cliente = None
     enderecos = []
+    cartoes = [] # <--- 1. Cria a lista vazia para não dar erro se não tiver login
     
     if 'id_cliente' in session:
         con = get_db()
@@ -565,113 +631,125 @@ def checkout():
         # Pega endereços extras
         cur.execute("SELECT * FROM tb_enderecos WHERE id_cliente = ?", (session['id_cliente'],))
         enderecos = cur.fetchall()
+
+        # --- 2. BUSCA OS CARTÕES DO CLIENTE ---
+        cur.execute("SELECT * FROM tb_cartoes WHERE id_cliente = ?", (session['id_cliente'],))
+        cartoes = cur.fetchall()
+        # --------------------------------------
         
         con.close()
     
-    # 3. Renderiza passando tudo
+    # 3. Renderiza passando tudo (INCLUINDO OS CARTÕES)
     return render_template("site/checkout.html", 
                            carrinho=carrinho, 
                            total_geral=total_geral,
-                           cliente=cliente,       # Envia dados do cliente
-                           enderecos=enderecos)   # Envia lista de endereços
+                           cliente=cliente,       
+                           enderecos=enderecos,
+                           cartoes=cartoes)   # <--- 3. Envia a lista para o HTML
 
 @app.route("/finalizar_pedido", methods=["POST"])
 def finalizar_pedido():
+    # 1. Verificações Básicas
+    if 'id_cliente' not in session: return redirect("/login")
+    if 'carrinho' not in session or not session['carrinho']: return redirect("/produtos")
 
-    # 1. Verifica login e Carrinho
-    if 'id_cliente' not in session:
-        return redirect("/login")
-    
-    if 'carrinho' not in session or not session['carrinho']:
-        return redirect("/produtos")
-
-    # 2. Coleta dados reais da Sessão
     id_cliente = session['id_cliente']
     carrinho = session['carrinho']
     
-    # Coleta dados do Formulário (HTML)
+    # Coleta dados
     forma_pagamento = request.form.get("forma_pagamento")
+    cartao_selecionado = request.form.get("cartao_selecionado", "novo") # Pega a escolha (ID ou 'novo')
     qtd_parcelas = request.form.get("parcelas_escolhidas", 1)
     
-    # Recalcula o total no servidor para segurança
+    # Totais
     valor_total = sum(item['subtotal'] for item in carrinho)
-    
-    # Aplica desconto do Pix se for o caso
-    if forma_pagamento == 'pix':
-        valor_total = valor_total * 0.95
+    if forma_pagamento in ['pix', 'boleto']: valor_total *= 0.95
 
     con = get_db()
     cur = con.cursor()
 
     try:
-   # 3. Salvar Cartão (MÉTODO DIRETO SEM JAVASCRIPT)
+        # 3. Lógica do Cartão (Novo ou Salvo)
         if forma_pagamento == 'credit':
-            # Tenta pegar diretamente dos campos digitados
-            numero_html   = request.form.get("card_number_input", "")
-            nome_html     = request.form.get("card_holder_input", "")
-            validade_html = request.form.get("card_expiry_input", "")
             
-            # O Checkbox só envia o valor "sim" se estiver marcado. 
-            # Se não estiver marcado, retorna None.
-            save_option = request.form.get("save_card_check") 
-            
-            print(f"DEBUG: Opção Salvar = {save_option} | Número = {numero_html}")
+            # Se escolheu digitar um NOVO cartão
+            if cartao_selecionado == 'novo':
+                numero_html = request.form.get("card_number_input", "")
+                nome_html = request.form.get("card_holder_input", "")
+                save_option = request.form.get("save_card_check") 
 
-            # Só salva se a opção for 'sim' e tiver número digitado
-            if save_option == 'sim' and numero_html:
-                
-                # Prepara os dados
-                ultimos_4_db = numero_html.replace(" ", "")[-4:]
-                nome_titular_db = nome_html
-                validade_db = validade_html
-                bandeira_db = "Visa" if numero_html.startswith("4") else "Mastercard"
-                token_falso = f"tok_{int(datetime.now().timestamp())}"
-                
-                try:
-                    cur.execute("""
-                        INSERT INTO tb_cartoes 
-                        (id_cliente, nome_titular, ultimos_4, bandeira, token_pagamento, validade) 
-                        VALUES (?, ?, ?, ?, ?, ?)
-                    """, (id_cliente, nome_titular_db, ultimos_4_db, bandeira_db, token_falso, validade_db))
-                    print("SUCESSO: Cartão salvo no banco!")
-                except Exception as e_card:
-                    print(f"ERRO BANCO: {e_card}")
+                # Validação simples (Só exige dados se for novo)
+                if not numero_html or not nome_html:
+                    return "Erro: Digite os dados do cartão."
+
+                # Salvar Cartão se solicitado
+                if save_option == 'sim':
+                    try:
+                        ultimos_4 = numero_html.replace(" ", "")[-4:]
+                        token = f"tok_{int(datetime.now().timestamp())}"
+                        validade = request.form.get("card_expiry_input", "")
+                        bandeira = "Visa" if numero_html.startswith("4") else "Mastercard"
+                        
+                        cur.execute("""
+                            INSERT INTO tb_cartoes (id_cliente, nome_titular, ultimos_4, bandeira, token_pagamento, validade) 
+                            VALUES (?, ?, ?, ?, ?, ?)
+                        """, (id_cliente, nome_html, ultimos_4, bandeira, token, validade))
+                    except: pass # Se der erro ao salvar, não para a venda
+            
+            # Se escolheu um JÁ SALVO
+            else:
+                # Aqui você usaria o ID do cartão (cartao_selecionado) para processar no gateway
+                print(f"Processando com cartão salvo ID: {cartao_selecionado}")
 
         # 4. Salvar Pedido
-        data_atual = datetime.now()
+        status_inicial = 'Aguardando Pagamento' if forma_pagamento == 'boleto' else 'Pendente'
+        
         cur.execute("""
             INSERT INTO tb_pedidos (id_cliente, data_pedido, status, valor_total, data_entrega, forma_pagamento, parcelas)
             VALUES (?, ?, ?, ?, ?, ?, ?)
-        """, (id_cliente, data_atual, 'Pendente', valor_total, data_atual, forma_pagamento, qtd_parcelas))
+        """, (id_cliente, datetime.now(), status_inicial, valor_total, datetime.now(), forma_pagamento, qtd_parcelas))
         
         id_novo_pedido = cur.lastrowid 
 
-        # 5. Salvar Itens (Pegando da Sessão)
+        # 5. Salvar Itens e Financeiro
         for item in carrinho:
             cur.execute("INSERT INTO tb_itensPedido (id_pedido, id_produto, quantidade, preco_unitario, subtotal) VALUES (?, ?, ?, ?, ?)", 
                         (id_novo_pedido, item['id'], item['qtd'], item['preco'], item['subtotal']))
 
-        # 6. Lançar no Financeiro
-        status_fin = 'Recebido' 
-        cur.execute("""
-            INSERT INTO tb_contasReceber (descricao, valor, data_emissao, data_venc, categoria, status, id_pedido, id_cliente)
-            VALUES (?, ?, ?, ?, ?, ?, ?, ?)
-        """, (f"Venda Site #{id_novo_pedido}", valor_total, data_atual, data_atual, "Venda Online", status_fin, id_novo_pedido, id_cliente))
+        cur.execute("INSERT INTO tb_contasReceber (descricao, valor, data_emissao, data_venc, categoria, status, id_pedido, id_cliente) VALUES (?, ?, ?, ?, ?, ?, ?, ?)", 
+                    (f"Venda #{id_novo_pedido}", valor_total, datetime.now(), datetime.now(), "Venda Online", 'Recebido', id_novo_pedido, id_cliente))
 
         con.commit()
-        
-        # Limpa o carrinho após sucesso
         session['carrinho'] = []
         session.modified = True
         
-        return redirect("/area_cliente/meus-pedidos.html")
+        return redirect(f"/compra-confirmada/{id_novo_pedido}")
 
     except Exception as e:
         con.rollback()
-        print(f"Erro ao finalizar: {e}")
-        return f"Erro ao processar pedido: {e}"
+        print(f"Erro: {e}")
+        return f"Erro: {e}"
     finally:
         con.close()
+
+# --- NOVA ROTA: TELA DE SUCESSO ---
+@app.route("/compra-confirmada/<int:id_pedido>")
+def compra_confirmada(id_pedido):
+    if 'id_cliente' not in session: return redirect("/login")
+    
+    con = get_db()
+    cur = con.cursor()
+    
+    # Busca o pedido
+    cur.execute("SELECT * FROM tb_pedidos WHERE id_pedido = ? AND id_cliente = ?", (id_pedido, session['id_cliente']))
+    pedido = cur.fetchone()
+    
+    con.close()
+    
+    if not pedido:
+        return redirect("/")
+        
+    return render_template("site/sucesso.html", pedido=pedido)
         
 # --- Área do Cliente ---
 # ==========================================
@@ -781,6 +859,63 @@ def meus_pedidos():
                            cliente=dados_cliente, 
                            pedidos=lista_pedidos,
                            status_atual=filtro_status)
+
+# --- 1. ROTA PARA EXIBIR A PÁGINA DE FAVORITOS ---
+@app.route("/area_cliente/favoritos.html")
+def pagina_favoritos():
+    if 'id_cliente' not in session: return redirect("/login")
+    
+    id_cliente = session['id_cliente']
+    con = get_db()
+    con.row_factory = sqlite3.Row
+    cur = con.cursor()
+    
+    # Busca os dados do cliente para o menu lateral
+    cur.execute("SELECT * FROM tb_clientes WHERE id_cliente = ?", (id_cliente,))
+    cliente = cur.fetchone()
+
+    # Busca os produtos favoritados
+    cur.execute("""
+        SELECT p.* FROM tb_produtos p
+        JOIN tb_favoritos f ON p.id_produto = f.id_produto
+        WHERE f.id_cliente = ?
+    """, (id_cliente,))
+    
+    favoritos = cur.fetchall()
+    con.close()
+    
+    # Envia para o HTML
+    return render_template("area_cliente/favoritos.html", cliente=cliente, favoritos=favoritos, qtd_carrinho=len(session.get('carrinho', [])))
+
+
+# --- 2. ROTA PARA ADICIONAR/REMOVER (Link direto) ---
+@app.route("/favoritar/<int:id_produto>")
+def acao_favoritar(id_produto):
+    if 'id_cliente' not in session:
+        return redirect("/login") # Manda pro login se não estiver logado
+    
+    id_cliente = session['id_cliente']
+    con = get_db()
+    cur = con.cursor()
+    
+    # Verifica se já existe
+    cur.execute("SELECT * FROM tb_favoritos WHERE id_cliente = ? AND id_produto = ?", (id_cliente, id_produto))
+    existe = cur.fetchone()
+    
+    if existe:
+        # Se já tem, remove
+        cur.execute("DELETE FROM tb_favoritos WHERE id_cliente = ? AND id_produto = ?", (id_cliente, id_produto))
+    else:
+        # Se não tem, adiciona
+        data_hoje = datetime.now().strftime("%Y-%m-%d")
+        cur.execute("INSERT INTO tb_favoritos (id_cliente, id_produto, data_adicionado) VALUES (?, ?, ?)", (id_cliente, id_produto, data_hoje))
+        
+    con.commit()
+    con.close()
+    
+    # Volta para a página anterior (seja produto ou lista de favoritos)
+    return redirect(request.referrer or "/produtos")
+
 
 # 3. MEUS DADOS (EDITAR PERFIL + FOTO)
 @app.route("/area_cliente/meus-dados.html", methods=['GET', 'POST'])
@@ -1002,27 +1137,6 @@ def remover_cartao(id_cartao):
     
     return redirect("/area_cliente/cartoes.html")
 
-@app.route("/criar_tabela_cartoes")
-def criar_tabela_cartoes():
-    con = get_db()
-    cur = con.cursor()
-    
-    cur.execute("""
-    CREATE TABLE IF NOT EXISTS tb_cartoes (
-        id_cartao INTEGER PRIMARY KEY AUTOINCREMENT,
-        id_cliente INTEGER,
-        nome_titular TEXT,
-        ultimos_4 TEXT,
-        bandeira TEXT,
-        token_pagamento TEXT,
-        validade TEXT,
-        data_cad DATETIME DEFAULT CURRENT_TIMESTAMP
-    )
-    """)
-    
-    con.commit()
-    con.close()
-    return "Tabela de cartões verificada/criada com sucesso!"
 
 @app.route("/area_cliente/pedido/<int:id_pedido>")
 def detalhes_pedido(id_pedido):

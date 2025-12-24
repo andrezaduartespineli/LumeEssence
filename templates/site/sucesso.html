@@ -1,0 +1,99 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Pedido Confirmado - Lume Essence</title>
+    <link rel="icon" href="/static/imagens/Logo/pequenalogosemfnfo.png">
+    
+    <link href='https://fonts.googleapis.com/css?family=Quicksand' rel='stylesheet'>
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:ital,wght@0,100..900;1,100..900&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="stylesheet" href="/static/stylesite.css">
+</head>
+<body style="background-color: #f4f4f4;">
+
+    <div class="checkout-header" style="text-align: center; padding: 20px; background: white;">
+        <a href="/">
+            <img src="/static/imagens/Logo/horizontalsemfundo.png" alt="Lume Essence" style="height: 50px;">
+        </a>
+    </div>
+
+    <div class="success-container">
+        
+        <div class="success-card">
+            <div class="success-icon">
+                <i class="fas fa-check"></i>
+            </div>
+            
+            <h2>Pedido Realizado com Sucesso!</h2>
+            <p class="order-number">Número do Pedido: <strong>#{{ pedido['id_pedido'] }}</strong></p>
+            
+            <hr class="divider-light">
+
+            {% if pedido['forma_pagamento'] == 'pix' %}
+                <div class="payment-instruction pix-instruction">
+                    <h3><i class="fa-brands fa-pix"></i> Pagamento via Pix</h3>
+                    <p>Escaneie o QR Code abaixo ou copie o código para pagar:</p>
+                    
+                    <img src="https://api.qrserver.com/v1/create-qr-code/?size=200x200&data=00020126330014BR.GOV.BCB.PIX011112345678900520400005303986540510.005802BR5912Lume Essence6008Brasilia62070503***6304" alt="QR Code Pix" class="qr-img">
+                    
+                    <div class="copypaste-box">
+                        <input type="text" value="00020126330014BR.GOV.BCB.PIX011112345678900..." id="pixCode" readonly>
+                        <button onclick="copiarPix()">Copiar</button>
+                    </div>
+                    
+                    <p class="expiry-alert"><i class="far fa-clock"></i> Este código expira em 30 minutos.</p>
+                </div>
+
+            {% elif pedido['forma_pagamento'] == 'boleto' %}
+                <div class="payment-instruction boleto-instruction">
+                    <h3><i class="fas fa-barcode"></i> Boleto Bancário</h3>
+                    <p>Seu boleto foi gerado. O pagamento pode levar até 3 dias úteis para compensar.</p>
+                    
+                    <div class="barcode-display">
+                        34191.79001 01043.510047 91020.150008 8 {{ "900000000" ~ pedido['id_pedido'] }}
+                    </div>
+
+                    <div class="boleto-actions">
+                        <button onclick="window.print()" class="btn-print"><i class="fas fa-print"></i> Imprimir Boleto</button>
+                        <button onclick="copiarBoleto()" class="btn-copy-bar"><i class="far fa-copy"></i> Copiar Código</button>
+                    </div>
+                </div>
+
+            {% else %}
+                <div class="payment-instruction credit-instruction">
+                    <h3><i class="far fa-credit-card"></i> Pagamento Aprovado</h3>
+                    <p>Recebemos o pagamento do seu cartão. Seu pedido já está sendo preparado!</p>
+                </div>
+            {% endif %}
+
+            <hr class="divider-light">
+
+            <a href="/area_cliente/pedido/{{ pedido['id_pedido'] }}" class="btn-go-details">
+                ACOMPANHAR MEU PEDIDO
+            </a>
+            
+            <a href="/" class="link-home">Voltar para a Loja</a>
+
+        </div>
+    </div>
+
+    <script>
+        function copiarPix() {
+            var copyText = document.getElementById("pixCode");
+            copyText.select();
+            document.execCommand("copy");
+            alert("Código Pix copiado!");
+        }
+        
+        function copiarBoleto() {
+            // Simulação de cópia do número do boleto
+            const codigo = "34191.79001 01043.510047 91020.150008 8 {{ '900000000' ~ pedido['id_pedido'] }}";
+            navigator.clipboard.writeText(codigo);
+            alert("Código de barras copiado!");
+        }
+    </script>
+
+</body>
+</html>

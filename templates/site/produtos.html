@@ -14,6 +14,9 @@
     <link rel="stylesheet" href="/static/stylesite.css">
 </head>
 <body>
+   
+<header>
+
 <div class="container">
                 <div class="logo">
                     <img src="/static/imagens/Logo/horizontalsemfundo.png" alt="Lume Essence">
@@ -164,6 +167,17 @@
 
     {% for p in produtos %}
     <div class="product-card-shop">
+
+      {% set lista_favs = ids_favoritos | default([]) %}
+
+<a href="/favoritar/{{ p['id_produto'] }}" 
+   class="btn-fav-icon {{ 'favoritado' if p['id_produto'] in lista_favs else '' }}" 
+   title="Favoritar"
+    style="text-decoration: none;">
+   
+   <i class="{{ 'fa-solid' if p['id_produto'] in lista_favs else 'fa-regular' }} fa-heart"></i>
+</a>
+
         <div class="product-image">
             <img src="/static/uploads/{{ p['img_produto'] }}" 
                  onerror="this.src='../../static/imagens/sem_foto.png'" 
@@ -216,7 +230,7 @@
     </div>
 
 
-    
+</header>
 <footer>
   <div class="footer-container">
     
@@ -249,14 +263,14 @@
     </div>
 
     <div class="footer-col">
-        <h4>Institucional</h4>
-        <ul>
-            <li><a href="institucional.html#trocas">Trocas e Devoluções</a></li>
-            <li><a href="institucional.html#privacidade">Política de Privacidade</a></li>
-            <li><a href="institucional.html#termos">Termos de Uso</a></li>
-            <li><a href="rastreio.html">Rastrear Pedido</a></li>
-        </ul>
-    </div>
+    <h4>Institucional</h4>
+    <ul>
+        <li><a href="/institucional#trocas">Trocas e Devoluções</a></li>
+        <li><a href="/institucional#privacidade">Política de Privacidade</a></li>
+        <li><a href="/institucional#termos">Termos de Uso</a></li>
+        <li><a href="/rastreio">Rastrear Pedido</a></li>
+    </ul>
+</div>
 
       <div class="footer-col">
             <h4>Entre em contato</h4>
@@ -296,9 +310,7 @@
 
     <div class="copyright">
       © 2025 Lume Essence - Todos os direitos reservados
-    </div>
-     <a href="../interno/login.html" class="admin-footer-link">Acesso da Equipe</a>
-  </div>
+    
 </footer>
 <script src="/static/scriptsite.js"></script>
 <script src="/static/mascaras.js"></script>

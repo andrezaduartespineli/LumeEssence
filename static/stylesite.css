@@ -2,7 +2,6 @@
    1. ESTILOS GLOBAIS (COMUNS A TODAS AS PÁGINAS)
    ========================================================================== */
 
-
 /* Reset de estilos básicos */
 * {
     margin: 0;
@@ -28,7 +27,7 @@ body {
     padding: 14px;
     color: rgb(27, 30, 228);
     background-color: #f4f4f4;
-    margin: 0 auto;   
+    margin: 0 auto;    
 }
 
 /* --- BARRA DE NAVEGAÇÃO (NAVBAR) --- */
@@ -129,19 +128,6 @@ body {
     left: 0;
 }
 
-/* --- RODAPÉ (FOOTER) --- */
-footer {
-    text-align: center;
-    padding: 7px;
-    background: #616b64;
-    color: white;
-    /* position: fixed;  <-- Recomendado remover 'fixed' se o conteúdo for longo */
-    width: 100%;
-    bottom: 0;
-    margin-top: 50px; /* Espaço para não colar no conteúdo */
-}
-
-
 /* ==========================================================================
    2. PÁGINA HOME (INDEX.HTML)
    ========================================================================== */
@@ -173,7 +159,7 @@ footer {
     position: relative;
     width: 160px;            /* Largura Fixa */
     height: 160px;           /* Altura Fixa */
-    border-radius: 10%;      /* 10% = Quadrado com borda suave | 50% = Redondo */
+    border-radius: 50%;      /* 10% = Quadrado com borda suave | 50% = Redondo */
     overflow: hidden;
     box-shadow: 0 4px 10px rgba(0,0,0,0.1);
     transition: transform 0.3s;
@@ -256,12 +242,11 @@ footer {
    3. PÁGINA SOBRE (SOBRE.HTML)
    ========================================================================== */
 
-/* --- Configurações Gerais para Elegância --- */
 .about-page {
-    font-family: 'Montserrat', sans-serif; /* Corpo do texto */
+    font-family: 'Montserrat', sans-serif;
     color: #4a4a4a;
-    line-height: 1.8; /* Espaçamento maior para leitura confortável */
-    background-color: #ffffff; /* Um branco levemente "quente" é mais elegante que #fff puro */
+    line-height: 1.8;
+    background-color: #ffffff;
     overflow-x: hidden;
 }
 
@@ -277,7 +262,6 @@ h2, h3 {
     color: #2c2c2c;
 }
 
-/* --- Seção de Introdução --- */
 .intro-section {
     text-align: center;
     padding: 80px 0 60px;
@@ -305,7 +289,6 @@ h2, h3 {
     font-weight: 300;
 }
 
-/* --- Seção Pilares (Antiga Timeline) --- */
 .pillars-section {
     background-color: #fff;
     padding: 80px 0;
@@ -329,7 +312,6 @@ h2, h3 {
     text-align: center;
     padding: 30px;
     background: #faf9f6;
-    /* Sombra muito suave para dar profundidade sem pesar */
     box-shadow: 0 10px 30px rgba(0,0,0,0.03); 
     border-radius: 4px;
     transition: transform 0.3s ease;
@@ -342,16 +324,15 @@ h2, h3 {
 .pillar-item h3 {
     font-size: 1.4rem;
     margin-bottom: 15px;
-    color: #d4a373; /* Sugestão de cor de destaque (tom terra/dourado) ou mantenha preto */
+    color: #d4a373; 
 }
 
 .pillar-item p {
     font-size: 1rem;
     color: #555;
-    text-align: center; /* Centralizado fica mais elegante em colunas */
+    text-align: center;
 }
 
-/* --- Seção Fundadora (Layout Flex) --- */
 .ceo-section {
     padding: 80px 0;
 }
@@ -360,7 +341,7 @@ h2, h3 {
     display: flex;
     align-items: center;
     gap: 60px;
-    flex-wrap: wrap; /* Para funcionar no celular */
+    flex-wrap: wrap; 
 }
 
 .ceo-image {
@@ -373,8 +354,8 @@ h2, h3 {
 .ceo-image img {
     width: 100%;
     max-width: 350px;
-    border-radius: 500px 500px 20px 20px; /* Formato de arco moderno */
-    box-shadow: 15px 15px 0px rgba(0,0,0,0.05); /* Sombra sólida decorativa */
+    border-radius: 500px 500px 20px 20px; 
+    box-shadow: 15px 15px 0px rgba(0,0,0,0.05); 
 }
 
 .ceo-content {
@@ -402,26 +383,7 @@ h2, h3 {
     text-align: justify;
 }
 
-/* --- Animações (básicas) --- */
-@keyframes fadeIn {
-    from { opacity: 0; }
-    to { opacity: 1; }
-}
-
-@keyframes slideUp {
-    from { opacity: 0; transform: translateY(30px); }
-    to { opacity: 1; transform: translateY(0); }
-}
-
-.fade-in {
-    animation: fadeIn 1.2s ease-out forwards;
-}
-
-.slide-up {
-    animation: slideUp 1s ease-out forwards;
-}
-
-/* --- Responsividade (Celular) --- */
+/* Responsividade CEO */
 @media (max-width: 768px) {
     .ceo-layout {
         flex-direction: column;
@@ -433,7 +395,7 @@ h2, h3 {
     }
     
     .ceo-content p {
-        text-align: center; /* Melhor leitura em mobile */
+        text-align: center;
     }
 
     .ceo-image img {
@@ -441,9 +403,8 @@ h2, h3 {
     }
 }
 
-/* --- Seção Processo de Criação --- */
 .process-section {
-    background-color: #faf9f6; /* Um tom "areia" ultra claro, muito elegante */
+    background-color: #faf9f6; 
     padding: 90px 0;
 }
 
@@ -463,10 +424,9 @@ h2, h3 {
     font-size: 1.1rem;
 }
 
-/* Grid dos Passos */
 .process-steps {
     display: grid;
-    grid-template-columns: repeat(2, 1fr); /* 2 colunas */
+    grid-template-columns: repeat(2, 1fr); 
     gap: 60px;
     max-width: 900px;
     margin: 0 auto;
@@ -479,12 +439,11 @@ h2, h3 {
     text-align: left;
 }
 
-/* Estilo do Número (01, 02...) */
 .step-number {
     font-family: 'Quicksand', sans-serif;
     font-size: 4rem;
     font-weight: 300;
-    color: #e0dcd5; /* Cor bege/cinza bem clara para ser sutil */
+    color: #e0dcd5; 
     line-height: 1;
     margin-bottom: 10px;
 }
@@ -503,16 +462,15 @@ h2, h3 {
     text-align: justify;
 }
 
-/* Responsividade para Celular */
 @media (max-width: 768px) {
     .process-steps {
-        grid-template-columns: 1fr; /* Vira 1 coluna no celular */
+        grid-template-columns: 1fr; 
         gap: 40px;
         padding: 0 20px;
     }
     
     .step-item {
-        align-items: center; /* Centraliza tudo no celular */
+        align-items: center; 
         text-align: center;
     }
 
@@ -521,136 +479,23 @@ h2, h3 {
     }
 }
 
-/* FIM DA PAGINA SOBRE*/
-
-/* --- ESTILOS DO NOVO FOOTER --- */
+/* ==========================================================================
+   4. RODAPÉ (FOOTER)
+   ========================================================================== */
 
 footer {
-  background-color: #616b64; /* Mesma cor da sua Navbar */
+  background-color: #616b64;
   color: #fff;
   padding: 40px 20px 10px;
   margin-top: 50px;
   font-family: 'Montserrat', sans-serif;
-  position: relative; /* Mudado de fixed para relative */
+  position: relative;
   width: 100%;
-  
 }
 
 .footer-container {
   max-width: 1200px;
   margin: 0 auto;
-}
-
-/* Newsletter */
-
-/* --- MODAL NEWSLETTER --- */
-.modal-overlay {
-    position: fixed;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
-    background: rgba(0, 0, 0, 0.8); /* Fundo escuro transparente */
-    z-index: 99999; /* Fica acima de tudo */
-    display: none; /* Escondido por padrão */
-    justify-content: center;
-    align-items: center;
-}
-
-/* Quando tiver a classe 'show', ele aparece */
-.modal-overlay.show {
-    display: flex !important;
-   opacity: 1 !important;    /* Garante visibilidade total */
-    animation: fadeIn 0.5s forwards; /* 'forwards' obriga a ficar parado no final da animação */
-}
-
-.modal-content {
-    background: white;
-    width: 90%;
-    max-width: 700px;
-    display: flex;
-    border-radius: 10px;
-    overflow: hidden;
-    position: relative;
-    box-shadow: 0 10px 25px rgba(0,0,0,0.3);
-}
-
-.close-modal-btn {
-    position: absolute;
-    top: 10px;
-    right: 15px;
-    background: none;
-    border: none;
-    font-size: 2rem;
-    cursor: pointer;
-    color: #555;
-    z-index: 10;
-}
-
-.modal-body {
-    display: flex;
-    width: 100%;
-}
-
-.modal-image {
-    width: 40%;
-    background-color: #f4f4f4;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-}
-
-.modal-image img {
-    max-width: 80%;
-    height: auto;
-}
-
-.modal-text {
-    width: 60%;
-    padding: 40px;
-    text-align: center;
-}
-
-.modal-text h3 {
-    font-family: 'Montserrat', sans-serif;
-    color: #333;
-    font-size: 1.8rem;
-    margin-bottom: 10px;
-}
-
-.modal-text input {
-    width: 100%;
-    padding: 12px;
-    margin-bottom: 10px;
-    border: 1px solid #ddd;
-    border-radius: 5px;
-}
-
-.modal-text button {
-    width: 100%;
-    padding: 12px;
-    background-color: #d4a373; /* Cor Dourada */
-    color: white;
-    border: none;
-    font-weight: bold;
-    cursor: pointer;
-    border-radius: 5px;
-}
-
-.modal-text button:hover {
-    background-color: #bfa15f;
-}
-
-@keyframes fadeIn {
-    from { opacity: 0; }
-    to { opacity: 1; }
-}
-
-/* Responsividade Celular */
-@media (max-width: 768px) {
-    .modal-content { flex-direction: column; }
-    .modal-image { display: none; } /* Esconde imagem no celular */
-    .modal-text { width: 100%; padding: 30px; }
 }
 
 .footer-top {
@@ -703,14 +548,12 @@ footer {
   background-color: #c49ba6;
 }
 
-/* Divisores */
 .footer-divider {
   border: 0;
   border-top: 1px solid rgba(255,255,255, 0.2);
   margin: 20px 0;
 }
 
-/* Colunas do Meio */
 .footer-middle {
   display: grid;
   grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
@@ -722,7 +565,7 @@ footer {
   font-family: 'Quicksand', sans-serif;
   font-size: 18px;
   margin-bottom: 15px;
-  color: #c49ba6; /* Destaque leve */
+  color: #c49ba6; 
 }
 
 .footer-col ul {
@@ -743,7 +586,7 @@ footer {
 
 .footer-col ul li a:hover {
   color: white;
-  padding-left: 5px; /* Efeitinho de movimento */
+  padding-left: 5px; 
 }
 
 .contact-list li {
@@ -752,7 +595,6 @@ footer {
   gap: 10px;
 }
 
-/* Parte Inferior */
 .footer-bottom {
   display: flex;
   justify-content: space-between;
@@ -786,7 +628,6 @@ footer {
   margin-top: 20px;
 }
 
-/* Responsividade para celular */
 @media (max-width: 768px) {
   .footer-top {
     flex-direction: column;
@@ -814,9 +655,163 @@ footer {
     flex-direction: column;
   }
 }
-/* --- FIM DOS ESTILOS DO NOVO FOOTER --- */
 
-/* --- ESTILOS DA PÁGINA DE CONTATO (CORRIGIDO) --- */
+/* ==========================================================================
+   5. MODAL NEWSLETTER (POPUP)
+   ========================================================================== */
+
+#newsletter-modal.modal-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0, 0, 0, 0.6);
+    backdrop-filter: blur(4px);
+    z-index: 99999;
+    display: none;
+    justify-content: center;
+    align-items: center;
+    opacity: 0;
+    transition: opacity 0.5s ease;
+}
+
+#newsletter-modal.modal-overlay.active {
+    display: flex;
+    opacity: 1;
+}
+
+#newsletter-modal .modal-container {
+    background: #fff;
+    width: 90%;
+    max-width: 850px;
+    height: 500px;
+    display: flex;
+    border-radius: 8px;
+    box-shadow: 0 20px 50px rgba(0,0,0,0.2);
+    position: relative;
+    overflow: hidden;
+    transform: translateY(50px);
+    transition: transform 0.5s ease;
+}
+
+#newsletter-modal.modal-overlay.active .modal-container {
+    transform: translateY(0);
+}
+
+#newsletter-modal .close-modal-btn {
+    position: absolute;
+    top: 15px;
+    right: 20px;
+    background: none;
+    border: none;
+    font-size: 2rem;
+    color: #888;
+    cursor: pointer;
+    z-index: 10;
+}
+
+#newsletter-modal .modal-image {
+    flex: 1;
+    background-color: #f0f0f0;
+}
+
+#newsletter-modal .modal-image img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+}
+
+#newsletter-modal .modal-content {
+    flex: 1;
+    padding: 50px 40px;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    text-align: center;
+    box-shadow: none; /* Remove sombra interna se herdar */
+    border-radius: 0;
+}
+
+#newsletter-modal .modal-tag {
+    font-family: 'Quicksand', sans-serif;
+    text-transform: uppercase;
+    font-size: 0.8rem;
+    letter-spacing: 2px;
+    color: #999;
+    margin-bottom: 10px;
+    display: block;
+}
+
+#newsletter-modal h2 {
+    font-family: 'Montserrat', sans-serif;
+    font-size: 2rem;
+    margin-bottom: 15px;
+    color: #333;
+    line-height: 1.2;
+}
+
+#newsletter-modal p {
+    font-family: 'Montserrat', sans-serif;
+    font-size: 0.95rem;
+    color: #666;
+    margin-bottom: 25px;
+    line-height: 1.6;
+}
+
+/* Formulário do Modal */
+#newsletter-modal .newsletter-form {
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+    width: 100%;
+}
+
+#newsletter-modal .newsletter-form input {
+    padding: 12px 15px;
+    border: 1px solid #ddd;
+    border-radius: 4px;
+    font-family: 'Montserrat', sans-serif;
+    font-size: 0.9rem;
+    outline: none;
+    width: 100%;
+    box-sizing: border-box;
+}
+
+#newsletter-modal .newsletter-form button {
+    padding: 14px;
+    background-color: #333;
+    color: #fff;
+    border: none;
+    border-radius: 4px;
+    font-family: 'Montserrat', sans-serif;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    cursor: pointer;
+    width: 100%;
+    transition: background 0.3s;
+}
+
+#newsletter-modal .newsletter-form button:hover {
+    background-color: #000;
+}
+
+@media (max-width: 768px) {
+    #newsletter-modal .modal-container {
+        flex-direction: column;
+        height: auto;
+        max-width: 400px;
+    }
+    
+    #newsletter-modal .modal-image {
+        display: none;
+    }
+}
+
+/* ==========================================================================
+   6. PÁGINA DE CONTATO
+   ========================================================================== */
 
 .contact-page-container {
     max-width: 1100px;
@@ -833,7 +828,6 @@ footer {
     box-shadow: 0 4px 15px rgba(0,0,0,0.05);
 }
 
-/* Área do Formulário */
 .contact-form-area {
     flex: 2; 
 }
@@ -859,12 +853,11 @@ footer {
     color: #616b64;
 }
 
-/* AQUI ESTAVA O PROBLEMA: Agora usamos classes específicas */
 .contact-form-area input[type="text"],
 .contact-form-area input[type="email"],
 .contact-form-area input[type="tel"],
 .contact-form-area textarea {
-    width: 100%; /* Agora isso só afeta o formulário de contato */
+    width: 100%;
     padding: 12px;
     border: 1px solid #ddd;
     border-radius: 5px;
@@ -881,7 +874,6 @@ footer {
     background-color: #fff;
 }
 
-/* Simulação de Recaptcha */
 .recaptcha-placeholder {
     margin-bottom: 20px;
 }
@@ -902,7 +894,6 @@ footer {
     margin-left: 20px;
 }
 
-/* Botão Enviar */
 .btn-enviar {
     background: linear-gradient(45deg, #A36361, #c49ba6);
     color: white;
@@ -921,7 +912,6 @@ footer {
     opacity: 0.9;
 }
 
-/* Área de Informações (Direita) */
 .contact-info-area {
     flex: 1;
     background-color: #fcfcfc;
@@ -981,7 +971,6 @@ footer {
     color: #A36361;
 }
 
-/* Responsividade Mobile */
 @media (max-width: 768px) {
     .contact-wrapper {
         flex-direction: column;
@@ -997,9 +986,11 @@ footer {
         margin-top: 20px;
     }
 }
-/* --- FIM DOS ESTILOS DA PÁGINA DE CONTATO --- */
 
-/* --- ESTILOS DA PÁGINA DE PRODUTOS --- */
+
+/* ==========================================================================
+   7. PÁGINA DE PRODUTOS
+   ========================================================================== */
 
 .main-shop-container {
     display: flex;
@@ -1007,10 +998,9 @@ footer {
     margin: 40px auto;
     padding: 0 20px;
     gap: 40px;
-    align-items: flex-start; /* Impede que a sidebar estique */
+    align-items: flex-start;
 }
 
-/* Sidebar (Esquerda) */
 .shop-sidebar {
     width: 250px;
     flex-shrink: 0;
@@ -1070,10 +1060,9 @@ footer {
 
 .checkbox-list input {
     margin-right: 8px;
-    accent-color: #A36361; /* Cor do check */
+    accent-color: #A36361;
 }
 
-/* Área Principal (Direita) */
 .shop-content {
     flex-grow: 1;
 }
@@ -1096,14 +1085,12 @@ footer {
     color: #555;
 }
 
-/* Grid de Produtos */
 .products-grid {
     display: grid;
     grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
     gap: 30px;
 }
 
-/* Card do Produto (Estilo Shop) */
 .product-card-shop {
     background: #fff;
     border-radius: 8px;
@@ -1120,7 +1107,7 @@ footer {
 .product-image {
     position: relative;
     overflow: hidden;
-    height: 250px; /* Altura fixa para alinhar */
+    height: 250px; 
 }
 
 .product-image img {
@@ -1131,7 +1118,7 @@ footer {
 }
 
 .product-card-shop:hover .product-image img {
-    transform: scale(1.05); /* Zoom leve ao passar o mouse */
+    transform: scale(1.05); 
 }
 
 .tag-novo {
@@ -1157,7 +1144,7 @@ footer {
     font-size: 16px;
     color: #333;
     margin-bottom: 10px;
-    height: 40px; /* Garante alinhamento se o título for longo */
+    height: 40px; 
 }
 
 .price-box {
@@ -1190,7 +1177,6 @@ footer {
     cursor: pointer;
     transition: all 0.3s;
     border-radius: 4px;
-    
 }
 
 .btn-buy:hover {
@@ -1198,7 +1184,6 @@ footer {
     color: white;
 }
 
-/* Paginação */
 .pagination {
     margin-top: 40px;
     text-align: center;
@@ -1226,37 +1211,33 @@ footer {
     border-color: #616b64;
 }
 
-/* Responsividade Mobile */
 @media (max-width: 768px) {
     .main-shop-container {
         flex-direction: column;
     }
     
     .shop-sidebar {
-        width: 100%; /* Sidebar vira topo no mobile */
+        width: 100%; 
         margin-bottom: 20px;
     }
     
     .products-grid {
-        grid-template-columns: repeat(2, 1fr); /* 2 colunas no celular */
+        grid-template-columns: repeat(2, 1fr); 
         gap: 15px;
     }
     
     .product-image {
-        height: 180px; /* Imagem menor no celular */
+        height: 180px; 
     }
 }
 
-/* --- BOTÕES DO CARD DE PRODUTO --- */
-
 .card-actions {
     display: flex;
-    flex-direction: column; /* Empilha um embaixo do outro */
-    gap: 15px; /* Espaço entre os botões */
+    flex-direction: column; 
+    gap: 15px; 
     margin-top: 20px;
 }
 
-/* Estilo do botão "Ver Detalhes" (Borda colorida, fundo transparente) */
 .btn-details {
     display: block;
     width: 100%;
@@ -1268,12 +1249,11 @@ footer {
     font-weight: bold;
     font-size: 14px;
     text-align: center;
-    text-decoration: none; /* Tira o sublinhado */
+    text-decoration: none; 
     border-radius: 4px;
     cursor: pointer;
     transition: all 0.3s;
-    margin-bottom: 15px; /* Empurra o botão de baixo */
-
+    margin-bottom: 15px; 
 }
 
 .btn-details:hover {
@@ -1282,12 +1262,11 @@ footer {
     border-color: #8c5351;
 }
 
-/* Estilo do botão "Comprar Agora" (Fundo colorido, texto branco) */
 .btn-buy-now {
     display: block;
     width: 100%;
     padding: 10px;
-    background-color: #A36361; /* Cor da marca */
+    background-color: #A36361; 
     border: 1px solid #A36361;
     color: white;
     font-family: 'Quicksand', sans-serif;
@@ -1301,13 +1280,12 @@ footer {
 }
 
 .btn-buy-now:hover {
-    background-color: #8c5351; /* Cor um pouco mais escura no hover */
+    background-color: #8c5351; 
     border-color: #8c5351;
-    transform: translateY(-2px); /* Efeito sutil de subida */
+    transform: translateY(-2px); 
     box-shadow: 0 4px 8px rgba(0,0,0,0.1);
 }
 
-/* Paginação Lume Essence */
 .pagination-container {
     display: flex;
     justify-content: center;
@@ -1334,9 +1312,9 @@ footer {
 }
 
 .page-btn:hover {
-    background-color: var(--gold); /* Use a cor dourada do seu tema */
+    background-color: #A36361; 
     color: white;
-    border-color: var(--gold);
+    border-color: #A36361;
     transform: translateY(-2px);
 }
 
@@ -1349,9 +1327,10 @@ footer {
     color: #333;
 }
 
-/* --- FIM DOS ESTILOS DA PÁGINA DE PRODUTOS --- */
 
-/* --- ESTILOS DO CARRINHO DE COMPRAS --- */
+/* ==========================================================================
+   8. CARRINHO DE COMPRAS
+   ========================================================================== */
 
 .cart-container {
     max-width: 1200px;
@@ -1362,9 +1341,8 @@ footer {
     align-items: flex-start;
 }
 
-/* Coluna da Esquerda (Itens) */
 .cart-items {
-    flex: 2; /* Ocupa 66% da largura */
+    flex: 2; 
 }
 
 .cart-header-row {
@@ -1382,7 +1360,6 @@ footer {
 .col-price { flex: 1; text-align: right; }
 .col-action { width: 50px; }
 
-/* Item Individual */
 .cart-item {
     display: flex;
     align-items: center;
@@ -1418,7 +1395,6 @@ footer {
     font-family: 'Montserrat', sans-serif;
 }
 
-/* Seletor de Quantidade */
 .item-quantity {
     flex: 1;
     display: flex;
@@ -1453,7 +1429,6 @@ footer {
     font-family: 'Montserrat', sans-serif;
 }
 
-/* Preço e Remover */
 .item-price {
     flex: 1;
     text-align: right;
@@ -1477,7 +1452,7 @@ footer {
 }
 
 .btn-remove:hover {
-    color: #A36361; /* Vermelho/Rosa ao passar o mouse */
+    color: #A36361; 
 }
 
 .continue-shopping {
@@ -1493,9 +1468,8 @@ footer {
     text-decoration: underline;
 }
 
-/* Coluna da Direita (Resumo) */
 .cart-summary {
-    flex: 1; /* Ocupa 33% da largura */
+    flex: 1; 
     background: #f9f9f9;
     padding: 30px;
     border-radius: 10px;
@@ -1578,7 +1552,7 @@ footer {
 .payment-info {
     text-align: right;
     font-size: 12px;
-    color: #28a745; /* Verde para desconto */
+    color: #28a745; 
     margin-bottom: 25px;
     font-family: 'Montserrat', sans-serif;
 }
@@ -1601,14 +1575,13 @@ footer {
     opacity: 0.9;
 }
 
-/* Responsividade Mobile */
 @media (max-width: 768px) {
     .cart-container {
         flex-direction: column;
     }
 
     .cart-header-row {
-        display: none; /* Esconde cabeçalho em telas pequenas */
+        display: none; 
     }
 
     .cart-item {
@@ -1632,38 +1605,37 @@ footer {
     }
 }
 .qty-link {
-            text-decoration: none;
-            color: inherit;
-            display: inline-flex;
-            align-items: center;
-            justify-content: center;
-            width: 30px; height: 30px; /* Ajuste conforme seu CSS original */
-            border: 1px solid #ddd;
-            background: #f9f9f9;
-            cursor: pointer;
-        }
-        .qty-link:hover { background: #eee; }
+    text-decoration: none;
+    color: inherit;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 30px; height: 30px; 
+    border: 1px solid #ddd;
+    background: #f9f9f9;
+    cursor: pointer;
+}
+.qty-link:hover { background: #eee; }
 
         
-/* --- ESTILO DO ÍCONE DO CARRINHO NA NAVBAR --- */
+/* --- ÍCONE CARRINHO NAVBAR --- */
 
 .cart-link {
-    position: relative; /* Necessário para posicionar a bolinha */
+    position: relative; 
     display: flex;
     align-items: center;
     justify-content: center;
 }
 
 .cart-link i {
-    font-size: 18px; /* Tamanho do ícone */
+    font-size: 18px; 
 }
 
-/* A bolinha vermelha com o número */
 .cart-count {
     position: absolute;
-    top: 2px;             /* Ajuste vertical */
-    right: 10px;          /* Ajuste horizontal */
-    background-color: #A36361; /* A cor rosa/terracota da sua marca */
+    top: 2px;           
+    right: 10px;          
+    background-color: #A36361; 
     color: white;
     font-size: 10px;
     font-weight: bold;
@@ -1672,43 +1644,37 @@ footer {
     display: flex;
     align-items: center;
     justify-content: center;
-    border-radius: 50%;   /* Deixa redondinho */
+    border-radius: 50%;   
     font-family: 'Montserrat', sans-serif;
-    border: 1px solid #616b64; /* Uma borda sutil para separar do fundo */
+    border: 1px solid #616b64; 
 }
 
-/* Efeito ao passar o mouse */
 .cart-link:hover .cart-count {
-    transform: scale(1.1); /* Um leve zoom na bolinha */
+    transform: scale(1.1); 
     transition: transform 0.2s;
 }
 
-/* --- FIM DOS ESTILOS DO CARRINHO DE COMPRAS --- */
+/* --- BUSCA NAVBAR --- */
 
-/* --- ESTILOS DA BUSCA NA NAVBAR--- */
-
-/* Agrupamento dos Links */
 .nav-links {
     display: flex;
     align-items: center;
 }
 
-/* Caixa de Busca */
 .search-box {
     display: flex;
     align-items: center;
-    background-color: rgba(255, 255, 255, 0.15); /* Fundo sutilmente transparente */
+    background-color: rgba(255, 255, 255, 0.15); 
     padding: 5px 15px;
-    border-radius: 20px; /* Bordas arredondadas (Pill shape) */
+    border-radius: 20px; 
     border: 1px solid rgba(255, 255, 255, 0.2);
     transition: background-color 0.3s;
 }
 
 .search-box:hover, .search-box:focus-within {
-    background-color: rgba(255, 255, 255, 0.25); /* Fica mais claro ao passar o mouse */
+    background-color: rgba(255, 255, 255, 0.25); 
 }
 
-/* Input (Onde digita) */
 .search-box input {
     background: transparent;
     border: none;
@@ -1716,15 +1682,13 @@ footer {
     color: white;
     font-family: 'Montserrat', sans-serif;
     font-size: 14px;
-    width: 200px; /* Largura da busca */
+    width: 200px; 
 }
 
-/* Cor do texto de placeholder (Ex: "O que você procura?") */
 .search-box input::placeholder {
     color: rgba(255, 255, 255, 0.7);
 }
 
-/* Botão da Lupa */
 .search-box button {
     background: transparent;
     border: none;
@@ -1739,10 +1703,9 @@ footer {
     transform: scale(1.1);
 }
 
-/* Responsividade Mobile */
 @media (max-width: 768px) {
     .navbar {
-        flex-direction: column; /* Coloca a busca embaixo dos links no celular */
+        flex-direction: column; 
         gap: 4px;
     }
     
@@ -1752,7 +1715,7 @@ footer {
     }
 
     .search-box {
-        width: 100%; /* Busca ocupa toda a largura no celular */
+        width: 100%; 
     }
     
     .search-box input {
@@ -1760,33 +1723,30 @@ footer {
     }
 }
 
-/* --- FIM DOS ESTILOS DA BUSCA NA NAVBAR --- */
 
-/* --- ESTILOS DE LOGIN E CADASTRO NA NAVBAR--- */
+/* ==========================================================================
+   9. LOGIN E CADASTRO
+   ========================================================================== */
 
-/* Ajuste para ícones na navbar */
 .icon-link {
     color: white;
     font-size: 18px;
     transition: color 0.3s;
 }
 
-
-/* Container Centralizado */
 .auth-container {
     display: flex;
     justify-content: center;
     align-items: center;
-    min-height: 60vh; /* Garante altura para centralizar na tela */
+    min-height: 60vh; 
     padding: 40px 20px;
 }
 
-/* Cartão Branco de Fundo */
 .auth-card {
     background: white;
     padding: 40px;
     width: 100%;
-    max-width: 450px; /* Largura máxima elegante */
+    max-width: 450px; 
     border-radius: 10px;
     box-shadow: 0 4px 20px rgba(0,0,0,0.05);
     text-align: center;
@@ -1806,7 +1766,6 @@ footer {
     display: block;
 }
 
-/* Estilo dos Inputs (Reaproveitando base do contato mas ajustando) */
 .auth-form .form-group {
     margin-bottom: 20px;
     text-align: left;
@@ -1835,7 +1794,6 @@ footer {
     border-color: #A36361;
 }
 
-/* Links (Esqueci senha / Cadastre-se) */
 .auth-links {
     display: flex;
     justify-content: space-between;
@@ -1854,11 +1812,10 @@ footer {
     text-decoration: underline;
 }
 
-/* Botão de Ação */
 .btn-auth {
     width: 100%;
     padding: 12px;
-    background: #A36361; /* Cor da marca */
+    background: #A36361; 
     color: white;
     border: none;
     border-radius: 50px;
@@ -1888,7 +1845,6 @@ footer {
     text-decoration: none;
 }
 
-/* Responsividade */
 @media (max-width: 768px) {
     .nav-icons-area {
         width: 100%;
@@ -1897,11 +1853,10 @@ footer {
     }
 }
 
-/* --- FIM DOS ESTILOS DE LOGIN E CADASTRO NA NAVBAR--- */
+/* ==========================================================================
+   10. PÁGINAS INSTITUCIONAIS (POLÍTICAS E RASTREIO)
+   ========================================================================== */
 
-/* --- PÁGINA INSTITUCIONAL (POLÍTICAS) --- */
-
-/* Rolagem suave ao clicar nos links */
 html {
     scroll-behavior: smooth;
 }
@@ -1915,11 +1870,9 @@ html {
     position: relative;
 }
 
-/* Menu Lateral */
 .policy-sidebar {
     width: 250px;
     flex-shrink: 0;
-    /* Faz o menu ficar fixo enquanto rola */
     position: sticky; 
     top: 20px; 
     height: fit-content;
@@ -1955,7 +1908,6 @@ html {
     color: #A36361;
 }
 
-/* Conteúdo (Direita) */
 .policy-content {
     flex: 1;
     background: #fff;
@@ -1966,7 +1918,6 @@ html {
 
 .policy-section {
     margin-bottom: 40px;
-    /* Ajuste para o scroll não cortar o título por causa de headers fixos se houver */
     scroll-margin-top: 20px; 
 }
 
@@ -2007,7 +1958,6 @@ html {
     margin: 40px 0;
 }
 
-/* Responsividade */
 @media (max-width: 768px) {
     .policy-container {
         flex-direction: column;
@@ -2015,7 +1965,7 @@ html {
 
     .policy-sidebar {
         width: 100%;
-        position: static; /* Remove o sticky no celular */
+        position: static; 
         margin-bottom: 20px;
     }
 
@@ -2024,11 +1974,7 @@ html {
     }
 }
 
-/* --- FIM DA PÁGINA INSTITUCIONAL (POLÍTICAS) --- */
-
-/* --- PÁGINA DE RASTREIO --- */
-
-/* Ícone Grande no Topo */
+/* RASTREIO */
 .tracking-icon {
     font-size: 40px;
     color: #A36361;
@@ -2044,33 +1990,26 @@ html {
     margin-right: auto;
 }
 
-/* --- CORREÇÃO DO BOTÃO DE RASTREIO (LADO A LADO) --- */
-
-/* Container para alinhar Input e Botão */
 .tracking-group {
-    display: flex;       /* Coloca um ao lado do outro */
-    gap: 10px;           /* Espaço entre o campo e o botão */
-    align-items: stretch; /* Força ambos a terem a mesma altura */
+    display: flex;       
+    gap: 10px;            
+    align-items: stretch; 
 }
 
-/* Ajuste no Input para ele não quebrar o layout */
 .tracking-group input {
-    flex: 1;             /* Ocupa todo o espaço restante */
-    margin: 0;           /* Remove margens extras se houver */
+    flex: 1;             
+    margin: 0;           
 }
 
-/* Novo estilo do Botão (Agora externo) */
 .btn-tracking {
-    position: static;    /* Remove o posicionamento absoluto antigo */
-    width: 60px;         /* Largura fixa */
+    position: static;    
+    width: 60px;         
     background: #616b64;
     color: white;
     border: none;
-    border-radius: 5px;  /* Bordas arredondadas iguais ao input */
+    border-radius: 5px;  
     cursor: pointer;
     transition: background 0.3s;
-    
-    /* Centralização perfeita do ícone */
     display: flex;
     align-items: center;
     justify-content: center;
@@ -2085,14 +2024,12 @@ html {
 .divider-light {
     border: 0;
     border-top: 1px solid #eee;
-    /* Aumentado de 25px para 35px para dar mais espaço acima e abaixo da linha */
     margin: 35px 0; 
 }
 
 .order-info {
     display: flex;
     justify-content: space-between;
-    /* Aumentado de 30px para 50px para afastar mais da linha do tempo */
     margin-bottom: 50px;
     font-family: 'Quicksand', sans-serif;
     font-size: 16px;
@@ -2101,8 +2038,7 @@ html {
     border-radius: 5px;
 }
 
-/* --- ESTILO DA TIMELINE (LINHA DO TEMPO) --- */
-
+/* Timeline */
 .timeline {
     list-style: none;
     padding: 0;
@@ -2111,24 +2047,22 @@ html {
     position: relative;
 }
 
-/* Linha Vertical */
 .timeline::before {
     content: '';
     position: absolute;
     top: 0;
     bottom: 0;
-    left: 7px; /* Posição da linha */
+    left: 7px; 
     width: 2px;
     background: #e0e0e0;
 }
 
 .timeline-item {
     position: relative;
-    padding-left: 30px; /* Espaço para a bolinha */
+    padding-left: 30px; 
     margin-bottom: 25px;
 }
 
-/* Bolinha da Timeline */
 .timeline-dot {
     position: absolute;
     left: 0;
@@ -2138,18 +2072,16 @@ html {
     border-radius: 50%;
     background: #ccc;
     border: 2px solid white;
-    box-shadow: 0 0 0 2px #ccc; /* Cria borda externa */
+    box-shadow: 0 0 0 2px #ccc; 
     z-index: 1;
 }
 
-/* Item Ativo (O mais recente) */
 .timeline-item.active .timeline-dot {
-    background: #A36361; /* Rosa Lume */
+    background: #A36361; 
     box-shadow: 0 0 0 2px #A36361;
     animation: pulse 2s infinite;
 }
 
-/* Texto da Timeline */
 .timeline-content h4 {
     margin: 0 0 5px;
     font-family: 'Quicksand', sans-serif;
@@ -2172,29 +2104,29 @@ html {
     margin-top: 3px;
 }
 
-/* Animação de Pulso para o item ativo */
 @keyframes pulse {
     0% { box-shadow: 0 0 0 0 rgba(163, 99, 97, 0.4); }
     70% { box-shadow: 0 0 0 10px rgba(163, 99, 97, 0); }
     100% { box-shadow: 0 0 0 0 rgba(163, 99, 97, 0); }
 }
 
-/* Ajuste na largura do card para rastreio */
 .tracking-card-width {
-    max-width: 500px !important; /* Um pouco mais largo que o login */
+    max-width: 500px !important; 
 }
 
-/* --- FIM DA PÁGINA DE RASTREIO --- */
 
-/* --- ESTILOS DO CARROSSEL (CORRIGIDO) --- */
+/* ==========================================================================
+   11. CARROSSEL (SLIDER E PRODUTOS)
+   ========================================================================== */
 
+/* Slider Principal */
 .slider-container {
     position: relative;
     max-width: 100%;
-    height: 500px; /* Altura do banner */
+    height: 500px; 
     overflow: hidden;
     margin-bottom: 40px;
-    background-color: #ddd; /* Cor de fundo cinza caso a imagem não carregue */
+    background-color: #ddd; 
 }
 
 .slide {
@@ -2213,21 +2145,19 @@ html {
     z-index: 1;
 }
 
-/* Imagem do Banner */
 .slide img {
     position: absolute;
     top: 0;
     left: 0;
     width: 100%;
     height: 100%;
-    object-fit: cover; /* Cobre todo o espaço */
-    filter: brightness(0.6); /* Escurece a imagem para o texto ler melhor */
+    object-fit: cover; 
+    filter: brightness(0.6); 
 }
 
-/* Texto sobre a imagem */
 .slide-content {
     position: relative;
-    z-index: 10; /* Garante que o texto fique NA FRENTE da imagem */
+    z-index: 10; 
     text-align: center;
     color: rgb(255, 255, 255);
     padding: 20px;
@@ -2239,7 +2169,7 @@ html {
     font-weight: 300;
     margin-bottom: 10px;
     letter-spacing: 2px;
-    text-shadow: 2px 2px 4px rgba(255, 255, 255, 0.5); /* Sombra para leitura */
+    text-shadow: 2px 2px 4px rgba(255, 255, 255, 0.5); 
 }
 
 .slide-content p {
@@ -2249,8 +2179,6 @@ html {
     text-shadow: 1px 1px 2px rgba(255, 255, 255, 0.5);
 }
 
-/* (O restante do CSS dos botões e bolinhas continua igual ao anterior) */
-/* Botão do Banner */
 .btn-slide {
     display: inline-block;
     padding: 12px 30px;
@@ -2268,9 +2196,7 @@ html {
     background-color: white;
     color: #333;
 }
-/* ... (Mantenha o CSS das setas e dots que passei antes) */
 
-/* Setas de Navegação */
 .prev-btn, .next-btn {
     position: absolute;
     top: 50%;
@@ -2292,7 +2218,6 @@ html {
 .prev-btn { left: 20px; }
 .next-btn { right: 20px; }
 
-/* Bolinhas Indicadoras */
 .dots-container {
     position: absolute;
     bottom: 20px;
@@ -2317,10 +2242,9 @@ html {
     transform: scale(1.2);
 }
 
-/* Responsividade para Celular */
 @media (max-width: 768px) {
     .slider-container {
-        height: 350px; /* Menor no celular */
+        height: 350px; 
     }
     
     .slide-content h2 {
@@ -2332,28 +2256,25 @@ html {
     }
 
     .prev-btn, .next-btn {
-        display: none; /* Esconde setas no celular para ficar mais limpo */
+        display: none; 
     }
 }
 
-/* --- FIM DOS ESTILOS DO CARROSSEL --- */
-
-/* --- ESTILOS DA BARRA DE BENEFÍCIOS --- */
-
+/* Benefits Bar */
 .benefits-bar {
-    background-color: #f9f9f9; /* Fundo cinza bem claro */
+    background-color: #f9f9f9; 
     padding: 30px 0;
     border-bottom: 1px solid #eee;
-    margin-bottom: 40px; /* Espaço antes do título "Nossos Produtos" */
+    margin-bottom: 40px; 
 }
 
 .benefits-container {
     max-width: 1200px;
     margin: 0 auto;
     display: flex;
-    justify-content: space-around; /* Distribui os itens uniformemente */
+    justify-content: space-around; 
     align-items: center;
-    flex-wrap: wrap; /* Permite quebrar linha no celular */
+    flex-wrap: wrap; 
     gap: 20px;
     padding: 0 20px;
 }
@@ -2362,14 +2283,12 @@ html {
     display: flex;
     align-items: center;
     gap: 15px;
-    min-width: 200px; /* Garante um tamanho mínimo para cada item */
+    min-width: 200px; 
 }
 
-/* Estilo dos Ícones */
 .benefit-item i {
     font-size: 32px;
-    color: #A36361; /* Cor rosa/terracota da marca */
-    /* Adiciona um círculo sutil atrás do ícone */
+    color: #A36361; 
     background: #fff0f0;
     width: 60px;
     height: 60px;
@@ -2379,7 +2298,6 @@ html {
     border-radius: 50%;
 }
 
-/* Estilo dos Textos */
 .benefit-text h4 {
     margin: 0 0 5px;
     font-family: 'Quicksand', sans-serif;
@@ -2394,46 +2312,40 @@ html {
     color: #666;
 }
 
-/* Responsividade */
 @media (max-width: 768px) {
     .benefits-container {
-        justify-content: flex-start; /* Alinha à esquerda no celular */
+        justify-content: flex-start; 
     }
 
     .benefit-item {
-        width: 100%; /* Cada item ocupa uma linha inteira no celular */
+        width: 100%; 
         padding: 10px 0;
-        border-bottom: 1px solid #eee; /* Adiciona uma linha separadora */
+        border-bottom: 1px solid #eee; 
     }
 
     .benefit-item:last-child {
         border-bottom: none;
     }
 }
-/* --- FIM DOS ESTILOS DA BARRA DE BENEFÍCIOS --- */
 
-/* --- ESTILOS DO MOSTRUÁRIO (VITRINE) --- */
-
+/* Mostruário (Vitrine) */
 .showcase-section {
     max-width: 1200px;
-    margin: 0 auto 60px; /* Margem inferior para afastar do próximo bloco */
+    margin: 0 auto 60px; 
     padding: 0 20px;
 }
 
 .showcase-grid {
     display: grid;
-    /* Cria 4 colunas iguais */
     grid-template-columns: repeat(4, 1fr); 
     gap: 20px;
 }
 
-/* --- Card Banner (Esquerda) --- */
 .showcase-banner-card {
     position: relative;
     height: 100%;
     border-radius: 8px;
     overflow: hidden;
-    /* Se não tiver imagem vertical, usa um fundo cor da marca */
     background-color: #616b64;
 }
 
@@ -2468,7 +2380,7 @@ html {
 
 .banner-overlay span {
     display: block;
-    font-family: 'Montserrat', sans-serif; /* Fonte cursiva ficaria linda aqui */
+    font-family: 'Montserrat', sans-serif; 
     font-size: 18px;
     margin: 5px 0 15px;
     font-style: italic;
@@ -2489,7 +2401,6 @@ html {
     color: #333;
 }
 
-/* --- Cards de Produto --- */
 .product-card-showcase {
     background: white;
     border: 1px solid #f0f0f0;
@@ -2521,7 +2432,7 @@ html {
     position: absolute;
     top: 10px;
     left: 10px;
-    background-color: #A36361; /* Rosa Lume */
+    background-color: #A36361; 
     color: white;
     font-size: 10px;
     padding: 4px 8px;
@@ -2568,7 +2479,7 @@ html {
 }
 
 .btn-shop-now {
-    background-color: #616b64; /* Verde acinzentado */
+    background-color: #616b64; 
     color: white;
     border: none;
     padding: 12px;
@@ -2583,30 +2494,26 @@ html {
 }
 
 .btn-shop-now:hover {
-    background-color: #A36361; /* Muda para Rosa no hover */
+    background-color: #A36361; 
 }
 
-/* Responsividade */
 @media (max-width: 900px) {
     .showcase-grid {
-        grid-template-columns: repeat(2, 1fr); /* 2 colunas no tablet */
+        grid-template-columns: repeat(2, 1fr); 
     }
 }
 
 @media (max-width: 600px) {
     .showcase-grid {
-        grid-template-columns: 1fr; /* 1 coluna no celular */
+        grid-template-columns: 1fr; 
     }
     
     .showcase-banner-card {
-        height: 300px; /* Altura fixa para o banner no celular */
+        height: 300px; 
     }
 }
 
-/* --- FIM DOS ESTILOS DO MOSTRUÁRIO (VITRINE) --- */
-
-/* --- ESTILOS DO CARROSSEL DE PRODUTOS --- */
-
+/* Carrossel de Produtos */
 .product-carousel-section {
     max-width: 1200px;
     margin: 40px auto;
@@ -2620,33 +2527,30 @@ html {
     align-items: center;
 }
 
-/* Área que contém os cards e rola */
 .carousel-track {
     display: flex;
     gap: 20px;
-    overflow-x: auto; /* Permite rolar horizontalmente */
+    overflow-x: auto; 
     scroll-behavior: smooth;
-    padding: 20px 5px; /* Espaço para a sombra não cortar */
+    padding: 20px 5px; 
     
-    /* Esconde a barra de rolagem (Scrollbar) */
-    -ms-overflow-style: none;  /* IE and Edge */
-    scrollbar-width: none;  /* Firefox */
+    -ms-overflow-style: none;  
+    scrollbar-width: none;  
 }
 
-/* Esconde scrollbar no Chrome/Safari/Opera */
 .carousel-track::-webkit-scrollbar {
     display: none;
 }
 
-/* O Card do Produto no Carrossel */
 .carousel-card {
-    min-width: 280px; /* Largura fixa para cada card */
+    min-width: 280px; 
     max-width: 280px;
     background: white;
     border-radius: 8px;
     box-shadow: 0 4px 15px rgba(0,0,0,0.05);
     transition: transform 0.3s;
-    flex-shrink: 0; /* Impede que o card encolha */
+    flex-shrink: 0; 
+    position: relative;
 }
 
 .carousel-card:hover {
@@ -2654,7 +2558,7 @@ html {
 }
 
 .card-img {
-    height: 300px; /* Imagem bem alta como na referência */
+    height: 300px; 
     overflow: hidden;
     border-radius: 8px 8px 0 0;
 }
@@ -2676,7 +2580,7 @@ html {
     color: #333;
     margin: 0 0 10px;
     font-weight: bold;
-    height: 40px; /* Altura fixa para alinhar títulos */
+    height: 40px; 
 }
 
 .prices {
@@ -2706,7 +2610,7 @@ html {
 }
 
 .btn-shop-card {
-    background-color: #A36361; /* Cor da Marca (Rosa) */
+    background-color: #A36361; 
     color: white;
     border: none;
     padding: 12px 20px;
@@ -2718,16 +2622,15 @@ html {
     cursor: pointer;
     transition: background 0.3s;
     letter-spacing: 1px;
-    text-decoration: none;  /* Remove o sublinhado */
-    display: block;         /* Garante que o botão ocupe o espaço correto */
-    text-align: center;     /* Centraliza o texto dentro do botão */
+    text-decoration: none;  
+    display: block;         
+    text-align: center;     
 }
 
 .btn-shop-card:hover {
     background-color: #8c5351;
 }
 
-/* Botões de Navegação (Setas) */
 .carousel-btn {
     background: white;
     border: 1px solid #ddd;
@@ -2743,7 +2646,7 @@ html {
     box-shadow: 0 2px 5px rgba(0,0,0,0.1);
     z-index: 10;
     transition: all 0.3s;
-    position: absolute; /* Para ficar em cima das imagens se quiser, ou lados */
+    position: absolute; 
 }
 
 .carousel-btn:hover {
@@ -2759,10 +2662,9 @@ html {
     right: -20px;
 }
 
-/* Responsividade */
 @media (max-width: 768px) {
     .carousel-btn {
-        display: none; /* Esconde botões no celular (usa o touch para rolar) */
+        display: none; 
     }
     
     .product-carousel-section {
@@ -2770,15 +2672,13 @@ html {
     }
 }
 
-/* --- FIM DO ESTILOS DO CARROSSEL DE PRODUTOS --- */
-
-/* --- ESTILOS DO CARROSSEL "SOBRE" --- */
+/* Carrossel Sobre */
 .brand-story-section {
     width: 100%;
-    background-color: #616b64; /* Verde da sua marca */
+    background-color: #616b64; 
     color: white;
     margin: 60px 0;
-    overflow: hidden; /* Esconde o que está fora da tela */
+    overflow: hidden; 
     position: relative;
 }
 
@@ -2790,32 +2690,30 @@ html {
 
 .story-track {
     display: flex;
-    transition: transform 0.6s ease-in-out; /* Movimento suave */
+    transition: transform 0.6s ease-in-out; 
     width: 100%;
 }
 
-/* Cada Slide ocupa 100% da largura */
 .story-slide {
     min-width: 100%;
     display: flex;
     align-items: center;
-    flex-wrap: wrap; /* Para celular */
+    flex-wrap: wrap; 
 }
 
-/* Coluna de Texto (Esquerda) */
 .story-text-col {
     flex: 1;
-    padding: 60px 80px; /* Bastante espaço interno */
+    padding: 60px 80px; 
     display: flex;
     flex-direction: column;
     justify-content: center;
-    align-items: flex-start; /* Alinha texto à esquerda */
+    align-items: flex-start; 
     text-align: left;
 }
 
 .story-text-col h3 {
-    font-family: 'Quicksand', sans-serif; /* Fonte de Título elegante */
-    font-size: 32px; /* Título grande como na foto */
+    font-family: 'Quicksand', sans-serif; 
+    font-size: 32px; 
     margin-bottom: 20px;
     text-transform: uppercase;
     letter-spacing: 2px;
@@ -2826,7 +2724,7 @@ html {
     font-size: 16px;
     line-height: 1.8;
     margin-bottom: 30px;
-    max-width: 500px; /* Limita largura do texto para leitura fácil */
+    max-width: 500px; 
 }
 
 .btn-story {
@@ -2846,20 +2744,18 @@ html {
     color: #616b64;
 }
 
-/* Coluna de Imagem (Direita) */
 .story-img-col {
     flex: 1;
-    height: 500px; /* Altura fixa para manter padrão */
+    height: 500px; 
     position: relative;
 }
 
 .story-img-col img {
     width: 100%;
     height: 100%;
-    object-fit: cover; /* Cobre todo o espaço sem distorcer */
+    object-fit: cover; 
 }
 
-/* Setas de Navegação */
 .story-btn {
     position: absolute;
     top: 50%;
@@ -2881,11 +2777,10 @@ html {
 .prev-story { left: 20px; }
 .next-story { right: 20px; }
 
-/* Indicadores (Barrinhas embaixo) */
 .story-indicators {
     position: absolute;
     bottom: 30px;
-    left: 25%; /* Tenta centralizar na coluna de texto */
+    left: 25%; 
     transform: translateX(-50%);
     display: flex;
     gap: 10px;
@@ -2893,7 +2788,7 @@ html {
 }
 
 .indicator {
-    width: 40px; /* Barrinha larga */
+    width: 40px; 
     height: 3px;
     background-color: rgba(255,255,255, 0.3);
     cursor: pointer;
@@ -2904,15 +2799,14 @@ html {
     background-color: white;
 }
 
-/* Responsividade (Celular) */
 @media (max-width: 900px) {
     .story-slide {
-        flex-direction: column-reverse; /* Imagem em cima, texto embaixo no celular */
+        flex-direction: column-reverse; 
     }
 
     .story-img-col {
         width: 100%;
-        height: 300px; /* Menor no celular */
+        height: 300px; 
     }
 
     .story-text-col {
@@ -2922,29 +2816,27 @@ html {
     }
 
     .story-indicators {
-        left: 50%; /* Centraliza total no celular */
+        left: 50%; 
         bottom: 10px;
     }
     
     .story-btn {
-        display: none; /* Esconde setas no celular para limpar visual */
+        display: none; 
     }
 }
-/* --- FIM DOS ESTILOS DO CARROSSEL "SOBRE" --- */
 
-/* --- ESTILOS DA NOVA SEÇÃO DE DESTAQUES (CARDS REDONDOS) --- */
-
+/* Destaques (Cards Redondos) */
 .highlights-section {
     padding: 60px 20px;
-    background-color: #fff; /* Fundo branco para destacar do resto */
-    margin-bottom: 40px; /* Espaço antes do footer */
+    background-color: #fff; 
+    margin-bottom: 40px; 
 }
 
 .highlights-grid {
     display: flex;
-    justify-content: center; /* Centraliza tudo na tela */
-    flex-wrap: wrap; /* Permite quebrar linha em telas menores */
-    gap: 40px; /* Espaço entre os itens */
+    justify-content: center; 
+    flex-wrap: wrap; 
+    gap: 40px; 
     max-width: 1200px;
     margin: 0 auto;
 }
@@ -2954,33 +2846,31 @@ html {
     flex-direction: column;
     align-items: center;
     text-align: center;
-    width: 180px; /* Largura fixa para manter alinhamento */
+    width: 180px; 
 }
 
-/* O Círculo da Imagem */
 .highlight-circle {
     width: 140px;
     height: 140px;
-    border-radius: 50%; /* Faz ficar redondo */
+    border-radius: 50%; 
     overflow: hidden;
     margin-bottom: 20px;
     box-shadow: 0 4px 10px rgba(0,0,0,0.1);
-    border: 3px solid #f9f9f9; /* Borda sutil */
+    border: 3px solid #f9f9f9; 
     transition: transform 0.3s, border-color 0.3s;
 }
 
 .highlight-card:hover .highlight-circle {
-    transform: scale(1.05); /* Leve zoom ao passar o mouse */
-    border-color: #A36361; /* Muda a borda para Rosa Lume */
+    transform: scale(1.05); 
+    border-color: #A36361; 
 }
 
 .highlight-circle img {
     width: 100%;
     height: 100%;
-    object-fit: cover; /* Garante que preencha o círculo sem distorcer */
+    object-fit: cover; 
 }
 
-/* Título */
 .highlight-card h4 {
     font-family: 'Quicksand', sans-serif;
     font-size: 16px;
@@ -2990,7 +2880,6 @@ html {
     text-transform: uppercase;
 }
 
-/* Texto Descritivo */
 .highlight-card p {
     font-family: 'Montserrat', sans-serif;
     font-size: 12px;
@@ -2999,14 +2888,13 @@ html {
     margin: 0;
 }
 
-/* Responsividade */
 @media (max-width: 768px) {
     .highlights-grid {
         gap: 30px;
     }
     
     .highlight-card {
-        width: 140px; /* Menor no celular */
+        width: 140px; 
     }
 
     .highlight-circle {
@@ -3019,9 +2907,9 @@ html {
     }
 }
 
-/* --- fim dos ESTILOS DA NOVA SEÇÃO DE DESTAQUES (CARDS REDONDOS) --- */
-
-/* --- PÁGINA DE DETALHES DO PRODUTO --- */
+/* ==========================================================================
+   12. DETALHES DO PRODUTO
+   ========================================================================== */
 
 .product-page-container {
     max-width: 1200px;
@@ -3045,21 +2933,18 @@ html {
     color: #A36361;
 }
 
-/* Container Principal (Galeria + Info) */
 .product-main-wrapper {
     display: flex;
     gap: 50px;
     margin-bottom: 60px;
 }
 
-/* --- Galeria de Imagens --- */
 .product-gallery-section {
-    flex: 1.2; /* Ocupa um pouco mais que a metade */
+    flex: 1.2; 
     display: flex;
     gap: 20px;
 }
 
-/* Lista de Miniaturas (Vertical) */
 .thumbnails-list {
     display: flex;
     flex-direction: column;
@@ -3081,9 +2966,8 @@ html {
     opacity: 1;
     border-color: #A36361;
 }
-
-/* Imagem Grande */
 .main-image-display {
+    position: relative; /* <--- OBRIGATÓRIO: Adicione essa linha */
     flex: 1;
     height: 500px;
     background: #f9f9f9;
@@ -3100,7 +2984,6 @@ html {
     object-fit: contain;
 }
 
-/* --- Coluna de Detalhes --- */
 .product-details-section {
     flex: 1;
     padding: 10px 0;
@@ -3142,7 +3025,7 @@ html {
 
 .payment-detail {
     display: block;
-    color: #A36361; /* Destaque no preço Pix */
+    color: #A36361; 
     font-weight: bold;
     margin-top: 5px;
     font-family: 'Montserrat', sans-serif;
@@ -3162,7 +3045,6 @@ html {
     margin: 25px 0;
 }
 
-/* Ações de Compra */
 .purchase-actions {
     display: flex;
     gap: 20px;
@@ -3196,7 +3078,7 @@ html {
 
 .btn-add-cart {
     flex: 1;
-    background-color: #616b64; /* Verde da Marca */
+    background-color: #616b64; 
     color: white;
     border: none;
     border-radius: 5px;
@@ -3211,7 +3093,6 @@ html {
     background-color: #4e5650;
 }
 
-/* Simulador de Frete */
 .shipping-simulator {
     background: #fcfcfc;
     padding: 20px;
@@ -3259,7 +3140,6 @@ html {
     font-family: 'Montserrat', sans-serif;
 }
 
-/* --- Bloco de Descrição --- */
 .product-description-block {
     border-top: 1px solid #eee;
     padding-top: 40px;
@@ -3295,14 +3175,13 @@ html {
     color: #999;
 }
 
-/* Responsividade Mobile */
 @media (max-width: 900px) {
     .product-main-wrapper {
         flex-direction: column;
     }
 
     .product-gallery-section {
-        flex-direction: column-reverse; /* Miniaturas embaixo */
+        flex-direction: column-reverse; 
     }
 
     .thumbnails-list {
@@ -3314,11 +3193,11 @@ html {
         height: 350px;
     }
 }
-/* --- FIM DA PÁGINA DE DETALHES DO PRODUTO --- */
 
-/* --- PÁGINA DE CHECKOUT --- */
+/* ==========================================================================
+   13. CHECKOUT
+   ========================================================================== */
 
-/* Header exclusivo do Checkout */
 .checkout-header {
     background: white;
     padding: 15px 40px;
@@ -3333,7 +3212,7 @@ html {
 }
 
 .secure-badge {
-    color: #28a745; /* Verde segurança */
+    color: #28a745; 
     font-family: 'Quicksand', sans-serif;
     font-weight: bold;
     font-size: 14px;
@@ -3342,7 +3221,6 @@ html {
     gap: 5px;
 }
 
-/* Layout Principal */
 .checkout-container {
     max-width: 1100px;
     margin: 40px auto;
@@ -3351,7 +3229,6 @@ html {
     gap: 40px;
 }
 
-/* Coluna da Esquerda (Formulários) */
 .checkout-forms {
     flex: 2;
 }
@@ -3373,10 +3250,9 @@ html {
     padding-bottom: 10px;
 }
 
-/* Grid de Formulário */
 .form-grid {
     display: grid;
-    grid-template-columns: 1fr 1fr; /* 2 colunas */
+    grid-template-columns: 1fr 1fr; 
     gap: 20px;
 }
 
@@ -3386,7 +3262,7 @@ html {
 }
 
 .input-group.full-width {
-    grid-column: span 2; /* Ocupa a linha toda */
+    grid-column: span 2; 
 }
 
 .input-group label {
@@ -3414,10 +3290,9 @@ html {
     font-size: 12px;
     color: #A36361;
     text-decoration: underline;
-    margin-top: 30px; /* Ajuste visual para alinhar com o input do lado */
+    margin-top: 30px; 
 }
 
-/* Opções de Frete */
 .shipping-options {
     margin-top: 20px;
     background: #f9f9f9;
@@ -3457,7 +3332,6 @@ html {
 .ship-time { font-size: 12px; color: #777; }
 .ship-price { font-weight: bold; color: #333; }
 
-/* Abas de Pagamento */
 .payment-tabs {
     display: flex;
     gap: 10px;
@@ -3485,7 +3359,7 @@ html {
 .pix-box {
     text-align: center;
     padding: 20px;
-    background: #f0fdf4; /* Verde bem clarinho */
+    background: #f0fdf4; 
     border: 1px dashed #28a745;
     border-radius: 5px;
 }
@@ -3505,11 +3379,10 @@ html {
     margin-top: 15px;
 }
 
-/* Botão Finalizar */
 .btn-finish-order {
     width: 100%;
     padding: 18px;
-    background-color: #28a745; /* Verde é melhor para conversão final */
+    background-color: #28a745; 
     color: white;
     border: none;
     border-radius: 5px;
@@ -3525,7 +3398,6 @@ html {
     background-color: #218838;
 }
 
-/* Coluna da Direita (Resumo Sticky) */
 .order-summary-sidebar {
     flex: 1;
 }
@@ -3535,7 +3407,7 @@ html {
     padding: 30px;
     border-radius: 8px;
     box-shadow: 0 4px 20px rgba(0,0,0,0.05);
-    position: sticky; /* Faz o resumo acompanhar a rolagem */
+    position: sticky; 
     top: 20px; 
 }
 
@@ -3601,10 +3473,9 @@ html {
     border-radius: 4px;
 }
 
-/* Responsividade */
 @media (max-width: 900px) {
     .checkout-container {
-        flex-direction: column-reverse; /* No celular, resumo vai pro final ou topo, dependendo da preferência */
+        flex-direction: column-reverse; 
     }
     
     .form-grid {
@@ -3616,28 +3487,24 @@ html {
     }
 }
 
-/* --- BOTÕES DE AÇÃO DO CHECKOUT --- */
-
 .checkout-actions {
     display: flex;
-    gap: 15px; /* Espaço entre os botões */
+    gap: 15px; 
     margin-bottom: 40px;
     align-items: center;
 }
 
-/* Ajuste no botão de finalizar para ele funcionar dentro do grupo */
 .btn-finish-order {
-    flex: 2; /* Ocupa 2/3 do espaço (Mais chamativo) */
-    margin-bottom: 0; /* Remove a margem antiga */
+    flex: 2; 
+    margin-bottom: 0; 
 }
 
-/* Estilo do Botão Cancelar */
 .btn-cancel-order {
-    flex: 1; /* Ocupa 1/3 do espaço */
+    flex: 1; 
     display: block;
     text-align: center;
     padding: 18px;
-    border: 1px solid #dc3545; /* Vermelho suave (alerta) */
+    border: 1px solid #dc3545; 
     color: #dc3545;
     background-color: transparent;
     border-radius: 5px;
@@ -3650,28 +3517,27 @@ html {
 }
 
 .btn-cancel-order:hover {
-    background-color: #fff5f5; /* Fundo levemente avermelhado no hover */
+    background-color: #fff5f5; 
     color: #a71d2a;
     border-color: #a71d2a;
 }
 
-/* Responsividade para celular */
 @media (max-width: 768px) {
     .checkout-actions {
-        flex-direction: column-reverse; /* Coloca o Cancelar embaixo no celular */
+        flex-direction: column-reverse; 
     }
 
     .btn-finish-order, .btn-cancel-order {
-        width: 100%; /* Largura total no celular */
+        width: 100%; 
         flex: auto;
     }
 }
-/* Estilo da caixa de identificação simplificada */
+
 .auth-check-box {
     background: #fff;
     padding: 30px;
     text-align: center;
-    border: 1px dashed #d4a373; /* Borda dourada pontilhada */
+    border: 1px dashed #d4a373; 
     border-radius: 8px;
     margin-top: 15px;
 }
@@ -3686,7 +3552,7 @@ html {
     display: flex;
     gap: 10px;
     max-width: 500px;
-    margin: 0 auto; /* Centraliza */
+    margin: 0 auto; 
 }
 
 .input-group-check input {
@@ -3698,7 +3564,7 @@ html {
 }
 
 .btn-continue {
-    background-color: #2c2c2c; /* Cor escura da marca */
+    background-color: #2c2c2c; 
     color: white;
     border: none;
     padding: 0 25px;
@@ -3709,10 +3575,9 @@ html {
 }
 
 .btn-continue:hover {
-    background-color: #d4a373; /* Dourado no hover */
+    background-color: #d4a373; 
 }
 
-/* Responsividade para celular */
 @media (max-width: 600px) {
     .input-group-check {
         flex-direction: column;
@@ -3722,188 +3587,22 @@ html {
         padding: 12px;
     }
 }
-/* --- FIM DA PÁGINA DE CHECKOUT --- */
 
-/* --- Modal Newsletter --- */
-/* --- Modal Newsletter (Isolado para não quebrar o footer) --- */
+/* ==========================================================================
+   14. MENU SUSPENSO (USER DROPDOWN)
+   ========================================================================== */
 
-/* Fundo escuro */
-#newsletter-modal.modal-overlay {
-    position: fixed;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
-    background: rgba(0, 0, 0, 0.6);
-    backdrop-filter: blur(4px);
-    z-index: 9999; /* Z-index bem alto para ficar acima de tudo */
-    display: none;
-    justify-content: center;
-    align-items: center;
-    opacity: 0;
-    transition: opacity 0.5s ease;
-}
-
-#newsletter-modal.modal-overlay.active {
-    opacity: 1;
-}
-
-/* Caixa do Modal */
-#newsletter-modal .modal-container {
-    background: #fff;
-    width: 90%;
-    max-width: 850px;
-    height: 500px;
-    display: flex;
-    border-radius: 8px;
-    box-shadow: 0 20px 50px rgba(0,0,0,0.2);
-    position: relative;
-    overflow: hidden;
-    transform: translateY(50px);
-    transition: transform 0.5s ease;
-}
-
-#newsletter-modal.modal-overlay.active .modal-container {
-    transform: translateY(0);
-}
-
-/* Botão Fechar */
-#newsletter-modal .close-btn {
-    position: absolute;
-    top: 15px;
-    right: 20px;
-    background: none;
-    border: none;
-    font-size: 2rem;
-    color: #888;
-    cursor: pointer;
-    z-index: 10;
-}
-
-/* Imagem */
-#newsletter-modal .modal-image {
-    flex: 1;
-    background-color: #f0f0f0;
-}
-
-#newsletter-modal .modal-image img {
-    width: 100%;
-    height: 100%;
-    object-fit: cover;
-}
-
-/* Conteúdo */
-#newsletter-modal .modal-content {
-    flex: 1;
-    padding: 50px 40px;
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-    text-align: center;
-}
-
-/* Títulos do Modal apenas */
-#newsletter-modal .modal-tag {
-    font-family: 'Quicksand', sans-serif;
-    text-transform: uppercase;
-    font-size: 0.8rem;
-    letter-spacing: 2px;
-    color: #999;
-    margin-bottom: 10px;
-    display: block; /* Garante que fique em linha própria */
-}
-
-#newsletter-modal h2 {
-    font-family: 'Montserrat', sans-serif;
-    font-size: 2rem;
-    margin-bottom: 15px;
-    color: #333;
-    line-height: 1.2;
-}
-
-#newsletter-modal p {
-    font-family: 'Montserrat', sans-serif;
-    font-size: 0.95rem;
-    color: #666;
-    margin-bottom: 25px;
-    line-height: 1.6;
-}
-
-/* --- Formulário ESPECÍFICO do Modal --- */
-/* Note que agora usamos #newsletter-modal antes para proteger o footer */
-
-#newsletter-modal .newsletter-form {
-    display: flex;
-    flex-direction: column;
-    gap: 15px;
-    width: 100%; /* Garante largura total dentro do modal */
-}
-
-/* Inputs APENAS dentro do modal */
-#newsletter-modal .newsletter-form input {
-    padding: 12px 15px;
-    border: 1px solid #ddd;
-    border-radius: 4px;
-    font-family: 'Montserrat', sans-serif;
-    font-size: 0.9rem;
-    outline: none;
-    width: 100%; /* Ocupa 100% da caixa pai */
-    box-sizing: border-box; /* Garante que o padding não estoure a largura */
-}
-
-#newsletter-modal .newsletter-form input:focus {
-    border-color: #d4a373;
-}
-
-/* Botão APENAS dentro do modal */
-#newsletter-modal .newsletter-form button {
-    padding: 14px;
-    background-color: #333;
-    color: #fff;
-    border: none;
-    border-radius: 4px;
-    font-family: 'Montserrat', sans-serif;
-    font-weight: 600;
-    text-transform: uppercase;
-    letter-spacing: 1px;
-    cursor: pointer;
-    width: 100%;
-    transition: background 0.3s;
-}
-
-#newsletter-modal .newsletter-form button:hover {
-    background-color: #000;
-}
-
-/* Responsividade do Modal */
-@media (max-width: 768px) {
-    #newsletter-modal .modal-container {
-        flex-direction: column;
-        height: auto;
-        max-width: 400px;
-    }
-    
-    #newsletter-modal .modal-image {
-        display: none;
-    }
-}
-
-/* --- Fim do Modal Newsletter --- */
-/* --- Menu Suspenso do Ícone de Usuário --- */
-
-/* Container para posicionar o menu relativo ao ícone */
 .user-menu-wrapper {
     position: relative;
     display: inline-block;
-    height: 100%; /* Garante altura para o hover não falhar */
+    height: 100%; 
 }
 
-/* O Menu Dropdown (Começa Escondido) */
 .user-dropdown {
     position: absolute;
-    top: 30px; /* Distância do ícone */
+    top: 30px; 
     left: 50%;
-    transform: translateX(-50%); /* Centraliza em relação ao ícone */
+    transform: translateX(-50%); 
     background-color: #fff;
     min-width: 180px;
     box-shadow: 0 4px 12px rgba(0,0,0,0.15);
@@ -3915,7 +3614,6 @@ html {
     z-index: 1000;
 }
 
-/* Setinha decorativa no topo do menu */
 .user-dropdown::before {
     content: '';
     position: absolute;
@@ -3928,14 +3626,12 @@ html {
     box-shadow: -2px -2px 5px rgba(0,0,0,0.03);
 }
 
-/* MÁGICA: Mostra o menu quando passa o mouse no Wrapper */
 .user-menu-wrapper:hover .user-dropdown {
     opacity: 1;
     visibility: visible;
-    top: 40px; /* Pequena animação de descida */
+    top: 40px; 
 }
 
-/* Estilo dos Links dentro do Menu */
 .user-dropdown ul {
     list-style: none;
     padding: 0;
@@ -3950,15 +3646,15 @@ html {
     color: #555;
     text-decoration: none;
     font-size: 0.9rem;
-    white-space: nowrap; /* Impede que o texto quebre linha */
+    white-space: nowrap; 
     transition: background 0.2s;
-    font-family: 'Montserrat', sans-serif; /* Garante a fonte do site */
-    margin: 0; /* Remove margens extras dos links globais */
+    font-family: 'Montserrat', sans-serif; 
+    margin: 0; 
 }
 
 .user-dropdown ul li a:hover {
     background-color: #f5f5f5;
-    color: #d4a373; /* Cor dourada da marca */
+    color: #d4a373; 
 }
 
 .user-dropdown i {
@@ -3967,14 +3663,12 @@ html {
     font-size: 0.9rem;
 }
 
-/* Separador */
 .user-dropdown .separator {
     height: 1px;
     background-color: #eee;
     margin: 5px 0;
 }
 
-/* Link de Sair (Vermelho) */
 .logout-link {
     color: #e74c3c !important;
 }
@@ -3983,46 +3677,41 @@ html {
     background-color: #fff0f0 !important;
 }
 
-/* --- FIM Menu Suspenso do Ícone de Usuário --- */
+/* ==========================================================================
+   15. MODAL CARTÃO E BOTÕES GERAIS
+   ========================================================================== */
 
-/* --- ESTILO DO MODAL (ADICIONAR CARTÃO) --- */
-
-/* Fundo escuro transparente que cobre a tela inteira */
 .modal-container {
-    display: none; /* Começa escondido */
-    position: fixed; /* Fica fixo na tela, mesmo se rolar */
-    z-index: 9999; /* Fica na frente de tudo */
+    display: none; 
+    position: fixed; 
+    z-index: 9999; 
     left: 0;
     top: 0;
     width: 100%;
     height: 100%;
-    background-color: rgba(0, 0, 0, 0.6); /* Preto com 60% de transparência */
+    background-color: rgba(0, 0, 0, 0.6); 
     
-    /* Centraliza a caixa branca no meio da tela */
     display: flex; 
     align-items: center;
     justify-content: center;
 }
 
-/* A caixa branca do formulário */
 .modal-content {
     background-color: #fff;
     padding: 30px;
     border-radius: 12px;
     width: 90%;
-    max-width: 450px; /* Largura máxima */
+    max-width: 450px; 
     position: relative;
     box-shadow: 0 10px 25px rgba(0,0,0,0.3);
-    animation: modalFadeIn 0.3s; /* Efeito suave ao abrir */
+    animation: modalFadeIn 0.3s; 
 }
 
-/* Animação de entrada */
 @keyframes modalFadeIn {
     from {opacity: 0; transform: translateY(-20px);}
     to {opacity: 1; transform: translateY(0);}
 }
 
-/* Botão de Fechar (X) */
 .close-modal {
     position: absolute;
     top: 15px;
@@ -4038,7 +3727,6 @@ html {
     color: #333;
 }
 
-/* Título do Modal */
 .modal-content h3 {
     margin-top: 0;
     margin-bottom: 20px;
@@ -4047,7 +3735,6 @@ html {
     text-align: center;
 }
 
-/* Inputs dentro do Modal */
 .modal-content label {
     display: block;
     margin-bottom: 5px;
@@ -4064,7 +3751,6 @@ html {
     font-size: 1rem;
 }
 
-/* Botões do Modal */
 .modal-buttons {
     display: flex;
     justify-content: space-between;
@@ -4075,7 +3761,7 @@ html {
 .btn-save {
     width: 100%;
     padding: 12px;
-    background-color: #2e7d32; /* Verde */
+    background-color: #2e7d32; 
     color: white;
     border: none;
     border-radius: 6px;
@@ -4104,3 +3790,239 @@ html {
 .btn-cancel:hover {
     background-color: #bbb;
 }
+
+/* ==========================================================================
+   16. ESTILOS DOS FAVORITOS (CORAÇÃO) - COM EFEITO HOVER
+   ========================================================================== */
+
+/* 1. Posicionamento relativo nos cards (Pais) */
+.product-card, .product-card-shop, .carousel-card {
+    position: relative;
+}
+
+/* 2. O Botão Redondo (Começa Invisível) */
+.btn-fav-icon {
+    position: absolute;
+    top: 10px;
+    right: 10px;
+    background: white;
+    width: 35px;
+    height: 35px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    box-shadow: 0 2px 5px rgba(0,0,0,0.2);
+    z-index: 10;
+    text-decoration: none;
+    cursor: pointer;
+
+    /* --- O EFEITO DE SUMIR/APARECER --- */
+    opacity: 0;                  /* Começa Transparente */
+    visibility: hidden;          /* Não clicável quando invisível */
+    transform: translateY(10px); /* Levemente deslocado para baixo */
+    transition: all 0.3s ease;   /* Animação suave */
+}
+
+/* 3. Ícone Cinza (Estado Normal) */
+.btn-fav-icon i {
+    color: #ccc;
+    font-weight: 400; /* Borda fina */
+    font-size: 18px;
+    transition: color 0.2s;
+}
+
+/* 4. QUANDO PASSA O MOUSE NO CARD (O botão aparece) */
+/* Aplica o efeito em todos os tipos de cards do site */
+.product-card:hover .btn-fav-icon,
+.product-card-shop:hover .btn-fav-icon,
+.carousel-card:hover .btn-fav-icon {
+    opacity: 1;              /* Fica visível */
+    visibility: visible;
+    transform: translateY(0); /* Sobe para o lugar certo */
+}
+/* Opção Alternativa: Sempre visível na página de detalhes */
+.main-image-display .btn-fav-icon {
+    opacity: 1 !important;
+    visibility: visible !important;
+    transform: translateY(0) !important;
+}
+
+/* 5. Hover no próprio botão (Zoom + Vermelho) */
+.btn-fav-icon:hover {
+    transform: scale(1.1) translateY(0); /* Aumenta um pouco */
+    background-color: white;
+}
+.btn-fav-icon:hover i {
+    color: #e74c3c; /* Fica vermelho ao passar o mouse */
+}
+
+/* 6. ESTADO FAVORITADO (Sempre Visível e Vermelho) */
+/* Se já curtiu, ele não some, para o cliente lembrar */
+.btn-fav-icon.favoritado {
+    opacity: 1 !important;        
+    visibility: visible !important;
+    transform: translateY(0) !important;
+    color: #e74c3c !important;
+}
+
+.btn-fav-icon.favoritado i {
+    color: #e74c3c !important;
+    font-weight: 900 !important; /* Ícone preenchido */
+}
+
+/* 7. CELULAR (Sempre visível pois não tem mouse) */
+@media (max-width: 768px) {
+    .btn-fav-icon {
+        opacity: 1 !important;
+        visibility: visible !important;
+        transform: translateY(0) !important;
+    }
+}
+
+/* --- ESTILOS DA PÁGINA DE SUCESSO --- */
+
+.success-container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    min-height: 80vh;
+    padding: 20px;
+}
+
+.success-card {
+    background: white;
+    padding: 40px;
+    border-radius: 10px;
+    box-shadow: 0 10px 30px rgba(0,0,0,0.05);
+    text-align: center;
+    max-width: 600px;
+    width: 100%;
+}
+
+.success-icon {
+    width: 80px;
+    height: 80px;
+    background-color: #28a745; /* Verde Sucesso */
+    color: white;
+    font-size: 40px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin: 0 auto 20px;
+    box-shadow: 0 5px 15px rgba(40, 167, 69, 0.3);
+}
+
+.success-card h2 {
+    font-family: 'Quicksand', sans-serif;
+    color: #333;
+    margin-bottom: 10px;
+}
+
+.order-number {
+    font-family: 'Montserrat', sans-serif;
+    font-size: 1.1rem;
+    color: #666;
+}
+
+.payment-instruction {
+    background: #f9f9f9;
+    padding: 20px;
+    border-radius: 8px;
+    border: 1px solid #eee;
+    margin: 20px 0;
+}
+
+/* Pix */
+.qr-img {
+    width: 150px;
+    margin: 15px 0;
+    border: 1px solid #ddd;
+    padding: 5px;
+    background: white;
+}
+
+.copypaste-box {
+    display: flex;
+    gap: 10px;
+    margin-top: 10px;
+}
+
+.copypaste-box input {
+    flex: 1;
+    padding: 8px;
+    border: 1px solid #ddd;
+    border-radius: 4px;
+    background: white;
+    color: #666;
+}
+
+.copypaste-box button {
+    background: #32bcad; /* Cor do Pix */
+    color: white;
+    border: none;
+    padding: 0 15px;
+    border-radius: 4px;
+    cursor: pointer;
+}
+
+/* Boleto */
+.barcode-display {
+    font-family: 'Courier New', monospace;
+    font-weight: bold;
+    font-size: 16px;
+    background: white;
+    padding: 15px;
+    border: 1px dashed #333;
+    margin: 15px 0;
+    letter-spacing: 1px;
+    word-break: break-all;
+}
+
+.boleto-actions {
+    display: flex;
+    justify-content: center;
+    gap: 10px;
+}
+
+.btn-print, .btn-copy-bar {
+    padding: 10px 15px;
+    border: 1px solid #333;
+    background: transparent;
+    cursor: pointer;
+    border-radius: 4px;
+    font-weight: bold;
+    transition: 0.3s;
+}
+
+.btn-print:hover { background: #333; color: white; }
+
+/* Botão Principal */
+.btn-go-details {
+    display: block;
+    width: 100%;
+    padding: 15px;
+    background-color: #A36361;
+    color: white;
+    text-decoration: none;
+    font-family: 'Quicksand', sans-serif;
+    font-weight: bold;
+    border-radius: 5px;
+    margin-top: 20px;
+    transition: opacity 0.3s;
+}
+
+.btn-go-details:hover {
+    opacity: 0.9;
+}
+
+.link-home {
+    display: block;
+    margin-top: 15px;
+    color: #666;
+    text-decoration: none;
+    font-size: 0.9rem;
+}
+
+.link-home:hover { text-decoration: underline; }
